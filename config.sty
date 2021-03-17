@@ -1,0 +1,165 @@
+\ProvidesPackage{config}
+
+\usepackage[T1]{fontenc}          % Set T1 (8-bit) font encoding
+\usepackage[utf8]{inputenc}       % Accept accented characters
+\usepackage{amsmath}              % It's amsmath
+\let\Bbbk\relax
+\usepackage{graphicx}             % Include images nicely
+\usepackage{libertine}            % Better text font
+\usepackage{inconsolata}          % Better monospace font
+\usepackage[final]{microtype}     % Better text justification
+\usepackage[hidelinks]{hyperref}  % Links in document
+\usepackage{breakcites}           % Linebreak citations
+\usepackage{booktabs}             % For sexier tables
+\usepackage[
+  backend=biber, style=ieee, doi=false, url=false, isbn=false
+]{biblatex}                       % Set up bibliography
+\usepackage{setspace}             % Custom line spacing
+\usepackage{lipsum}               % For placeholder text, you can remove this
+\usepackage{epstopdf}             % Convert .eps to .pdf
+
+\onehalfspacing                   % Set 1.5 line spacing
+\setlength\bibitemsep{10pt}       % Give the bibliograhpy some air
+\renewcommand{\arraystretch}{1.2} % Give lists/tables some air, too
+\setcounter{secnumdepth}{3}       % Set table of contents depth to 3
+
+% Make ligatures and stuff copyable from pdf
+\pdfgentounicode=1
+\input{glyphtounicode}
+
+% Define chapter names for abstracts
+\newcommand*{\englishabstractname}{Abstract}
+\newcommand*{\norwegianabstractname}{Sammendrag}
+
+% TODOs
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+\hspace{-2.5pt}}
+\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
+
+
+% Paragraphs 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+
+
+% Add-ons
+\usepackage{cleveref}
+\usepackage{forest}
+\tikzset{
+  tree node/.style = {align=center, inner sep=0pt, font = \scriptsize},
+  S/.style = {draw, circle, minimum size = 8mm, top color=white, bottom color=blue!20},
+  tree node label/.style={font=\scriptsize},
+}
+\forestset{
+  declare toks={left branch prefix}{},
+  declare toks={right branch prefix}{},
+  declare toks={left branch suffix}{},
+  declare toks={right branch suffix}{},
+  tree node left label/.style={
+    label=170:#1,
+  },
+  tree node right label/.style={
+    label=10:#1,
+  },
+  maths branch labels/.style={
+    branch label/.style={
+      if n=1{
+        edge label={node [left, midway] {$\forestoption{left branch prefix}##1\forestoption{left branch suffix}$}},
+      }{
+        edge label={node [right, midway] {$\forestoption{right branch prefix}##1\forestoption{right branch suffix}$}},
+      }
+    },
+  },
+  text branch labels/.style={
+    branch label/.style={
+      if n=1{
+        edge label={node [left, midway] {\foresteoption{left branch prefix}##1\forestoption{left branch suffix}}},
+      }{
+        edge label={node [right, midway] {\forestoption{right branch prefix}##1\forestoption{right branch suffix}}},
+      }
+    },
+  },
+  text branch labels,
+  set branch labels/.style n args=4{%
+    left branch prefix={#1},
+    left branch suffix={#2},
+    right branch prefix={#3},
+    right branch suffix={#4},
+  },
+  set maths branch labels/.style n args=4{
+    maths branch labels,
+    set branch labels={#1}{#2}{#3}{#4},
+  },
+  set text branch labels/.style n args=4{
+    text branch labels,
+    set branch labels={#1}{#2}{#3}{#4},
+  },
+  branch and bound/.style={
+    /tikz/every label/.append style=tree node label,
+    maths branch labels,
+    for tree={
+      tree node,
+      S,
+      math content,
+      s sep'+=20mm,
+      l sep'+=5mm,
+      thick,
+      edge+={thick},
+    },
+    before typesetting nodes={
+      for tree={
+        split option={content}{:}{tree node left label,content,tree node right label,branch label},
+      },
+    },
+    where n children=0{
+      tikz+={
+        \draw [thick]  ([yshift=-10pt, xshift=-2.5pt].south west) -- ([yshift=-10pt, xshift=2.5pt].south east);
+      }
+    }{},
+  },
+}
+
+\usepackage{verbatim}
+\renewcommand{\vec}[1]{\mathbold{#1}}
+\newcommand{\mat}[1]{\mathbold{#1}}
+\usepackage{booktabs}
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\usepackage{pgfplotsthemetol}
+\usepackage{bm}
+\RequirePackage[acronym]{glossaries}        % create a glossary and acronym list
+\usepackage{tocloft}
+
+\makeatletter
+\renewcommand{\@chapapp}{}% Not necessary...
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+\usepackage{enumitem}
+\usepackage[]{quoting}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\usepackage{siunitx}
+
+\newcommand{\comments}[1]{}
+
+\pgfplotscreateplotcyclelist{yay-rainbow}{
+{black!60!red   ,fill=white!60!red   },
+{black!60!orange,fill=white!60!orange},
+{black!60!yellow,fill=white!60!yellow},
+{black!60!green ,fill=white!60!green },
+{black!60!cyan  ,fill=white!60!cyan  },
+{black!60!violet,fill=white!60!violet}}
+
+
+\usepackage[libertine]{newtxmath} % Better math font

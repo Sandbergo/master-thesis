@@ -1,0 +1,20 @@
+\chapter{Conclusion}\label{cha:conclusion}
+
+The experiments show that Multi-Layer Perceptrons can improve the running time of \gls{BnB} over the default method in the SCIP Optimization solver running purely on the CPU. Three \gls{MLP}s of varying capacity and computational complexity were tested for variable choice accuracy and efficiency when integrated into the SCIP solver. The two higher-capacity models showed identical accuracy, but the computational complexity of the largest \gls{MLP} was too high to result in an improved running time of the algorithm on the test problems. MLP1, the best-performing method, was a model with no hidden layers and is therefore identical to a linear model. 
+
+
+
+Increasing the model capacity showed no accuracy increase, and is shown to increase computation time notably. This proves the importance of model selection with minimal computational complexity, at the expense of some accuracy. Implementations of purely linear methods will be simpler to do directly in the solver. It can be assumed that the overhead of working via the PySCIPOpt interface and performing the computations in a PyTorch-compliant manner negatively impacts efficiency. The possibilities for implementing the learned branching strategies in the most computationally efficient way should be evaluated, as this might greatly improve the results for all machine learning aided \gls{BnB}.  
+
+Firstly, for the conducted experiments in this project: Fewer problem sets, fewer experiments, and no accounting for the impact of randomized seeds was performed in this project, as compared to the works by Gasse et al. \cite{gasse2019exact} and Gupta et al. \cite{gupta2020hybrid}. These experiments are time-consuming, however for a higher degree of certainty in the validity of the results, this might be necessary to explore in future work. The initiative to standardize comparisons of learned branching strategies will be productive for the research community, however, the current standards imply multiple weeks of running experiments for researchers with only one computer available, which is the reason for the reduced number of experiments in this project.   
+
+The results indicate a possible shift away from the deep learning approach, given the features currently available. Deep learning based models are unlikely to be outcompeted on accuracy, however, good linear models indicate great opportunities for analyzable, tractable, classical methods that are faster to implement. Researchers are encouraged to explore these methods and analyze the nature of the currently used feature set developed by Khalil \cite{khalil2020towards} and Gupta et al. \cite{gupta2020hybrid}.
+
+In conclusion, the results for using Multi-Layer Perceptrons in learning to branch are very positive. Experiments indicate that linear models might be equally suited as deep networks. Accurate linear methods can provide opportunities for evaluating the current feature-set used by the researchers in the field and is assumed to be a fertile area of research which is probable to gain community attention and new insight.    
+
+%\begin{chapquote}{Thomas Aquinas, \textit{Summa Theologica}}
+%``Quod potest compleri per pauciora principia, non fit per plura.\footnote{It is superfluous %to suppose that what can be accounted for by a few principles has been produced by many.}''
+%\end{chapquote}
+
+% Diskusjonskapittel
+% Rød tråd: Accuracy vs. efficiency

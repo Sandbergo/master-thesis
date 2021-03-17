@@ -1,0 +1,40 @@
+\documentclass[10pt,b5paper,twoside,openright]{book}
+\usepackage{config}
+\input{tex/glossary.tex}
+\addbibresource{bib/bibliography.bib}
+\setlength{\cftbeforesecskip}{5pt}
+\begin{document}
+
+\input{tex/frontpage}
+\frontmatter
+\pagestyle{plain}
+
+\begingroup
+\let\cleardoublepage\clearpage
+\input{tex/01-abstract}
+\input{tex/02-sammendrag}
+
+\tableofcontents \clearpage
+\listoftables    \clearpage
+\listoffigures   \clearpage
+%\printglossary[type=\acronymtype] % Print acronyms
+\printglossary                    % Print glossary
+\endgroup
+
+
+\mainmatter
+\pagestyle{headings}
+\input{tex/1-introduction}
+\input{tex/2-background}
+\input{tex/3-methods}
+\input{tex/4-results}
+\input{tex/5-discussion}
+\input{tex/6-conclusion}
+%\input{tex/log}
+%%\appendix
+%%\input{tex/A-model}
+
+\backmatter
+\printbibliography[heading=bibintoc,title={References}]
+
+\end{document}
