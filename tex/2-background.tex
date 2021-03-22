@@ -296,15 +296,72 @@ The functions are denoted as layers of the perceptron, and are implemented as af
 
 The computation of the output of the function given its input is known as a \textit{forward pass} through the network. The required computations for a single input vector into a network with $ n $ hidden layers will include $ n + 1 $ matrix multiplications and $ n + 1 $ applications of the non-linear activation function, given that there is an activation function on the output. 
 
-Depending on the training configuration, the problem can be interpreted as a classification problem or regression problem. In the following experiments, the former approach is selected. 
+Depending on the training configuration, the problem can be interpreted as a classification problem or regression problem (or a ranking problem, as in \cite{khalil2016learning}). In the following experiments, the former approach is selected, as has become popular after Gasse et al. (2019) \cite{gasse2019exact}. 
 
 
 
 
 
-\section{Markov Decision Processes}
+\section{Markov Decision Processes}\label{sec:mdp}
 
-Central to the advancement of learned strategies in \gls{BnB} is the interpretation of the solution algorithm as a \emph{Markov Decision Process} (\gls{MDP}). 
+Central to the advancement of learned strategies in \gls{BnB} is the interpretation of the solution algorithm as a \textit{Markov Decision Process} (\gls{MDP}) \cite{gasse2019exact}. This interpretation relates the problem to a large collection of literature on the topic \cite{howard1960dynamic}.
+
+An \gls{MDP} is expressed as $ \mathcal{S}, \mathcal{A}, p_{init}, p_{trans}, R$ 
+where $ \mathcal{S}$ is the state space, 
+$\mathcal{A}$ is the action space, 
+$p_{init}$ is an initial state distribution ($p_{init}\;:\;\mathcal{S}\leftarrow \mathbb{R}_{\geq 0}$), 
+$p_{trans}$ is the state transition distribution (
+$p_{trans}\; : \; \mathcal{S}
+\times \mathcal{A}\times \mathcal{S}
+\leftarrow \mathbb{R}_{\geq 0}$), 
+$p_{trans}$), $R$ is the reward function $R\;:\;\mathcal{S} \rightarrow \mathbb{R}$. \cite{prouvost2020ecole}. 
+
+Further, the \textit{action policy} $\pi$ is given as $\pi \; : \; \mathcal{A}\times \mathcal{S}
+\leftarrow \mathbb{R}_{\geq 0}$, and results in state-action trajectories $\tau = (s_0, a_0, s_1, a_1, ... )$ that obey a joint distribution that can be expressed as following: \cite{prouvost2020ecole}
+\begin{equation}
+    \tau \sim \underbrace{p_\textit{init}(s_0)}_{\text{initial state}}
+\prod_{t=0}^\infty \underbrace{\pi(a_t | s_t)}_{\text{next action}}
+\underbrace{p_\textit{trans}(s_{t+1} | a_t, s_t)}_{\text{next state}}
+\end{equation}
+
+These definitions now allow a formulation of the \gls{MDP} control problem, which is the problem of interest in this thesis. The control problem consists of finding the action policy that maximizes the reward, and can be stated as: \cite{prouvost2020ecole}
+\begin{equation}\label{eq:mdprcontrol}
+    [\pi^\star = \underset{\pi}{\operatorname{arg\,max}}
+\lim_{T \to \infty} \mathbb{E}_\tau\left[\sum_{t=0}^{T} R(s_t)\right]
+\end{equation}
+
+
+\subsection{Partially-observable Markov Decision Processes}
+
+A subset or generalization of an \gls{MDP} is the \textit{Partially-observable Markov Decision Process }(\gls{PO-MDP}) \cite{monahan1982state}. Processes of this class allows for uncertainty of the states as well as additional acquisition of state information \cite{monahan1982state}.
+The addition of an observation of the process in the observation space ($o \in \Omega $) extends the process to the formulation to $ (\mathcal{S}, \mathcal{A}, p_{init}, p_{trans}, R, O)$. 
+
+The generalization from \gls{MDP} to \gls{PO-MDP} concedes the Markovian nature of the trajectories \cite{prouvost2020ecole}, i.e:
+\begin{equation}
+    o_{t+1},r_{t+1} \not \perp   h_{t-1} \mid o_t,r_t,a_t
+\text{,}
+\end{equation}
+meaning that the entire action-state history of the process is necessary for the policy. The history is denoted $\mathcal{H}$, and the policy of the \gls{PO-MDP} is stated as:
+\begin{equation}
+    \pi:\mathcal{A} \times \mathcal{H} \to \mathbb{R}_{\geq 0}
+\end{equation}
+which means that the control problem of the \gls{PO-MDP} can also be stated as \cref{eq:mdprcontrol}.
+
+\subsection{Branch \& Bound as a \gls{PO-MDP}}
+
+Interpreted in the language of \gls{MDP}s, the \gls{BnB} algorithm is the \textit{environment} and a concrete \gls{MILP} problem instance is an \textit{episode} in this environment. The \textit{agent} is the brancher, where in this thesis the variable selection policy is the component of interest, ignoring the node selection policy. The state of the solver consists of the \gls{BnB} tree at that instance, as well as the observations at each node (the \textit{history} of the \gls{PO-MDP}).
+
+This formulation is the basis for the \textit{Ecole} framework, which is discussed in \Cref{sec:ecole}
+The \gls{PO-MDP} formulation allows for the agent in the \gls{BnB} environment to be learned through \textit{reinforcement learning}
+
+
+\section{Reinforcement Learning}
+
+The subset of machine learning described as Reinforcement Learning (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. 
+
+Many attempts have been made at implementing \gls{RL} in \gls{CO}, see for example ... Attempts show promise, however the approaches rely on efficient and accurate models pre-trained on labeled data. 
+\footnote{Attempts on \gls{RL} models were also made by the author of this thesis, but the models did not prove useful with the chosen method.}
+Cappart et al. (2021) \cite{cappart2021combinatorial} also conclude that useful \gls{RL} policies are not mature yet. 
 
 
 \section{Graph Convolutional Neural Networks }

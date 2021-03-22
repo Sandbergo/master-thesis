@@ -79,13 +79,13 @@ MLP2 and MLP3 show near-identical accuracy, with MLP3 consistently outperformed 
 
 \section{Efficiency}
 
-Five branching strategies were compared on the problem data set of three different problem sizes. The branching strategies are Full Strong Branching, Reliability Pseudo-cost branching, and the three \gls{MLP} topologies. The results are shown in \Cref{tab:results1}. \textit{Time} is the mean solution time, \textit{nodes} is the mean number of nodes in the solution graphs (calculated in accordance with the findings of Gamrath et al. \cite{gamrath2018measuring}), \textit{completed} is the number of problems where optimality was achieved within the time limit of 45 minutes and is only applicable for the large problem size. The branching strategy with the shortest mean solution time is marked bold for each problem size. 
+Five branching strategies were compared on the problem data set of three different problem sizes. The branching strategies are Full Strong Branching, Reliability Pseudo-cost branching, and the three \gls{MLP} topologies. The results are shown in \Cref{tab:results1_cauction}. \textit{Time} is the mean solution time, \textit{nodes} is the mean number of nodes in the solution graphs (calculated in accordance with the findings of Gamrath et al. \cite{gamrath2018measuring}), \textit{completed} is the number of problems where optimality was achieved within the time limit of 45 minutes and is only applicable for the large problem size. The branching strategy with the shortest mean solution time is marked bold for each problem size. 
 
 The low-capacity MLP1 branching strategy clearly wins for small problem sizes and is slightly better for medium problem sizes. For large problem sizes, Reliability Pseudo-cost Branching is decisively better, with less than half the solution time of the \gls{MLP} strategies. 
 
 Full Strong Branching results in solution trees orders of magnitude smaller than the \gls{MLP} counterpart. MLP1 is consistently performing faster branching than the other strategies, with respectively $8 \%, 23 \%, 48 \%$ more nodes processed than MLP2 for the three problem sizes.
 
-\Cref{fig:barplot} shows the results for the small problem size from \Cref{tab:results1}, including $95 \%$ confidence intervals.
+\Cref{fig:barplot} shows the results for the small problem size from \Cref{tab:results1_cauction}, including $95 \%$ confidence intervals.
 % \usepackage{booktabs}
  
   
