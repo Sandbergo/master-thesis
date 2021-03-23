@@ -357,11 +357,19 @@ The \gls{PO-MDP} formulation allows for the agent in the \gls{BnB} environment t
 
 \section{Reinforcement Learning}
 
-The subset of machine learning described as Reinforcement Learning (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. 
+The subset of machine learning described as Reinforcement Learning (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. No results will be discussed in this thesis, however a background in the topic is necessary to understand both other works in the field and the long-term goals of the project.
 
-Many attempts have been made at implementing \gls{RL} in \gls{CO}, see for example ... Attempts show promise, however the approaches rely on efficient and accurate models pre-trained on labeled data. 
-\footnote{Attempts on \gls{RL} models were also made by the author of this thesis, but the models did not prove useful with the chosen method.}
+\gls{RL} encompasses the problem of an \textit{agent} learning a \textit{policy} for behaving in an \textit{environment} so as to achieve a global objective. Any sequential decision-making problem with a measure of optimality that relies on past experience can be formulated as a \gls{RL} problem \cite{francois2018introduction}. In addition, the approach has seen success in a number of fields in the past years with the integration of deep learning models, often termed deep \gls{RL} \cite{francois2018introduction}. Most notable of the advancements might be AlphaZero, Google's successful chess-AI \cite{silver2017mastering}. \gls{RL} has the important property of being independent of data, meaning a number of core \gls{ML} challenges (quantity, quality, and bias of data) are rendered irrelevant. 
+
+\gls{RL} is particularly interesting in \gls{BnB} because of the \gls{MDP} nature of the algorithm, and the assumption that the handcrafted heuristics and sub-algorithms prevalent in modern solvers are either inefficient or inaccurate compared to the theoretical capabilities of, i.e. neural networks. 
+
+Many attempts have been made at implementing \gls{RL} in \gls{CO}, see for example Etheve et al. (2020) \cite{etheve2020reinforcement} or Tang et al. (2020) \cite{tang2020reinforcement}. Approaches for learning variable selection, such as reported in Scavuzzo (2020) \cite{scavuzzo2020learning}, rely on efficient and accurate pre-trained models based on imitation learning, like the models presented in this thesis. More knowledge is likely needed for the pure \gls{RL} approach to take over the mantle.
+\footnote{Attempts on \gls{RL} models were also made by the author of this thesis, but the models did not prove useful with the chosen method and are therefore not reported.}
 Cappart et al. (2021) \cite{cappart2021combinatorial} also conclude that useful \gls{RL} policies are not mature yet. 
+
+
+
+
 
 
 \section{Graph Convolutional Neural Networks }

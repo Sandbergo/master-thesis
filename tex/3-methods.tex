@@ -385,8 +385,12 @@ The number of nodes processed by the algorithm will also be reported. Fewer node
 
 \section{Ecole}\label{sec:ecole}
 
-\cite{prouvost2020ecole}.
+To facilitate and standardize development of \gls{ML}-based improvements of \gls{CO} algorithms, \textit{Extensible Combinatorial Optimization Learning Environments} (\gls{Ecole}) was developed \cite{prouvost2020ecole}, with the first version published in the last quarter of 2020. \gls{Ecole} aims to mimic the \textit{openAI Gym} framework \cite{brockman2016openai}, a popular framework for developing \gls{RL} models. It is a python library written largely in efficient C++. 
+The library is based on the open source solver \gls{SCIP} \cite{achterberg2009scip}.
 
+The theoretical basis for \gls{Ecole} is presented in \Cref{sec:mdp}. 
+
+It also provides \gls{CO} problem \textit{generators} for the four problem classes presented in this thesis.
 
 \section{Development Environment}
 
