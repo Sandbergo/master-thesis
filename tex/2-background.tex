@@ -252,6 +252,14 @@ where $\bm{X}$ is the feasible set as described in \Cref{eq:milp}. These inequal
 Algorithms that find these inequalities during the \gls{BnB} algorithm are called \textit{Branch and Cut}. The nomenclature comes from calling the application of these inequalities \textit{cuts} or \textit{cutting planes}.
 When an application of inequalities are only employed on the root node (before dividing the solution space in the enumeration), the algorithm is sometimes referred to as \textit{Cut and Branch} rather than \textit{Branch and Cut} \cite{wolsey2020integer}.
 
+\subsection{Primal and Dual Heuristics}
+
+The efficiency of modern \gls{MILP} solvers rely on their implementation of \textit{primal} and \textit{dual} heuristics.
+
+Primal heuristics are methods for finding feasible solutions at a given \gls{BnB} node, where the quality, or distance to the optimal bound, is the determining factor to whether the feasible solution is useful or not \cite{khalil2020towards}. These heuristics are as costly as they are useful, and modern solvers periodically run different heuristics at different times during the solution process \cite{khalil2020towards}.  
+
+Dual heuristics are the backbone of the creation of the \gls{BnB} tree. This includes selecting which node to branch from, and which variable to branch on at the selected node CHECK!!. The application of cutting planes is also classified under dual heuristics.
+
 
 \subsection{Branching Variable Selection Strategy}\label{ssec:branchingstrategy}
 

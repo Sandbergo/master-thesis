@@ -383,18 +383,60 @@ The execution time is compared using python's \verb|time.proc_time()| function, 
 The number of nodes processed by the algorithm will also be reported. Fewer nodes are not necessarily indicative of a better algorithm, however, this will be an important comparison, as it gives a proxy measurement of the accuracy/efficiency trade-off for the algorithms. 
 
 
-\section{Ecole}\label{sec:ecole}
+
+
+
+\section{Software}
+
+A number of comprehensive software libraries are required to perform the experiments in this thesis, this section presents the three most essential.  
+
+
+\subsection{SCIP}
+
+\textit{Solving Constraint Integer Programs }(\gls{SCIP})
+\cite{achterberg2009scip}, is the \gls{CO} solver that lays the foundation for the data generation and model evaluation for the methods. It is considered the fastest non-commercial solver for \gls{MIP} and\gls{MINLP} problems \cite{gamrath2020scip}. It is written in C with wrappers for C++. The software is maintained by the\textit{ Zuse Institute Berlin} (ZIB) group. 
+
+The \textit{SCIP Optimization Suite} contains, as of version 7, the simplex-based linear programming solver SoPlex \cite{wunderling1996soplex}, automated decomposition solver GCG \cite{gamrath2010gcg}, the parallelization framework UG \cite{shinano2018ug} and the \gls{MILP} presolving library PaPILO \cite{gamrath2020scip}.
+
+In the experiments in this thesis, the LP solver and node selection algorithms are the most relevant, as most of the more complex capabilities of \gls{SCIP} are deactivated in order to make the results as fair and reproducible as possible. 
+
+
+
+
+
+\subsection{PyTorch}
+
+\textit{PyTorch} is the Python library that the machine learning models are written in. The library provides, most notably, dynamic eager execution, automatic differentiation and \gls{GPU} acceleration \cite{paszke2019pytorch}. 
+
+Necessary for constructing and training the graph convolutional neural networks, the \textit{PyTorch Geometric} library was used \cite{fey2019pytorchgeometric}. The library facilitates deep learning on data with irregular structure, such as graphs. This includes methods for sparse data GPU acceleration and efficient mini-batch handling \cite{fey2019pytorchgeometric}. 
+
+
+
+
+\subsection{Ecole}\label{ssec:ecole}
 
 To facilitate and standardize development of \gls{ML}-based improvements of \gls{CO} algorithms, \textit{Extensible Combinatorial Optimization Learning Environments} (\gls{Ecole}) was developed \cite{prouvost2020ecole}, with the first version published in the last quarter of 2020. \gls{Ecole} aims to mimic the \textit{openAI Gym} framework \cite{brockman2016openai}, a popular framework for developing \gls{RL} models. It is a python library written largely in efficient C++. 
 The library is based on the open source solver \gls{SCIP} \cite{achterberg2009scip}.
 
 The theoretical basis for \gls{Ecole} is presented in \Cref{sec:mdp}. 
 
-It also provides \gls{CO} problem \textit{generators} for the four problem classes presented in this thesis.
+It also provides \gls{CO} problem \textit{generators} for the four problem classes presented in this thesis. As of version 0.5, these generators are not completely correct, and in the experiments for the combinatorial auction problems the generator from Gupta et al. (2020) \cite{gupta2020hybrid} was used. 
 
-\section{Development Environment}
+The relevant functions and their \gls{PO-MDP} counterparts can be presented as follows \cite{prouvost2020ecole}:
 
-The project is run on only Open Source Software, in order to support and further develop the commonly available tools for machine learning and mathematical programming. 
+$RewardFunction \equiv R$, 
+$ObservationFunction \equiv O$, 
+$reset\_dynamics() \equiv p_\textit{init}(s_0)$, 
+$step\_dynamics() \equiv p_\textit{trans}(s_{t+1}|s_t,a_t)$, 
+$reset() \equiv s_0 \sim p_\textit{init}(s_0), r_0=R(s_0), o_0=O(s_0)$, 
+$step() \equiv s_{t+1} \sim p_\textit{trans}(s_{t+1}|a_t,s_t), r_t=R(s_t), o_t=O(s_t)$
+
+
+
+
+\subsection{Development Environment}
+
+The project is run on only Open Source Software, in order to support and further develop the commonly available tools for machine learning and mathematical programming. For reproducability, the libraries and their respective versions are listed here, as well as in the publicly available code repository. 
 
 The project code is written in 
 \verb|python 3.7.9|, and uses               
