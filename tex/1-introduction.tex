@@ -6,6 +6,7 @@ This chapter presents a short history, motivation and background in the fields o
 
 \section{Background}
 
+In this section, a relevant background in the relevant fields of mathematical programming and machine learning is presented, as well as an overview of the previous work in combining these fields. The section is adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming }(2020). 
 
 \subsection{Mathematical Programming}
 
@@ -39,7 +40,7 @@ Further, the results of the iterative optimization process of generating an \gls
 
 \section{Previous Work}
 
-There has been a recent surge of interest in leveraging machine learning methods in solving non-convex optimization problems, notably a recent literature review conducted by Yoshua Bengio \cite{bengio2020machine}. The aim is for statistical learning to aid in the efficient solving of complex problems without sacrificing the strong guarantees inherent in mathematical optimization solvers. These hybrid methods now show the potential to be competitive with the state-of-the-art solvers for these NP-hard problems \cite{gasse2019exact}. 
+There has been a recent surge of interest in leveraging machine learning methods in solving non-convex optimization problems, notably a recent literature review conducted by Yoshua Bengio \cite{bengio2020machine}. The aim is for statistical learning to aid in the efficient solving of complex problems without sacrificing the strong guarantees inherent in mathematical optimization solvers. These hybrid methods now show the potential to be competitive with the state-of-the-art solvers for these \gls{NP}-hard problems \cite{gasse2019exact}. 
 
 An overview of the history of learning in \gls{BnB} is given a survey paper by Lodi and Zarpellon \cite{lodi2017learning}. To summarize, interest in using more advanced statistics to unravel the relations of a \gls{MILP} problem and the optimal branching variable was first observed in 2009. Various approaches to learning have been attempted, with recent efforts to directly incorporate the learned algorithms into the solution algorithm from 2016 and onwards \cite{lodi2017learning}.  
 
@@ -56,7 +57,7 @@ The methods of Gasse et al. \cite{gasse2019exact} and the improvements made by G
 
 Recent attempts to facilitate the development of \gls{ML}-aided \gls{CO} includes a notable project named Extensible Combinatorial Optimization Learning Environments (\emph{Ecole}) \cite{prouvost2020ecole}. It was developed by the group Data Science For Decision Making (\gls{DS4DM}), connected to the Polytechnique Montr\'{e}al university. \gls{Ecole} is an open source framework for a controllable python interface to \gls{BnB} algorithms, and is built on SCIP and PySCIPOpt. The framework is tightly knit with the previous work from the group, notably Gasse et al. \cite{gasse2019exact} and Gupta et al. \cite{gupta2020hybrid}, and aims to standardize research within the field of \gls{BnB} algorithm improvement.  
 As of May 2021, no articles have been published with results from using this framework. A recent article by
-Cappart et al. (2021) \cite{cappart2021combinatorial} presents the current status of and the role of the Ecole framework in further developing this field. 
+Cappart et al. (2021) \cite{cappart2021combinatorial} presents the current status of and the role of the \gls{Ecole} framework in further developing this field. 
 
 
 \section{Research Questions}\label{sec:questions}
@@ -64,22 +65,22 @@ Cappart et al. (2021) \cite{cappart2021combinatorial} presents the current statu
 For this project, three research questions are considered.
 %
 \begin{enumerate}[label=(\roman*)]
-    \item \textit{Can Multi-Layer Perceptrons decrease the running time of Branch and Bound running on the \Gls{CPU}?}
+    \item \textit{Can Graph Convolutional Neural Networks and  Multi-Layer Perceptrons decrease the running time of Branch and Bound running on the \Gls{CPU}?}
 \end{enumerate}
 %
-A Multi-Layer Perceptron model is implemented by Gupta et al. \cite{gupta2020hybrid}, however it is used in the context of hybrid models, combining \Gls{GCNN} features with the general variable features. It is unclear whether a purely \gls{MLP}-based approach can result in improvements on the native branching strategies. \gls{MLP}s have been the focus of research for many decades, and implementation is assumed to be relatively straightforward \cite{goodfellow2016deep}.
+A Multi-Layer Perceptron model is implemented by Gupta et al. \cite{gupta2020hybrid}, however it is used in the context of hybrid models, combining \Gls{GCNN} features with the general variable features. This is done to mitigate the loss in efficiency by running \gls{GCNN}s on the \gls{CPU}. It is unclear whether a purely \gls{MLP}-based approach can result in improvements on the native branching strategies. \gls{MLP}s have been the focus of research for many decades, and implementation is assumed to be relatively straightforward \cite{goodfellow2016deep}.
 %
 \begin{enumerate}[resume*]
-    \item \textit{What is the impact of different \gls{MLP} model sizes on the accuracy and efficiency of the Branch and Bound algorithm}?
+    \item \textit{What is the impact of different \gls{GCNN} and \gls{MLP} model topologies on the accuracy and efficiency of the Branch and Bound algorithm, when run on the \gls{CPU} and \gls{GPU}}?
 \end{enumerate}
 %
 Machine Learning model choice based on reduced complexity is cited as a motivation for design choices in Gupta et al. \cite{gupta2020hybrid}, however the impact of varying sizes of the same model has not been performed before, and the magnitude of the impact is unknown. Increased model capacity is known to facilitate higher accuracy \cite{goodfellow2016deep}, however, whether this has a detrimental effect on the Branch and Bound algorithm's overall performance is unknown. Results from methods that are more comparable will indicate the importance of accuracy versus computational complexity.   
 %
 \begin{enumerate}[resume*]
-    \item \textit{Are there more research opportunities for \gls{MLP}s in Branch and Bound?}
+    \item \textit{What are the most promising research opportunities for learning in Branch and Bound?}
 \end{enumerate}
 %
-Little attention appears to have been made towards the more standard \Gls{MLP} classifier in the field of \Gls{ML} in \Gls{BnB}, an indication of possibilities in this field might spur further research. The general field has gained traction recently \cite{bengio2020machine}, and the author assumes more research and interest will come in the next few years. Whether \Gls{MLP}s are a part of the future is not yet known. 
+The general field has gained traction recently \cite{bengio2020machine}, and the author assumes more research and interest will come in the next few years. In the implementation of this project, the new framework \gls{Ecole} is used. This is the first paper where \gls{Ecole} is used as the basis for the experiments, and an independent review of this framework is due.  
 
 
 

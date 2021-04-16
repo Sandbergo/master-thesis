@@ -17,10 +17,13 @@ The problems are expressed as pure binary programs. The results of the algorithm
 Problems are generated in three sizes: small, medium, and large. Small instances are used for training, while medium and large problem sizes are reserved for evaluating the extended algorithm's ability to generalize on more challenging problems. These problem sizes represent what current algorithms can solve within seconds (for the small instances) and multiple minutes (for the large instances).
 
 
-\subsubsection{Set covering}
+\subsubsection{Set Covering}
 
-Barabasi-Albert graph.
-\footnote{In Gasse et al. (2019) the graph is reported to be of the type Erd\"{o}s-R\'{e}nyi, however the implementation is in fact a Barabasi-Albert graph.}
+The set covering problem is implemented in \gls{Ecole} as described in Balas \& Ho (1980)\cite{balas1980set} \footnote{The available version of this paper contains nearly illegible equations, the article Minoux (1987) \cite{minoux1987class} has therefore been used to supplement.}. The general problem includes a set of vertices $V_j$ and a matrix of costs $c_j$ for activating an edge between any two vertices. The activation of an edge is modelled with the binary variable $x_j$ and the characteristic vector of subset $V_j$ denoted $\textbf{A}_j$. The binary linear problem of covering all vertices at minimum cost can be expressed as: 
+\begin{align}
+    \min &\sum_{j=1}^N c_j x_j \\ s.t. \; &\sum_{j=1}^N \mathbf{A}_j x_j \geq \mathbf{1} \,,\; x \in \mathbb{B}^N 
+\end{align}
+The problem is therefore a pure binary linear problem with only inequality constraints. The set covering problem is a well-known class, and is one of Karp's 21 \gls{NP}-complete problems \cite{karp1972reducibility}.  
 
 \subsubsection{Combinatorial Auction}
 
@@ -35,6 +38,9 @@ The combinatorial auctions problem is based on multi-object auctions where bidde
 \subsubsection{Maximum Independent Set}
 
 
+Barabasi-Albert graph.
+\footnote{In Gasse et al. (2019) the graph is reported to be of the type Erd\"{o}s-R\'{e}nyi, however the implementation is in fact a Barabasi-Albert graph.}
+
 
 
 
@@ -42,6 +48,32 @@ The combinatorial auctions problem is based on multi-object auctions where bidde
 
 The generated problems are solved using the Full Strong Branching policy, as explained in \Cref{ssec:branchingstrategy}. To not interfere with branching strategies, the application of cutting planes to the problem is restricted to the root node, i.e. before any branching decisions are made. This means that the Branch and Bound algorithm used in these experiments could be called a Cut and Branch algorithm, as is discussed in \Cref{ssec:inequalities}.
 However, without loss of generality and for simplicity's sake, the algorithm will be referred to as Branch and Bound in this project despite the initial application of cutting planes.  
+
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    \KwResult{Variable selection samples}
+    \For{$episode\in EPISODES$}{
+        \While{episode not solved}{
+            $\rho\leftarrow rand()$\;
+            \eIf{$\rho \leq 0.2$}{
+                $samples\leftarrow solver state$\;
+                $scores\leftarrow SB scores$\;
+                Save scores and state\;
+                Branch on SB score\;
+                }{
+                Branch on pseudocost\;
+            }
+        }
+    }
+    
+    \caption{\label{alg:datacol} Data collection algorithm}
+\end{algorithm}
+
+
+The algorithm for data collection is shown in \Cref{alg:datacol}, and is adapted from Gasse et al. (2019) \cite{gasse2019exact}. During training, 20 \% of the branching variable decisions are done by the strong branching expert, compared to 5 \% in Gasse et al. (2019) \cite{gasse2019exact} and 100 \% in Gupta et al. (2020). This is based on the assumption that the total number of nodes will benefit. This may, however, have an adverse effect on the accuracy and loss scores of the models, as less efficient branching strategies will lead to a larger number of branching problems having more variables. This method of generating expert samples has been criticized by Sun et al. (2021)\cite{sun2021improving}, among other reasons because strengths of \gls{SB} cannot be learned through variable selection only. The reader is referred to this article for further reading.
+
+
 
 For every node, the \gls{SB} strategy assigns a score to every possible branching variable. The best variable to branch on according to \gls{SB} is saved explicitly and then branched on. The best candidate variable is used for training, while the \gls{SB} scores are used for evaluating the learned strategy. The placement of the selected variable compared to the candidate variables will be used to generate a top-k accuracy score, to evaluate whether the algorithm is able to select among the top variables to branch on.  
 
@@ -312,7 +344,18 @@ MLP3, shown in \Cref{fig:topo_mlp3}, has five hidden layers of width 1024. A for
 
 \subsection{Graph Convolutional Neural Networks}
 
-...
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{img/gnn_1.png}
+    \caption{The Graph Convolutional Neural Network as specified in Gasse et al. (2019) \cite{gasse2019exact}}
+    \label{fig:bipartite}
+\end{figure}
+
+
+
+
+
 
 
 \subsection{Network hyperparameters}

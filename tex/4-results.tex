@@ -41,6 +41,44 @@ The training graph for MLP3 is shown in \Cref{fig:training}. The Training and va
 
 \section{Accuracy}
 
+
+\begin{scriptsize}
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lrrrrrrr}
+		\toprule
+		& \multicolumn{3}{c}{Combinatorial Auction} & \multicolumn{3}{c}{Set Covering}\\ 
+		\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+		Model & acc@1 & acc@5 & acc@10 & acc@1 & acc@5 & acc@10 \\
+		\midrule
+		MLP1 & 30.3 \% & 62.8 \% & 79.4 \% & 0 & 0 & 0\\
+		MLP2 & 50.1 \% & 78.9 \% & 89.9 \% & 0 & 0 & 0\\
+		MLP3 & 50.2 \% & 79.3 \% & 90.1 \% & 0 & 0 & 0\\
+		GNN1 & 53.0 \% & 87.5 \% & 95.9 \% & 0 & 0 & 0\\
+		GNN2 & 53.0 \% & 87.1 \% & 96.0 \% & 0 & 0 & 0\\
+		\addlinespace
+		\bottomrule
+	\end{tabular}
+	\caption{Top-k accuracy scores for combinatorial auctions and set covering.}\label{tab:results1_set}
+\end{table}
+\end{scriptsize}
+
+% MLP1 0.30329361 0.43040384 0.5133234  0.57414763 0.62793777 0.66972857
+%0.70506455 0.7397385  0.76903343 0.79443893
+
+%[0.50099305 0.61717974 0.69298246 0.7469381  0.78930818 0.82000993
+%0.84640847 0.86701423 0.88339954 0.89920556]
+
+% 0.50281364 0.61924859 0.69546508 0.75       0.79319762 0.82116849
+% 0.84789805 0.8683383  0.8857994  0.90143992]
+
+% [0.52962595 0.68884475 0.7744952  0.8326713  0.87520689 0.90292949
+% 0.92303873 0.938762   0.95076134 0.95945051]
+
+% [0.52962595 0.68636213 0.7744952  0.83325058 0.87065541 0.90052963
+% 0.92171466 0.93776895 0.95092685 0.96027805]
+ 
+
 The top-k accuracy scores for the three \gls{MLP}s along with the benchmark accuracy for random variable selection is shown in \Cref{fig:topk}. Top k accuracy is defined as the number of selected branching variables within the top k variables as determined by the Strong Branching evaluation. 
 % https://scikit-learn.org/dev/modules/model_evaluation.html#top-k-accuracy-score
 
@@ -97,13 +135,21 @@ Full Strong Branching results in solution trees orders of magnitude smaller than
 		& \multicolumn{2}{c}{Small} & \multicolumn{2}{c}{Medium} & \multicolumn{3}{c}{Large}\\ \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-8}
 		Model & Time (s) & Nodes  & Time (s) & Nodes & Time (s) & Nodes & Completed\\
 		\midrule
-		FSB & 5.4 &  9.7  & 135.9 &  89.4 & 2070.8 &  520.0 & 12 / 20\\
-		PC &  2.5 & 378.3  &  27.3 &  3844.8 & 420.6 &  40130.6 & 20 / 20 \\
-		RPC &  3.7 & 27.8  &  22.7 &  987.4 & \textbf{250.1} &  15164.4 & 20 / 20 \\
+		FSB & 0 & 0 & 0 & 0 & 0 & 0 & 0 / 20\\
+		PC  & $7.78 \pm 9.50$ & $749 \pm 1634$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		RPC & $10.68 \pm 8.01$ & $295 \pm 895$ 0 & 0 & 0 & 0 & 0 & 0 / 20\\
 		\addlinespace
-		MLP1 & \textbf{2.1} & 128.6 & \textbf{22.4} & 1224.4 & 606.4 & 22849.8 & 18 / 20\\
-		MLP2 & 2.3          & 118.6 & 23.6          & 992.2 & 524.4 & 15408.4  & 18 / 20\\
-		MLP3 & 3.0          & 120.2 & 51.2          & 1050.6 & 680.7 & 9889.6  & 15 / 20\\
+		MLP1\textsubscript{g} & $36.89 \pm 57.71$ & $2232 \pm 3442$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP2\textsubscript{g} & $16.24 \pm 27.27$ & $545 \pm 1120$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP3\textsubscript{g} & $16.45 \pm 22.58$ & $515 \pm 808 $& 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN1\textsubscript{g} & $11.63 \pm 16.66$ & $272 \pm 506 $& 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN2\textsubscript{g} & $11.18 \pm 11.51$ & $264 \pm 357 $& 0 & 0 & 0 & 0 & 0 / 20\\
+		\addlinespace
+		MLP1\textsubscript{c} & $39.70 \pm 55.09$ & $2242 \pm 3486$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP2\textsubscript{c} & $16.70 \pm 17.78$ & $513 \pm 720$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP3\textsubscript{c} & $17.69 \pm 22.25$ & $502 \pm 867$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN1\textsubscript{c} & $68.59 \pm 97.11$ & $308 \pm 460$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN2\textsubscript{c} & $72.37 \pm 112.80$ & $324 \pm 523$ & 0 & 0 & 0 & 0 & 0 / 20\\
 		\bottomrule
 	\end{tabular}
 	\caption{Setcover.}\label{tab:results1_set}
@@ -111,56 +157,28 @@ Full Strong Branching results in solution trees orders of magnitude smaller than
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{lrrrrrrr}
-		\toprule
+	    \toprule
 		& \multicolumn{2}{c}{Small} & \multicolumn{2}{c}{Medium} & \multicolumn{3}{c}{Large}\\ \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-8}
 		Model & Time (s) & Nodes  & Time (s) & Nodes & Time (s) & Nodes & Completed\\
 		\midrule
-		FSB & 5.4 &  9.7  & 135.9 &  89.4 & 2070.8 &  520.0 & 12 / 20\\
-		PC &  2.5 & 378.3  &  27.3 &  3844.8 & 420.6 &  40130.6 & 20 / 20 \\
-		RPC &  3.7 & 27.8  &  22.7 &  987.4 & \textbf{250.1} &  15164.4 & 20 / 20 \\
+		FSB & 0 & 0 & 0 & 0 & 0 & 0 & 0 / 20\\
+		PC  & $1.96 \pm 0.84$ & $355 \pm 358$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		RPC & $2.73 \pm 1.18$ & $16 \pm 30$ & 0 & 0 & 0 & 0 & 0 / 20\\
 		\addlinespace
-		MLP1 & \textbf{2.1} & 128.6 & \textbf{22.4} & 1224.4 & 606.4 & 22849.8 & 18 / 20\\
-		MLP2 & 2.3          & 118.6 & 23.6          & 992.2 & 524.4 & 15408.4  & 18 / 20\\
-		MLP3 & 3.0          & 120.2 & 51.2          & 1050.6 & 680.7 & 9889.6  & 15 / 20\\
+		MLP1\textsubscript{g} & $1.84 \pm 0.83$ & $282 \pm 362$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP2\textsubscript{g} & $1.60 \pm 0.44$ & $123 \pm 116$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP3\textsubscript{g} & $1.62 \pm 0.45$ & $121 \pm 112$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN1\textsubscript{g} & $1.65 \pm 0.45$ & $97 \pm 85$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN2\textsubscript{g} & $1.63 \pm 0.44$ & $95 \pm 80$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		\addlinespace
+		MLP1\textsubscript{c} & $1.78 \pm 0.78$ & $280 \pm 394$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP2\textsubscript{c} & $3.12 \pm 1.28$ & $123 \pm 114$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP3\textsubscript{c} & $3.24 \pm 1.35$ & $120 \pm 112$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN1\textsubscript{c} & $5.06 \pm 2.80$ & $96 \pm 81$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN2\textsubscript{c} & $5.10 \pm 2.92$ & $97 \pm 81$ & 0 & 0 & 0 & 0 & 0 / 20\\
 		\bottomrule
 	\end{tabular}
-	\caption{Combinatorial auction.}\label{tab:results1_cauction}
-\end{table}
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{lrrrrrrr}
-		\toprule
-		& \multicolumn{2}{c}{Small} & \multicolumn{2}{c}{Medium} & \multicolumn{3}{c}{Large}\\ \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-8}
-		Model & Time (s) & Nodes  & Time (s) & Nodes & Time (s) & Nodes & Completed\\
-		\midrule
-		FSB & 5.4 &  9.7  & 135.9 &  89.4 & 2070.8 &  520.0 & 12 / 20\\
-		PC &  2.5 & 378.3  &  27.3 &  3844.8 & 420.6 &  40130.6 & 20 / 20 \\
-		RPC &  3.7 & 27.8  &  22.7 &  987.4 & \textbf{250.1} &  15164.4 & 20 / 20 \\
-		\addlinespace
-		MLP1 & \textbf{2.1} & 128.6 & \textbf{22.4} & 1224.4 & 606.4 & 22849.8 & 18 / 20\\
-		MLP2 & 2.3          & 118.6 & 23.6          & 992.2 & 524.4 & 15408.4  & 18 / 20\\
-		MLP3 & 3.0          & 120.2 & 51.2          & 1050.6 & 680.7 & 9889.6  & 15 / 20\\
-		\bottomrule
-	\end{tabular}
-	\caption{Capacitated Facility Location.}\label{tab:results1_facility}
-\end{table}
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{lrrrrrrr}
-		\toprule
-		& \multicolumn{2}{c}{Small} & \multicolumn{2}{c}{Medium} & \multicolumn{3}{c}{Large}\\ \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-8}
-		Model & Time (s) & Nodes  & Time (s) & Nodes & Time (s) & Nodes & Completed\\
-		\midrule
-		FSB & 5.4 &  9.7  & 135.9 &  89.4 & 2070.8 &  520.0 & 12 / 20\\
-		PC &  2.5 & 378.3  &  27.3 &  3844.8 & 420.6 &  40130.6 & 20 / 20 \\
-		RPC &  3.7 & 27.8  &  22.7 &  987.4 & \textbf{250.1} &  15164.4 & 20 / 20 \\
-		\addlinespace
-		MLP1 & \textbf{2.1} & 128.6 & \textbf{22.4} & 1224.4 & 606.4 & 22849.8 & 18 / 20\\
-		MLP2 & 2.3          & 118.6 & 23.6          & 992.2 & 524.4 & 15408.4  & 18 / 20\\
-		MLP3 & 3.0          & 120.2 & 51.2          & 1050.6 & 680.7 & 9889.6  & 15 / 20\\
-		\bottomrule
-	\end{tabular}
-	\caption{Maximum Independent Set .}\label{tab:results1_indset}
+	\caption{Combinatorial auction solving efficiency.}\label{tab:results1_cauction}
 \end{table}
 \end{scriptsize}
 
@@ -203,3 +221,111 @@ Full Strong Branching results in solution trees orders of magnitude smaller than
   \caption{Mean solution time with 95 \% confidence intervals for small combinatorial auction problems, n = 100.}
     \label{fig:barplot}
 \end{figure}
+
+
+
+
+\subsection{MLP and GNN Comparison}
+
+
+\subsection{GPU and CPU Comparison}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+    
+      \def\MarkSize{.75em}
+      \protected\def\ToWest#1{%
+        \llap{#1\kern\MarkSize}\phantom{#1}%
+      }
+      \protected\def\ToSouth#1{%
+        \sbox0{#1}%
+        \smash{%
+          \rlap{%
+            \kern-.5\dimexpr\wd0 + \MarkSize\relax
+            \lower\dimexpr.375em+\ht0\relax\copy0 %
+          }%
+        }%
+        \hphantom{#1}%
+      }
+    \begin{axis}[ xlabel={CPU time}, ylabel={GPU time}, width=10cm, height=10cm, ymin=1.0, ymax=5.5, xmin=1.0,   xmax=5.5, ymajorgrids=true,
+    xmajorgrids=true,]v
+    \addplot[scatter,mark=*,only marks, point meta=x,nodes near coords*={\data},
+    visualization depends on={value \thisrow{dataname} \as \data},] 
+    table [x=x,y=y]{
+    x       y       dataname
+    1.84    1.78    MLP1
+    1.60    3.12    \ToSouth{MLP2}
+    1.62    3.24    MLP3
+    1.65    5.06    \ToSouth{GNN1}
+    1.63    5.10    GNN2
+    };
+    \end{axis}
+    \end{tikzpicture}
+    \caption{Combinatorial Auction small problem mean solution time GPU and CPU.}
+    \label{fig:gpu_cpu}
+\end{figure}
+
+
+
+\subsection{Learned and Classical Branching Comparison}
+
+% including transfer learning 
+
+\begin{scriptsize}
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lrrrrrrr}
+		\toprule
+		& \multicolumn{2}{c}{Small} & \multicolumn{2}{c}{Medium} & \multicolumn{3}{c}{Large}\\ \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-8}
+		Model & Time (s) & Nodes  & Time (s) & Nodes & Time (s) & Nodes & Completed\\
+		\midrule
+		FSB & 0 & 0 & 0 & 0 & 0 & 0 & 0 / 20\\
+		PC  & $7.78 \pm 9.50$ & $749 \pm 1634$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		RPC & 0 & 0 & 0 & 0 & 0 & 0 & 0 / 20\\
+		\addlinespace
+		MLP1\textsubscript{g} & $36.89 \pm 57.71$ & $2232 \pm 3442$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP2\textsubscript{g} & $16.24 \pm 27.27$ & $545 \pm 1120$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN1\textsubscript{g} & $11.63 \pm 16.66$ & $272 \pm 506 $& 0 & 0 & 0 & 0 & 0 / 20\\
+		\addlinespace
+		MLP1\textsubscript{c} & $39.70 \pm 55.09$ & $2242 \pm 3486$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP2\textsubscript{c} & $16.70 \pm 17.78$ & $513 \pm 720$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN1\textsubscript{c} & $68.59 \pm 97.11$ & $308 \pm 460$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		\bottomrule
+	\end{tabular}
+	\caption{Setcover solving time on larger problem sets.}\label{tab:results_trans_set}
+\end{table}
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lrrrrrrr}
+	    \toprule
+		& \multicolumn{2}{c}{Small} & \multicolumn{2}{c}{Medium} & \multicolumn{3}{c}{Large}\\ \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-8}
+		Model & Time (s) & Nodes  & Time (s) & Nodes & Time (s) & Nodes & Completed\\
+		\midrule
+		FSB & 0 & 0 & 0 & 0 & 0 & 0 & 0 / 20\\
+		PC  & $1.96 \pm 0.84$ & $355 \pm 358$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		RPC & 0 & 0 & 0 & 0 & 0 & 0 & 0 / 20\\
+		\addlinespace
+		MLP1\textsubscript{g} & $1.84 \pm 0.83$ & $282 \pm 362$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP2\textsubscript{g} & $1.60 \pm 0.44$ & $123 \pm 116$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN1\textsubscript{g} & $1.65 \pm 0.45$ & $97 \pm 85$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		\addlinespace
+		MLP1\textsubscript{c} & $1.78 \pm 0.78$ & $280 \pm 394$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP2\textsubscript{c} & $3.12 \pm 1.28$ & $123 \pm 114$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		GNN1\textsubscript{c} & $5.06 \pm 2.80$ & $96 \pm 81$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		\bottomrule
+	\end{tabular}
+	\caption{Combinatorial auction solving efficiency on larger problem sets.}\label{tab:results_trans_cauction}
+\end{table}
+\end{scriptsize}
+% include feature importance
+
+% include solution hists nnodes
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{img/loss70.eps}
+    \caption{Histogram of nodes for pseudo cost branching and MLP2.}
+    \label{fig:node_histogram}
+\end{figure}
+

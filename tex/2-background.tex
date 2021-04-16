@@ -363,19 +363,6 @@ This formulation is the basis for the \textit{Ecole} framework, which is discuss
 The \gls{PO-MDP} formulation allows for the agent in the \gls{BnB} environment to be learned through \textit{reinforcement learning}
 
 
-\section{Reinforcement Learning}
-
-The subset of machine learning described as Reinforcement Learning (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. No results will be discussed in this thesis, however a background in the topic is necessary to understand both other works in the field and the long-term goals of the project.
-
-\gls{RL} encompasses the problem of an \textit{agent} learning a \textit{policy} for behaving in an \textit{environment} so as to achieve a global objective. Any sequential decision-making problem with a measure of optimality that relies on past experience can be formulated as a \gls{RL} problem \cite{francois2018introduction}. In addition, the approach has seen success in a number of fields in the past years with the integration of deep learning models, often termed deep \gls{RL} \cite{francois2018introduction}. Most notable of the advancements might be AlphaZero, Google's successful chess-AI \cite{silver2017mastering}. \gls{RL} has the important property of being independent of data, meaning a number of core \gls{ML} challenges (quantity, quality, and bias of data) are rendered irrelevant. 
-
-\gls{RL} is particularly interesting in \gls{BnB} because of the \gls{MDP} nature of the algorithm, and the assumption that the handcrafted heuristics and sub-algorithms prevalent in modern solvers are either inefficient or inaccurate compared to the theoretical capabilities of, i.e. neural networks. 
-
-Many attempts have been made at implementing \gls{RL} in \gls{CO}, see for example Etheve et al. (2020) \cite{etheve2020reinforcement} or Tang et al. (2020) \cite{tang2020reinforcement}. Approaches for learning variable selection, such as reported in Scavuzzo (2020) \cite{scavuzzo2020learning}, rely on efficient and accurate pre-trained models based on imitation learning, like the models presented in this thesis. More knowledge is likely needed for the pure \gls{RL} approach to take over the mantle.
-\footnote{Attempts on \gls{RL} models were also made by the author of this thesis, but the models did not prove useful with the chosen method and are therefore not reported.}
-Cappart et al. (2021) \cite{cappart2021combinatorial} also conclude that useful \gls{RL} policies are not mature yet. 
-
-
 
 
 
@@ -396,3 +383,66 @@ Models that leverage the graph nature of combinatorial optimization problems hav
 The application of \gls{GCNN}s on \gls{BnB} algorithms relies on the bipartite graph structure that results from the solution process, as explained in \Cref{sec:bnb}. At each point before the variable selection process, the state of the solution algorithm graph can be processed by the \gls{GCNN} algorithm. 
 
 The state of the \gls{BnB} graph at a node can be represented as $s_t = (\mathcal{G}, \mathbf{C}, \mathbf{E}, \mathbf{V})$, where $\mathcal{G}$ represents the bipartite \gls{BnB} solution graph at that time instance, $\mathbf{C}$ represents the constraints, $\mathbf{E}$ represents the \textit{edges}, or connections between the variables and constraints, and $\mathbf{V}$ represents candidate variables.  
+
+Gasse et al. (2019) \cite{gasse2019exact} presents three motivating points for why graph convolutions would be a good architecture for learning to branch:
+\begin{enumerate}[label=(\roman*)]
+    \item They are well-defined no matter the input graph size
+    \item Their computational complexity is directly related
+to the density of the graph, which makes it an ideal choice for processing typically sparse MILP
+problems
+    \item They are permutation-invariant, that is they will always produce the same output no
+matter the order in which the nodes are presented
+\end{enumerate}
+
+
+
+
+\subsection{Bipartite Graph Representation}
+
+The application of \gls{GCNN}s on \gls{MILP} and sub-\gls{MILP} problems rely on the bipartite representation of constraints and variables as presented in Gasse et al. (2019) \cite{gasse2019exact}.
+This concept will be introduced with an example \gls{MILP} given as:
+\begin{align}\label{eq:bipex}
+    \min \quad &\texttt{v}_1 + \texttt{v}_2 + \texttt{v}_3\\ 
+    s.t. \quad &\texttt{v}_1 + \texttt{v}_2 - \texttt{v}_3 \geq 1 \qquad (c_1)\nonumber\\
+    &\texttt{v}_3 \geq \frac{1}{2}\qquad\qquad\quad\;\,\,\, (c_2)\nonumber\\
+    &\mathbf{v} \in \mathbb{B}^N \nonumber
+\end{align}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.45\linewidth]{img/bipartite_zoom.png}
+    \caption{Example of a bipartite constraint-variable graph.}
+    \label{fig:bipartite}
+\end{figure}
+
+For \Cref{eq:bipex}, the corresponding constraint-variable graph representation can be illustrated as in
+\Cref{fig:bipartite}.
+
+Constraints and variables are the numbered nodes of the graphs, while the edges represent the relation between the nodes. 
+
+
+
+
+\subsection{Ablation}
+
+Meyes et al. (2019) \cite{meyes2019ablation}
+
+
+
+
+
+
+
+
+
+\section{Reinforcement Learning}
+
+The subset of machine learning described as Reinforcement Learning (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. No results will be discussed in this thesis, however a background in the topic is necessary to understand both other works in the field and the long-term goals of the project.
+
+\gls{RL} encompasses the problem of an \textit{agent} learning a \textit{policy} for behaving in an \textit{environment} so as to achieve a global objective. Any sequential decision-making problem with a measure of optimality that relies on past experience can be formulated as a \gls{RL} problem \cite{francois2018introduction}. In addition, the approach has seen success in a number of fields in the past years with the integration of deep learning models, often termed deep \gls{RL} \cite{francois2018introduction}. Most notable of the advancements might be AlphaZero, Google's successful chess-AI \cite{silver2017mastering}. \gls{RL} has the important property of being independent of data, meaning a number of core \gls{ML} challenges (quantity, quality, and bias of data) are rendered irrelevant. 
+
+\gls{RL} is particularly interesting in \gls{BnB} because of the \gls{MDP} nature of the algorithm, and the assumption that the handcrafted heuristics and sub-algorithms prevalent in modern solvers are either inefficient or inaccurate compared to the theoretical capabilities of, i.e. neural networks. 
+
+Many attempts have been made at implementing \gls{RL} in \gls{CO}, see for example Etheve et al. (2020) \cite{etheve2020reinforcement} or Tang et al. (2020) \cite{tang2020reinforcement}. Approaches for learning variable selection, such as reported in Scavuzzo (2020) \cite{scavuzzo2020learning}, rely on efficient and accurate pre-trained models based on imitation learning, like the models presented in this thesis. More knowledge is likely needed for the pure \gls{RL} approach to take over the mantle.
+\footnote{Attempts on \gls{RL} models were also made by the author of this thesis, but the models did not prove useful with the chosen method and are therefore not reported.}
+Cappart et al. (2021) \cite{cappart2021combinatorial} also conclude that useful \gls{RL} policies are not mature yet. 
