@@ -132,50 +132,48 @@ Full Strong Branching results in solution trees orders of magnitude smaller than
 	\centering
 	\begin{tabular}{lrrrrrrr}
 		\toprule
-		& \multicolumn{2}{c}{Small} & \multicolumn{2}{c}{Medium} & \multicolumn{3}{c}{Large}\\ \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-8}
-		Model & Time (s) & Nodes  & Time (s) & Nodes & Time (s) & Nodes & Completed\\
+		Model & Time (s) & Nodes  & Time/node (ms) & parameters \\
 		\midrule
 		FSB & 0 & 0 & 0 & 0 & 0 & 0 & 0 / 20\\
-		PC  & $7.78 \pm 9.50$ & $749 \pm 1634$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		RPC & $10.68 \pm 8.01$ & $295 \pm 895$ 0 & 0 & 0 & 0 & 0 & 0 / 20\\
+		PC  & $7.78 \pm 9.50$ & $749 \pm 1634$ & 0 & 0\\
+		RPC & $10.68 \pm 8.01$ & $295 \pm 895$ 0 & 0\\
 		\addlinespace
-		MLP1\textsubscript{g} & $36.89 \pm 57.71$ & $2232 \pm 3442$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		MLP2\textsubscript{g} & $16.24 \pm 27.27$ & $545 \pm 1120$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		MLP3\textsubscript{g} & $16.45 \pm 22.58$ & $515 \pm 808 $& 0 & 0 & 0 & 0 & 0 / 20\\
-		GNN1\textsubscript{g} & $11.63 \pm 16.66$ & $272 \pm 506 $& 0 & 0 & 0 & 0 & 0 / 20\\
-		GNN2\textsubscript{g} & $11.18 \pm 11.51$ & $264 \pm 357 $& 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP1\textsubscript{g} & $36.89 \pm 57.71$ & $2232 \pm 3442$ & 0 & 0\\
+		MLP2\textsubscript{g} & $16.24 \pm 27.27$ & $545 \pm 1120$  & 0 & 0\\
+		MLP3\textsubscript{g} & $16.45 \pm 22.58$ & $515 \pm 808 $  & 0 & 0\\
+		GNN1\textsubscript{g} & $11.63 \pm 16.66$ & $272 \pm 506 $  & 0 & 0\\
+		GNN2\textsubscript{g} & $11.18 \pm 11.51$ & $264 \pm 357 $  & 0 & 0\\
 		\addlinespace
-		MLP1\textsubscript{c} & $39.70 \pm 55.09$ & $2242 \pm 3486$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		MLP2\textsubscript{c} & $16.70 \pm 17.78$ & $513 \pm 720$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		MLP3\textsubscript{c} & $17.69 \pm 22.25$ & $502 \pm 867$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		GNN1\textsubscript{c} & $68.59 \pm 97.11$ & $308 \pm 460$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		GNN2\textsubscript{c} & $72.37 \pm 112.80$ & $324 \pm 523$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP1\textsubscript{c} & $39.70 \pm 55.09$ & $2242 \pm 3486$ & 0 & 0\\
+		MLP2\textsubscript{c} & $16.70 \pm 17.78$ & $513 \pm 720$   & 0 & 0\\
+		MLP3\textsubscript{c} & $17.69 \pm 22.25$ & $502 \pm 867$   & 0 & 0\\
+		GNN1\textsubscript{c} & $68.59 \pm 97.11$ & $308 \pm 460$   & 0 & 0\\
+		GNN2\textsubscript{c} & $72.37 \pm 112.80$ & $324 \pm 523$  & 0 & 0\\
 		\bottomrule
 	\end{tabular}
-	\caption{Setcover.}\label{tab:results1_set}
+	\caption{Setcover solving efficiency.}\label{tab:results1_set}
 \end{table}
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{lrrrrrrr}
 	    \toprule
-		& \multicolumn{2}{c}{Small} & \multicolumn{2}{c}{Medium} & \multicolumn{3}{c}{Large}\\ \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-8}
-		Model & Time (s) & Nodes  & Time (s) & Nodes & Time (s) & Nodes & Completed\\
+		Model & Time (s) & Nodes  & Time/node (ms) & parameters \\
 		\midrule
-		FSB & 0 & 0 & 0 & 0 & 0 & 0 & 0 / 20\\
-		PC  & $1.96 \pm 0.84$ & $355 \pm 358$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		RPC & $2.73 \pm 1.18$ & $16 \pm 30$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		FSB & 0 & 0 & 0 & 0 & --- \\
+		PC  & $1.96 \pm 0.84$ & $355 \pm 358$ & $5.5$ & ---\\
+		RPC & $2.73 \pm 1.18$ & $16 \pm 30$ & $ 171.1$ & ---\\
 		\addlinespace
-		MLP1\textsubscript{g} & $1.84 \pm 0.83$ & $282 \pm 362$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		MLP2\textsubscript{g} & $1.60 \pm 0.44$ & $123 \pm 116$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		MLP3\textsubscript{g} & $1.62 \pm 0.45$ & $121 \pm 112$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		GNN1\textsubscript{g} & $1.65 \pm 0.45$ & $97 \pm 85$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		GNN2\textsubscript{g} & $1.63 \pm 0.44$ & $95 \pm 80$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP1\textsubscript{g} & $1.84 \pm 0.83$ & $282 \pm 362$ & $6.5$  & 0\\
+		MLP2\textsubscript{g} & $1.60 \pm 0.44$ & $123 \pm 116$ & $13.0$ & 0\\
+		MLP3\textsubscript{g} & $1.62 \pm 0.45$ & $121 \pm 112$ & $13.4$ & 0\\
+		GNN1\textsubscript{g} & $1.65 \pm 0.45$ & $97 \pm 85$   & $17.0$ & 0\\
+		GNN2\textsubscript{g} & $1.63 \pm 0.44$ & $95 \pm 80$   & $17.2$ & 0\\
 		\addlinespace
-		MLP1\textsubscript{c} & $1.78 \pm 0.78$ & $280 \pm 394$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		MLP2\textsubscript{c} & $3.12 \pm 1.28$ & $123 \pm 114$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		MLP3\textsubscript{c} & $3.24 \pm 1.35$ & $120 \pm 112$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		GNN1\textsubscript{c} & $5.06 \pm 2.80$ & $96 \pm 81$ & 0 & 0 & 0 & 0 & 0 / 20\\
-		GNN2\textsubscript{c} & $5.10 \pm 2.92$ & $97 \pm 81$ & 0 & 0 & 0 & 0 & 0 / 20\\
+		MLP1\textsubscript{c} & $1.78 \pm 0.78$ & $280 \pm 394$ & $6.4$  & 0\\
+		MLP2\textsubscript{c} & $3.12 \pm 1.28$ & $123 \pm 114$ & $25.4$ & 0\\
+		MLP3\textsubscript{c} & $3.24 \pm 1.35$ & $120 \pm 112$ & $27.0$ & 0\\
+		GNN1\textsubscript{c} & $5.06 \pm 2.80$ & $96 \pm 81$   & $52.7$ & 0\\
+		GNN2\textsubscript{c} & $5.10 \pm 2.92$ & $97 \pm 81$   & $52.6$ & 0\\
 		\bottomrule
 	\end{tabular}
 	\caption{Combinatorial auction solving efficiency.}\label{tab:results1_cauction}
@@ -225,10 +223,7 @@ Full Strong Branching results in solution trees orders of magnitude smaller than
 
 
 
-\subsection{MLP and GNN Comparison}
-
-
-\subsection{GPU and CPU Comparison}
+\subsection{Model Comparison}
 
 \begin{figure}
     \centering

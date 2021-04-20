@@ -276,6 +276,13 @@ and \textit{Pseudo-cost Branching} (\gls{PB}), which relies on the expected chan
 
 In the literature, the branching strategy is referred to as a strategy, policy, or rule, in this project \textit{strategy} is used.  
 
+\subsection{B\&B MILP Features}
+??
+
+
+
+
+
 
 \section{Learned Branching Policy}
 
@@ -292,25 +299,7 @@ The fundamental assumption to this approach is that the most computationally dem
 where $f$ is the learned function, $\mathcal{C}$ is the set of possible branching variables, $\pi_{SB}$ is the Strong Branching strategy and $\epsilon$ is the deviation in the scoring function. 
 
 
-\section{Multi-layer Perceptrons}
-
-Multi-Layer Perceptrons (MLP), more commonly known as deep feed-forward neural networks, are recommended by Gupta et al. (2020) \cite{gupta2020hybrid} as a less computationally expensive alternative to the approaches by Khalil et al. (2016) \cite{khalil2016learning} and Gasse et al. (2019) \cite{gasse2019exact}. 
-
-MLPs are networks that generate a nonlinear function $y = f(\mathbf{x}; \bm{\theta})$, where $x$ is the input $y$ is the output and $\bm{\theta}$ represents the parameters of the function. The parameters are learned during repeated optimization, and will under ideal circumstances converge to approach the goal function $y = f^*(\mathbf{x})$. The function is realized as a series of compositions of functions. The composed functions are represented as an acyclical, directed graph \cite{nielsen2018neural}, and can be expressed as:
-\begin{align}
-    y = f_L \circ f_{L-1} \circ \ldots \circ f_{1} \circ f_{0} (\mathbf{x})  
-\end{align}
-The functions are denoted as layers of the perceptron, and are implemented as affine functions of every input parameter at every node, $\mathbf{z}_l = \mathbf{x}_{l-1}^T \mathbf{w}_l + \mathbf{b}_l$. Applying non-linear function, known as an \textit{activation function}, allows the \gls{MLP} to represent arbitrary nonlinear functions \cite{goodfellow2016deep}. This is expressed as $\mathbf{x}_l = \mathbf{a}(\mathbf{z}_l)$.
-
-The computation of the output of the function given its input is known as a \textit{forward pass} through the network. The required computations for a single input vector into a network with $ n $ hidden layers will include $ n + 1 $ matrix multiplications and $ n + 1 $ applications of the non-linear activation function, given that there is an activation function on the output. 
-
-Depending on the training configuration, the problem can be interpreted as a classification problem or regression problem (or a ranking problem, as in \cite{khalil2016learning}). In the following experiments, the former approach is selected, as has become popular after Gasse et al. (2019) \cite{gasse2019exact}. 
-
-
-
-
-
-\section{Markov Decision Processes}\label{sec:mdp}
+\subsection{Markov Decision Processes}\label{sec:mdp}
 
 Central to the advancement of learned strategies in \gls{BnB} is the interpretation of the solution algorithm as a \textit{Markov Decision Process} (\gls{MDP}) \cite{gasse2019exact}. This interpretation relates the problem to a large collection of literature on the topic \cite{howard1960dynamic}.
 
@@ -353,9 +342,18 @@ meaning that the entire action-state history of the process is necessary for the
 \begin{equation}
     \pi:\mathcal{A} \times \mathcal{H} \to \mathbb{R}_{\geq 0}
 \end{equation}
-which means that the control problem of the \gls{PO-MDP} can also be stated as \cref{eq:mdprcontrol}.
+which means that the control problem of the \gls{PO-MDP} can also be stated as \cref{eq:mdprcontrol}. 
 
-\subsection{Branch \& Bound as a \gls{PO-MDP}}
+An illustration of the Markov Decision Process control loop from the documentation of \gls{Ecole} is shown in \Cref{fig:mdp}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.45\linewidth]{img/mdp.png}
+    \caption{Illustration of the Markov Decision Process control loop (\url{https://doc.ecole.ai/master/using-environments.html}).}
+    \label{fig:mdp}
+\end{figure}
+
+\subsection{Branch \& Bound as a PO-MDP}
 
 Interpreted in the language of \gls{MDP}s, the \gls{BnB} algorithm is the \textit{environment} and a concrete \gls{MILP} problem instance is an \textit{episode} in this environment. The \textit{agent} is the brancher, where in this thesis the variable selection policy is the component of interest, ignoring the node selection policy. The state of the solver consists of the \gls{BnB} tree at that instance, as well as the observations at each node (the \textit{history} of the \gls{PO-MDP}).
 
@@ -364,10 +362,30 @@ The \gls{PO-MDP} formulation allows for the agent in the \gls{BnB} environment t
 
 
 
+\subsection{Multi-layer Perceptrons}
+
+Multi-Layer Perceptrons (\gls{MLP}s), more commonly known as deep feed-forward neural networks, are recommended by Gupta et al. (2020) \cite{gupta2020hybrid} as a less computationally expensive alternative to the approaches by Khalil et al. (2016) \cite{khalil2016learning} and Gasse et al. (2019) \cite{gasse2019exact}. 
+
+MLPs are networks that generate a nonlinear function $y = f(\mathbf{x}; \bm{\theta})$, where $x$ is the input $y$ is the output and $\bm{\theta}$ represents the parameters of the function. The parameters are learned during repeated optimization, and will under ideal circumstances converge to approach the goal function $y = f^*(\mathbf{x})$. The function is realized as a series of compositions of functions. The composed functions are represented as an acyclical, directed graph \cite{nielsen2018neural}, and can be expressed as:
+\begin{align}
+    y = f_L \circ f_{L-1} \circ \ldots \circ f_{1} \circ f_{0} (\mathbf{x})  
+\end{align}
+The functions are denoted as layers of the perceptron, and are implemented as affine functions of every input parameter at every node, $\mathbf{z}_l = \mathbf{x}_{l-1}^T \mathbf{w}_l + \mathbf{b}_l$. Applying non-linear function, known as an \textit{activation function}, allows the \gls{MLP} to represent arbitrary nonlinear functions \cite{goodfellow2016deep}. This is expressed as $\mathbf{x}_l = \mathbf{a}(\mathbf{z}_l)$.
+
+The computation of the output of the function given its input is known as a \textit{forward pass} through the network. The required computations for a single input vector into a network with $ n $ hidden layers will include $ n + 1 $ matrix multiplications and $ n + 1 $ applications of the non-linear activation function, given that there is an activation function on the output. 
+
+Depending on the training configuration, the problem can be interpreted as a classification problem or regression problem (or a ranking problem, as in \cite{khalil2016learning}). In the following experiments, the former approach is selected, as has become popular after Gasse et al. (2019) \cite{gasse2019exact}. 
 
 
 
-\section{Graph Convolutional Neural Networks }
+
+
+
+
+
+
+
+\subsection{Graph Convolutional Neural Networks }
 
 Graph Convolutional Neural Networks (\gls{GCNN}s) is a term for neural networks that have input data represented in a graph-structure that is processed by the convolution operation \cite{kipf2016semisupervised}. The graph convolution operation is defied by the propagation rule \cite{kipf2016semisupervised}:
 \begin{equation}
@@ -377,6 +395,11 @@ where $H^{(l)}$ is the matrix of activations in layer $l$ (meaning $H^{(0)} = 0$
 This operation is shown to be inspired by the first order approximations to spectral filters on graphs \cite{kipf2016semisupervised}.
 
 The term \textit{embeddings} will be used in this thesis for continuous-variable representations derived from the input features, as it is used in Gasse et al. \cite{gasse2019exact}. 
+
+
+PRENORM LAYERS
+
+
 
 Models that leverage the graph nature of combinatorial optimization problems have been shown to have satisfactory performance, see e.g. Dai et al. (2018) \cite{dai2018learning}. 
 \gls{GCNN}s are proposed by Gasse et al. \cite{gasse2019exact} as an alternative to the feature-rich approaches by Khalil et al. (2016) \cite{khalil2016learning}. 
@@ -388,7 +411,7 @@ Gasse et al. (2019) \cite{gasse2019exact} presents three motivating points for w
 \begin{enumerate}[label=(\roman*)]
     \item They are well-defined no matter the input graph size
     \item Their computational complexity is directly related
-to the density of the graph, which makes it an ideal choice for processing typically sparse MILP
+to the density of the graph, which makes it an ideal choice for processing typically sparse \gls{MILP}
 problems
     \item They are permutation-invariant, that is they will always produce the same output no
 matter the order in which the nodes are presented
@@ -412,30 +435,32 @@ This concept will be introduced with an example \gls{MILP} given as:
     \centering
     \includegraphics[width=0.45\linewidth]{img/bipartite_zoom.png}
     \caption{Example of a bipartite constraint-variable graph.}
-    \label{fig:bipartite}
+    \label{fig:bipartite_cv}
 \end{figure}
 
 For \Cref{eq:bipex}, the corresponding constraint-variable graph representation can be illustrated as in
-\Cref{fig:bipartite}.
+\Cref{fig:bipartite_cv}.
 
 Constraints and variables are the numbered nodes of the graphs, while the edges represent the relation between the nodes. 
 
 
 
 
-\subsection{Ablation}
+\subsection{Ablation Studies}
 
-Meyes et al. (2019) \cite{meyes2019ablation}
+The concept of ablation studies in machine learning, as presented in 
+Meyes et al. (2019) \cite{meyes2019ablation} is presented in this section.
+Ablation studies hail from the field of neuroscience, in which sections of a complex system, e.g. the brain, is examined after removing different sections. The function of the removed sections can then be inferred by the change in the observed reaction to external stimuli \cite{meyes2019ablation}.
+
+In the context of \gls{ML}, ablation studies are a formalization of observing changes in performance after the removal of components of artificial neural networks \cite{meyes2019ablation}.  
+The concept, or at least the formalization, is not yet considered a standard method in \gls{ML} research \cite{sheikholeslami2019ablation}.
+In this thesis, the concept of an ablation study will be interpreted more broadly than in Meyes et al. (2019) \cite{meyes2019ablation}, as the networks in this thesis are retrained after each section is removed. This form of ablation study is coined as \textit{model ablation} in Sheikholeslami (2019) \cite{sheikholeslami2019ablation}.
 
 
 
 
 
-
-
-
-
-\section{Reinforcement Learning}
+\subsection{Reinforcement Learning}
 
 The subset of machine learning described as Reinforcement Learning (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. No results will be discussed in this thesis, however a background in the topic is necessary to understand both other works in the field and the long-term goals of the project.
 

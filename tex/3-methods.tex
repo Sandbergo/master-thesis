@@ -32,7 +32,7 @@ The combinatorial auctions problem was chosen out of the four because it has con
 The combinatorial auctions problem is based on multi-object auctions where bidders place monetary bids on bundles (combinations) of goods, and the optimization problem is to find the bids that maximize the profit of the auctioneer \cite{brown2000towards}. The problems are considered realistic and economically oriented, and are applicable to five broad domains in which optimization is important: Proximity in Space, Paths in Space, Arbitrary Relationships, Temporal Matching, and Temporal Scheduling \cite{brown2000towards}.  
 
 
-\subsubsection{Capacitated Facility Location}
+%\subsubsection{Capacitated Facility Location}
 
 
 \subsubsection{Maximum Independent Set}
@@ -87,26 +87,48 @@ The variable features are divided into six subcategories, and are presented in \
 %
 \begin{table}[h]
 	\centering
-	\begin{tabular}{lrl}
+	\begin{tabular}{lll}
 		\toprule
-		  Feature Description & Number of variables & Source \\ 
+		  Tensor & Feature & Description \\ 
+		  \toprule
+		  \multirow{13}{2.5cm}{\textbf{Variable} (19)} & objective & Objective coefficient, normalized.  \\
+		  & type (4) & Type (binary, integer, impl. integer, continuous) as a one-hot encoding. \\
+		  & has\_lb & Lower bound indicator. \\
+		  & has\_ub & Upper bound indicator \\
+		  & reduced\_cost & Reduced cost, normalized. \\
+		  & sol\_value & Solution value. \\
+          & sol\_frac  & Solution value fractionality.\\
+		  & sol\_is\_at\_lb & Solution value equals lower bound.\\
+		  & sol\_is\_at\_ub & Solution value equals upper bound.\\
+		  & scaled\_age & LP age, normalized. \\
+          & inc\_val & Value in incumbent.\\
+          & avg\_inc\_val & Average value in incumbents.\\
+		  & basis\_status (4) & Simplex basis status (lower, basic, upper, zero) as a one-hot encoding.\\
 		  \midrule
-		  Variable Features & 13 & Gasse et al. \cite{gasse2019exact} \\
-		  Constraint Features & 5 & Gasse et al. \cite{gasse2019exact} \\
-		  Edge Features & 1 & Gasse et al. \cite{gasse2019exact} \\
-		  Optimal Variable & 1 & Gasse et al. \cite{gasse2019exact} \\
-		  Static Features & 18 & Khalil et al. \cite{khalil2016learning} \\
-		  Dynamic Features & 54 & Khalil et al. \cite{khalil2016learning} \\
+		  \multirow{5}{2.5cm}{\textbf{Constraint} (5)} & obj\_cos\_sim & Cosine similarity with objective. \\
+		  & bias & Bias value, normalized with constraint coefficients. \\
+		  & is\_tight & Tightness indicator in LP solution. \\
+		  & dualsol\_val & Dual solution value, normalized. \\
+		  & scaled\_age & LP age, normalized with total number of LPs. \\
+		  \midrule
+		  \multirow{1}{2.5cm}{\textbf{Edge} (1)} & coef & Constraint coefficient, normalized per constraint. \\
+		  %Static Features & 18 & Khalil et al. \cite{khalil2016learning} \\
+		  %Dynamic Features & 54 & Khalil et al. \cite{khalil2016learning} \\
 		% \addlinespace
 		\bottomrule
 	\end{tabular}
-	\caption{Features of each variable in the data set.}\label{tab:feats}
+	\caption{Features of each variable in the data. \cite{gasse2019exact}}\label{tab:feats}
 \end{table}
 %
 The underlying assumption is that these features are sufficiently correlated with the optimal variable to branch on, as is given by the Strong Branching algorithm.
 % math stuff here?
 
+
+
 \section{Models}
+
+This section presents the models 
+
 
 \subsection{Multi-Layer Perceptrons}
 
