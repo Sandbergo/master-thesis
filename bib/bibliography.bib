@@ -610,7 +610,6 @@ url="https://doi.org/10.1007/BFb0120886"
   author = {Karp, Richard M.},
   biburl = {https://www.bibsonomy.org/bibtex/2f17b99063a789f22dd3aeb922a157ac6/dblp},
   booktitle = {Complexity of Computer Computations},
-  crossref = {conf/coco/1972},
   editor = {Miller, Raymond E. and Thatcher, James W.},
   ee = {https://doi.org/10.1007/978-1-4684-2001-2_9},
   interhash = {427e5bfc8069f94f57c5d43b6fd85949},
@@ -656,4 +655,104 @@ url="https://doi.org/10.1007/BFb0120886"
       eprint={2104.02828},
       archivePrefix={arXiv},
       primaryClass={cs.LG}
+}
+
+@InProceedings{maher2016pyscipopt,
+author="Maher, Stephen
+and Miltenberger, Matthias
+and Pedroso, Jo{\~a}o Pedro
+and Rehfeldt, Daniel
+and Schwarz, Robert
+and Serrano, Felipe",
+editor="Greuel, Gert-Martin
+and Koch, Thorsten
+and Paule, Peter
+and Sommese, Andrew",
+title="PySCIPOpt: Mathematical Programming in Python with the SCIP Optimization Suite",
+booktitle="Mathematical Software -- ICMS 2016",
+year="2016",
+publisher="Springer International Publishing",
+address="Cham",
+pages="301--307",
+abstract="SCIP is a solver for a wide variety of mathematical optimization problems. It is written in C and extendable due to its plug-in based design. However, dealing with all C specifics when extending SCIP can be detrimental to development and testing of new ideas. This paper attempts to provide a remedy by introducing PySCIPOpt, a Python interface to SCIP that enables users to write new SCIP code entirely in Python. We demonstrate how to intuitively model mixed-integer linear and quadratic optimization problems and moreover provide examples on how new Python plug-ins can be added to SCIP.",
+isbn="978-3-319-42432-3"
+}
+
+@article{kirk2008nvidia,
+  title={NVIDIA CUDA software and GPU parallel computing architecture},
+  author={Kirk, David and Center, Barcelona Supercomputing and others},
+  year={2008}
+}
+
+@Article{yilmaz2021node,
+AUTHOR = {Yilmaz, Kaan and Yorke-Smith, Neil},
+TITLE = {A Study of Learning Search Approximation in Mixed Integer Branch and Bound: Node Selection in SCIP},
+JOURNAL = {AI},
+VOLUME = {2},
+YEAR = {2021},
+NUMBER = {2},
+PAGES = {150--178},
+URL = {https://www.mdpi.com/2673-2688/2/2/10},
+ISSN = {2673-2688},
+ABSTRACT = {In line with the growing trend of using machine learning to help solve combinatorial optimisation problems, one promising idea is to improve node selection within a mixed integer programming (MIP) branch-and-bound tree by using a learned policy. Previous work using imitation learning indicates the feasibility of acquiring a node selection policy, by learning an adaptive node searching order. In contrast, our imitation learning policy is focused solely on learning which of a node’s children to select. We present an offline method to learn such a policy in two settings: one that comprises a heuristic by committing to pruning of nodes; one that is exact and backtracks from a leaf to guarantee finding the optimal integer solution. The former setting corresponds to a child selector during plunging, while the latter is akin to a diving heuristic. We apply the policy within the popular open-source solver SCIP, in both heuristic and exact settings. Empirical results on five MIP datasets indicate that our node selection policy leads to solutions significantly more quickly than the state-of-the-art precedent in the literature. While we do not beat the highly-optimised SCIP state-of-practice baseline node selector in terms of solving time on exact solutions, our heuristic policies have a consistently better optimality gap than all baselines, if the accuracy of the predictive model is sufficient. Further, the results also indicate that, when a time limit is applied, our heuristic method finds better solutions than all baselines in the majority of problems tested. We explain the results by showing that the learned policies have imitated the SCIP baseline, but without the latter’s early plunge abort. Our recommendation is that, despite the clear improvements over the literature, this kind of MIP child selector is better seen in a broader approach to using learning in MIP branch-and-bound tree decisions.},
+DOI = {10.3390/ai2020010}
+}
+
+
+
+@article{seror2015ablative,
+title = {Ablative therapies: Advantages and disadvantages of radiofrequency, cryotherapy, microwave and electroporation methods, or how to choose the right method for an individual patient?},
+journal = {Diagnostic and Interventional Imaging},
+volume = {96},
+number = {6},
+pages = {617-624},
+year = {2015},
+note = {Diagnostic imaging of the abdomen},
+issn = {2211-5684},
+doi = {https://doi.org/10.1016/j.diii.2015.04.007},
+url = {https://www.sciencedirect.com/science/article/pii/S2211568415001709},
+author = {O. Seror},
+keywords = {Percutaneous ablation, Radiofrequency, Microwave, Irreversible electroporation},
+}
+
+
+@book{cormen2009introduction,
+  title={Introduction to algorithms},
+  author={Cormen, Thomas H and Leiserson, Charles E and Rivest, Ronald L and Stein, Clifford},
+  year={2009},
+  publisher={MIT press}
+}
+
+
+@article{morrison2016branch,
+title = {Branch-and-bound algorithms: A survey of recent advances in searching, branching, and pruning},
+journal = {Discrete Optimization},
+volume = {19},
+pages = {79-102},
+year = {2016},
+issn = {1572-5286},
+doi = {https://doi.org/10.1016/j.disopt.2016.01.005},
+url = {https://www.sciencedirect.com/science/article/pii/S1572528616000062},
+author = {David R. Morrison and Sheldon H. Jacobson and Jason J. Sauppe and Edward C. Sewell},
+keywords = {Branch-and-bound, Discrete optimization, Integer programming, Search strategies, Cyclic best first search, Survey},
+abstract = {The branch-and-bound (B&B) algorithmic framework has been used successfully to find exact solutions for a wide array of optimization problems. B&B uses a tree search strategy to implicitly enumerate all possible solutions to a given problem, applying pruning rules to eliminate regions of the search space that cannot lead to a better solution. There are three algorithmic components in B&B that can be specified by the user to fine-tune the behavior of the algorithm. These components are the search strategy, the branching strategy, and the pruning rules. This survey presents a description of recent research advances in the design of B&B algorithms, particularly with regards to these three components. Moreover, three future research directions are provided in order to motivate further exploration in these areas.}
+}
+
+@INPROCEEDINGS{dong2012combinatorial,
+  author={Mo Dong and Gaofei Sun and Wang, Xinbing and Zhang, Qian},
+  booktitle={2012 Proceedings IEEE INFOCOM}, 
+  title={Combinatorial auction with time-frequency flexibility in cognitive radio networks}, 
+  year={2012},
+  volume={},
+  number={},
+  pages={2282-2290},
+  doi={10.1109/INFCOM.2012.6195615}}
+  
+@article{ross2013interactive,
+    author = "Stephane  Ross",
+    title = "{Interactive Learning for Sequential Decisions and Predictions}",
+    year = "2013",
+    month = "6",
+    url = "https://kilthub.cmu.edu/articles/thesis/Interactive_Learning_for_Sequential_Decisions_and_Predictions/6720269",
+    doi = "10.1184/R1/6720269.v1"
 }

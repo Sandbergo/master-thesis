@@ -1,0 +1,157 @@
+\chapter{Discussion}\label{cha:discussion}
+
+This chapter discusses the results obtained in \Cref{cha:results} and presents ideas about further work in the field. Several sections share formulations with sections from the corresponding chapter in the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020). 
+
+
+\section{Data Set}\label{sec:dis_data}
+
+The problem instances were only created from the combinatorial auctions and set covering classes. As noted in \Cref{cha:results}, there are differences between performance on the two problem classes, indicating that problem classes are important for fair judgement on the branching policies. Especially as the largest loss of accuracy when removing the constraint features was found for the problem set with a larger number of constraints. This consistent with previous work in evaluating \gls{BnB} solvers \cite{anand2017comparative}. Apart from this, a standardization regarding problem classes and sizes are necessary for fair evaluation of the \gls{BnB} improvements.
+
+Generating samples (branching problem samples with Strong Branching scores) was performed in accordance with Gasse et al. (2019) \cite{gasse2019exact}, using the data collection model presented in \gls{Ecole}. The expert probability was increased from 0.05 to 0.20, and the number of samples was reduced from $100000$ to $50000$. The expert probability change resulted in a somewhat reduced accuracy based on simple experiments that are not reported, though no noticeable change in efficiency.  
+
+On a practical note, several of the provided problem generator classes in \gls{Ecole} were flawed during the creation of the experiments, which delayed the work and resulted in only two problem classes being present in the experiments. These problems were generated with the old, python-written generators from Gasse et al. (2019) \cite{gasse2019exact}, and solved (generating branching problem samples) using the \gls{Ecole} framework. These issues have since been resolved. Other researchers are adviced to implement a parallelization of the sample generation found in the source code of this thesis. 
+
+Increasing the problem size was chosen as the method for estimating the out-of-distribution efficiency of the \gls{MLP}-aided \gls{BnB}, as was done by Gasse et al. (2020) \cite{gasse2019exact}. Other approaches to the problem generation and generalization efficiency estimation might look into problem distributions with a temporal component, i.e. where the test samples are from a provably different distribution, without dramatically increasing the difficulty. This might be more representative of problems that are time-constrained, and will give a different estimate of the out-of-distribution generalization error.  
+
+
+
+
+\section{Training}\label{sec:disc_training}
+
+The training is discussed based on general insights as presented in Goodfellow et al. (2016) \cite{goodfellow2016deep}, as it is difficult to come to decisive conclusions within the field of Deep Learning. On a general note, the graphs presented in \Cref{sec:res_training} show a large reduction in the evaluation loss after the first epoch, indicating that the model optimization process quickly results in a reasonable model. This is consistent with a comparison of the random variable selection policy, as the untrained model is practically a random choice policy.  
+
+A sign of \textit{overfitting} the model to the training data, would be a validation loss that increases while the training loss decreases. This is not the case, meaning that there is no reason to believe that the model merely remembers the training data instead of learning an approximation of the relationship between the node features and the variable \gls{SB} score. 
+
+All models stopped training within 100 epochs due to the early stopping scheme explained in \Cref{sec:trainingprotocol}, meaning that it is reasonable to assume that maintaining an identical optimizer and learning rate between the models was not detrimental to the accuracy of the trained models.  
+
+
+
+
+\section{Accuracy}\label{sec:disc_accuracy}
+
+All models show a considerable improvement over the random choice heuristic, further verifying that the model training process was productive. 
+
+In addition, model accuracy strictly decreases as the model is ablated, indicating that the model is not over-parameterized to the point of being unable to reach a good function approximation with the selected training method. 
+
+A clear result is the near-constant accuracy when ablating from GNN2 to GNN1 and MLP3 to MLP2. In these ablations, only hidden layers are removed. This indicates an over-parameterization in terms of the number of hidden layers.
+
+
+When model capacity decreases (via ablations) without a decrease in accuracy, two causes must be balanced when attempting to gain insight from the results: 
+\begin{enumerate}[label=(\roman*)]
+    \item The training protocol is not able to discover the complex relations between the input features and the output scores of the Strong Branching algorithm.
+    \item The theoretical optimal branching function is not strongly dependent on complex, non-linear relations between input and output.
+\end{enumerate}
+The latter argument seems more likely based on the results in this project and previous experiments \cite{gupta2020hybrid} \cite{gasse2019exact}, however there are no convergence guarantees for the models, and option one can therefore not be ruled out.
+
+
+
+
+
+A large loss of accuracy occurs when removing the graph convolutions (ablating from GNN1 to MLP3), meaning the graph convolutions are productive in aiding the scoring process. This is consistent for both model classes, though the loss of accuracy is double for the setcovering problems. This might be explained through the nature of the problems, as the setcovering problems has around 150 \% more constraints than the combinatorial auctions problems. From this, it is possible to draw the conclusion that the necessarily of the convolutions are problem-dependent. This is viewed as a problematic conclusion, as the \gls{BnB} variable selection algorithm should ideally be a universally good model, irrelevant of the particularities of the model. It must also be noted that further experiments with many more problem classes should be conducted to reach a definite conclusion in this regard. 
+
+Further, the ablation from MLP2 to MLP1, in which the non-linear capabilities of the model is removed, a large drop off in accuracy is found. This indicates that a non-linear transformation from input to output is necessary, as a single-layer neural network is assumed to quickly converge to the optimal model \cite{goodfellow2016deep}. This is true for the variable feature set, though a more expressive variable feature set such as the one found in Khalil et al. (2016) \cite{khalil2016learning} might resolve these problems.
+
+
+
+The lower accuracy scores compared to the results in Gasse et al. (2019) \cite{gasse2019exact} can come from a number of sources, some can be attributed. For the purposes of the ablation study, lower accuracy should not impact the results of comparison between the ablated models, however it is not possible to rule out that the training process is sub-par compared to the original, which can mean that the models are under-trained compared to the models presented in Gasse et al. (2019) \cite{gasse2019exact}. The reader is advised to keep this in mind. 
+
+
+
+Based on this, the following insights regarding the accuracies of the models seem probable based on the experiments:
+\begin{enumerate}[label=(\roman*)]
+    \item The Graph Convolutional operator is necessary for the accuracy of the model, with the effect depending on the problem class.
+    \item The Gasse GCNN seems overparameterized, as removal of hidden layers did not show a reduction in accuracy.
+    \item The change in accuracy after ablations varies between the problem classes.
+    \item The linear models based only on the variable features showed a considerable reduction in accuracy.
+\end{enumerate}
+
+
+\section{Efficiency}\label{sec:disc_efficiency}
+
+
+
+The central problem in \textit{learning-to-branch} is the trade-off between computational efficiency and the number of nodes processed, where the goal is to solve problems in the least amount of time. The results in \Cref{tab:results1_cauction} and \cref{tab:results1_set} show that the time per branching decision varies greatly between the models. The time per node decreases strictly as the model is ablated, which is expected. This verifies the assumption that a reduction in model size leads to a reduction in computation time. The combination of the reduced accuracy and reduced computation time following the ablations allows for studying the aforementioned accuracy/efficiency trade-off. 
+
+Comparing the models with similar accuracy (GNN2 and GNN1, MLP3 and MLP2) shows that the decrease in the number of hidden layers does not particularly impact the time spent per node.  The larger changes in time spent per node is found in the same ablation iterations as the reduction in model accuracy: after the removal of the graph convolutions and after all hidden layers are removed. This trend is clear for both problem classes, and is consistent when run on both the \gls{GPU} and \gls{CPU}. 
+This is particularly noticeable in the ablation MLP3 to MLP2, where the number of parameters is reduced by over 85 \%, though the time per node is only reduced by less than 10 \% in all cases.
+
+A comparison between the classical branching policies (\gls{FSB}, \gls{PC}, \gls{RPC}) shows that the methods are generally improved upon by the \gls{ML}-models for the combinatorial auctions problems, but not for the set covering problems. This is not the case for the original Gasse GCNN, which can come from the reduced model accuracy in this implementation as well as lower capacity hardware. This will not be commented further, as the comparisons of the models and hardware is the focus of the experiments.
+It is still not ideal that the models have seemingly not achieved the same improvements as the original implementation.
+
+On the \gls{CPU}, the results vary between the problem classes: Only MLP1 is competitive for the combinatorial auction problems, while the large loss of accuracy for the MLP1 model for the set covering problems results in MLP2 and MLP3 being the most viable alternatives when restricted to the \gls{CPU}. Either way, for both problem classes the results show that models with graph convolutions are far too inefficient when run on the \gls{CPU}.  
+
+Lastly, inconsistencies between the differences in solution time when run on the \gls{GPU} and \gls{CPU} must be noted: For the set covering problem, the \gls{CPU} restriction results in a considerably larger increase in solution time than for the combinatorial auction problems. This is assumed to be due to the larger number of constraints resulting in these operations to be infeasible on the reduced capacity for large tensors on the \gls{CPU}. Further, MLP3 and MLP2 have a larger decrease in performance when run on the \gls{CPU} for the combinatorial auctions problems. This is surprising, and might be examined by further experiments on more problem classes. 
+
+Based on this, the following insights regarding the efficiency of the models seem probable based on the experiments:
+\begin{enumerate}[label=(\roman*)]
+    \item All ablations show competitive efficiency when run on the \gls{GPU}.
+    \item Removal of hidden layers does not particularly impact the time per node.
+    \item Graph convolutional models are far to inefficient to be used on a \gls{CPU} only setup. 
+\end{enumerate}
+
+
+
+
+
+
+\section{Critique of Experiments}
+
+The conducted experiments have proved to give useful insights into the topic at hand, and a critique of those experiments is due. Three points of criticism are presented in this section:
+
+
+Firstly, the variable performance when comparing the different models on the \gls{GPU} and \gls{CPU} between the two problem classes means that a larger number of classes should be evaluated. Conclusions based on the problem formulation differences are not reliable with so few problem classes. Due to the aforementioned issues regarding the problem generators and the time consuming process of training and evaluating all models for each problem. 
+
+Secondly, the accuracy of GNN2 is lower that the original Gasse \gls{GCNN} implementation \cite{gasse2019exact}. This can possibly mean that the model does not converge as successfully as the original implementation, or that other subtle differences result in a worse performance. This issue was not expected. 
+
+Thirdly, the implementation of the original \gls{GCNN} in a new and different framework might reduce the validity of the ablation study, as a number of changes from the original have been made.
+\gls{Ecole} This ties into the issues with the reduced performance, as changes were made in order to follow the implementations found in the \gls{Ecole} source code. This was clear beforehand, however the value of making an implementation in the \gls{Ecole} was evaluated to outweigh this drawback.
+
+
+
+\section{Further Work}\label{sec:disc_furtherwork}
+
+Further work in the field of \gls{ML} based variable selection can gain insights from the results in this thesis.
+The experiments show that the viability for \gls{GCNN} models are very limited when run on the \gls{CPU}, showing that the model is not productive with this hardware restriction. In addition, results seem to indicate that both accuracy and efficiency of the model on different hardware is reliant on the particularities of the problem formulation. This sets a precedent for a thorough evaluation of the models that are presented in future work within the field, as the applicability of the results is dependent on a number of factors. For applications of \gls{BnB} run on specialized hardware this is less of an issue, however this limits the general usefulness of the models. 
+
+As \gls{ML} approaches are highly dependent on the hardware, model choices and performance evaluation should be tied to the practical application of the algorithms. This is the trend in Gupta et al. (2020) \cite{gupta2020hybrid}, and for applications of \gls{BnB} on general, inexpensive hardware, this restriction is necessary. For this case, making promising features, known as observation functions in the \gls{PO-MDP} literature, can be a method for improving the accuracy of the \gls{ML} models without using the spatially and computationally expensive graph convolution model. 
+
+With this caveat noted, there are still a number of opportunities for \gls{ML} aided \gls{BnB}, especially as the \gls{Ecole} framework is expanded upon. This includes both primal and dual heuristics of the solver.
+A recurring approach mentioned in the context of improving \gls{BnB} is the Reinforcement Learning approach. This appears to be under development, with results in review by Etheve et al. (2020) \cite{etheve2020reinforcement}. On a larger scale, the work on learning-to-branch fits in the larger context of learned algorithms replacing expert-created algorithms. This has the potential to eventually remove the human component to algorithm construction. For now, closer attention to the features and correlations of the variable scoring might be the more fruitful endeavor, as the results in this project show that the deep learning approach does not yield significantly better results. 
+
+The problem classes are a reoccurring point of interest in the results of the experiments, indicating that a varied selection of problem classes is necessary for fair evaluation of the models' ability to be efficient in any application. Four problem generators currently exist in the \gls{Ecole} framework, with assumed benefit of more problem classes. 
+The work in this field remains on artificial problems, however, there would be great interest in a practical implementation on real-world optimization problems, e.g. an optimal traffic routing algorithm running on an embedded system. 
+
+In addition, further work in the field should also strive to compare results with the top commercial solvers IBM CPLEX and Gurobi \cite{anand2017comparative}. The automatic tuning of the highly parameterized commercial optimization solvers has also been shown to yield significant improvements in solution time \cite{hutter2010automated}, and is therefore advised to include in further and more comprehensive comparisons.   
+
+
+
+
+
+\section{Research Questions}\label{sec:dis_questions}
+
+In this section, the answers to the research questions from \Cref{sec:questions} are discussed based on the results. 
+
+The first question was stated as:
+%
+\begin{enumerate}[label=(\roman*)]
+    \item \textit{What is the impact on the accuracy of a \gls{GCNN} by iterative ablation?}
+\end{enumerate}
+%
+The iterative ablations showed a consistent decrease in accuracy for both problem classes. The notable decreases in accuracy occurred after removing the graph convolutional modules (resulting in a pure Multi-Layer Perceptron) and after all of the hidden layers of the model were removed, resulting in a linear model. A larger loss of accuracy was found for the set covering problems than the combinatorial auction problems after the removal of the graph convolutions.
+This is assumed to be because of the higher number of constraints in the set covering problems compared to the combinatorial auction problems. 
+
+The second question was formulated:
+%
+\begin{enumerate}[resume*]
+    \item \textit{What is the change in efficiency of the iteratively ablated \gls{GCNN} when run on the \gls{CPU} and \gls{GPU} as a part of the \gls{BnB} algorithm}?
+\end{enumerate}
+%
+All ablations resulted in decreased computation time per variable branching decision. All models were competitive with the classical branching strategies (Full Strong branching, Pseudo-cost branching, Reliability Pseudo-cost branching) when run on the \gls{GPU}. On the \gls{CPU}, there was a significant decrease in performance for the models containing graph convolutions. This performance reduction was greater for the set covering problems, indicating that the number of constraints might exacerbate problems with running graph convolutional models on restricted hardware. Reducing the number of hidden layers did not impact the computation time per node in particular, and is therefore not considered a viable alternative for reducing the computation time.    
+
+Lastly, research question three:
+%
+\begin{enumerate}[resume*]
+    \item \textit{What are the most promising research opportunities for learning in Branch and Bound?}
+\end{enumerate}
+%
+This is covered in more detail in \cref{sec:disc_furtherwork}. In short, future work should include testing the models on varied problem classes, as well as considering what hardware the enhanced \gls{BnB} algorithm is approved for. With this in mind, an increased focus on the observation of the \gls{BnB} algorithm as well as analysis of the score computation process is important. The clearest opportunities lie in using reinforcement learning to further improve the models learned by imitation learning, in order to free the heuristics of the limits of the strong branching imitation. 

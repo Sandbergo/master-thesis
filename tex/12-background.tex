@@ -1,10 +1,12 @@
 \chapter{Background}\label{cha:background}
 
-The following chapter lays the theoretical groundwork for the project. An understanding of linear algebra, numerical optimization, algorithms, and statistics is assumed. 
+The following chapter lays the theoretical groundwork for the project. An understanding of linear algebra, numerical optimization, algorithms, and statistics is assumed. \Cref{sec:mathprog,sec:motivation,sec:previouswork} and \ref{sec:structure} are adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020). 
 
-\section{Mathematical Programming}
 
-In this project, the terms mathematical programming, numerical optimization, and optimization are used interchangeably.
+\section{Mathematical Programming}\label{sec:mathprog}
+
+This section presents the field of \textit{Mathematical Programming} at the level relevant for understanding the thesis.
+In this work, the terms mathematical programming, numerical optimization, and optimization are used interchangeably. The differences between these stem largely from the communities who use them. The section will first cover the topic of Linear Programming (\gls{LP}), and then the topic of Mixed-Integer Linear Programming (\gls{MILP}), lastly a section on NP-hard problems.  
 
 
 \subsection{Linear Programming}
@@ -97,30 +99,82 @@ where $ p $ is the number of integer variables, otherwise the variables are the 
         }
       \end{scope}
     \end{tikzpicture}
-    \caption{Figure of an \Gls{LP} and the corresponding \Gls{ILP}}
+    \caption{Illustration of an \Gls{LP} with its corresponding \Gls{ILP}, i.e. the \gls{LP} with integrality constraints.}
     \label{fig:milpfig}
 \end{figure}
 
-In \Cref{fig:milpfig}, an \gls{LP} problem and the problem with integrality constraints is shown. For the LP problem, the shaded areas represent the inequality constraints, where the diagonal lines represent the level curves of the objective function. In the \gls{ILP} problem, the crosses represent the feasible solutions. The LP is also called a \textit{relaxation} of the original \gls{ILP}, which is fundamental to efficient solving algorithms of \gls{MILP} problems.
+In \Cref{fig:milpfig}, an \gls{LP} problem and the problem with \textit{integrality constraints} is shown. For the \gls{LP} problem, the shaded areas represent the inequality constraints, where the diagonal lines represent the level curves of the objective function. In the \gls{ILP} problem, the crosses represent the feasible solutions. The \gls{LP} is also called a \textit{relaxation} of the original \gls{ILP}, which is fundamental to efficient solving algorithms of \gls{MILP} problems.
 
-A problem that includes integrality constraints cannot be convex \cite{wolsey2020integer}. The non-convexity of the feasible set of the problem constitutes a significant challenge, and it is considered unlikely that polynomial-time solutions exist \cite{papadimitriou1982combinatorial}. \gls{MILP} problems belong to the category of \gls{NP}-hard problems \cite{papadimitriou1982combinatorial}.   
-
-
+A problem that includes integrality constraints cannot be convex \cite{wolsey2020integer}. The non-convexity of the feasible set of the problem constitutes a significant challenge, and it is considered unlikely that polynomial-time solutions exist \cite{papadimitriou1982combinatorial}. \gls{MILP} problems belong to the category of $\mathcal{NP}$-hard problems \cite{papadimitriou1982combinatorial} (this class of problems will be discussed in \Cref{ssec:complexity}).   
 
 A subset of \gls{MILP} problems can be Integer Linear Programming (\gls{ILP}), where all variables are restricted to integer values, or Binary Linear Programming (\gls{BLP}), where all variables are restricted to binary values. 
 
 \gls{ILP} and \gls{BLP} problems belong to the category of combinatorial optimization problems, which has been the main focus of the efforts to solve entirely or partially with machine learning methods \cite{bengio2020machine}. 
 
 
+
+
+\subsection{Computational Complexity}\label{ssec:complexity}
+
+A basic understanding of computational complexity is required to justify the nature of the algorithms used to solve \gls{MILP} problems. 
+
+All problems can be divided into \textit{classes} by the nature of the algorithms that can solve these problems. Problems for which there exists algorithms that can solve the problem in a time that is \textit{polynomial} of the problem size, belong to class $\mathcal{P}$. Problems to which a correct solution can be verified in polynomial time belongs to the class $\mathcal{NP}$ (non-deterministic polynomial time) \cite{cormen2009introduction}. 
+
+
+Two other central complexity classes in this context are the $\mathcal{NP}$-complete and $\mathcal{NP}$-hard classes. The $\mathcal{NP}$-complete class contains problems that can be \textit{reduced} to any other problem in the $\mathcal{NP}$-complete class in polynomial time. 
+The $\mathcal{NP}$-hard class contains problems that are at least as hard as the problems in the $\mathcal{NP}$-complete group, but has not been proved to be reducible to a $\mathcal{NP}$-complete problem. A figure showing this is given in \Cref{fig:np}. The general \gls{MILP} belongs to the $\mathcal{NP}$-hard class, and some \gls{MILP}s belong to the $\mathcal{NP}$-complete class. 
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\linewidth]{img/npc.png}
+    \caption{\label{fig:np}Illustration of the most common view of the P, NP, NPC and NP-hard relationship. Adapted from Cormen et al. (2009) \cite{cormen2009introduction}.}
+\end{figure}
+
+As stated, it is considered unlikely that \gls{MILP} problems can be solved in polynomial time. Therefore, it is more fruitful to improve upon the best existing solution algorithms and evaluating the improvements on practical problems. As the improvements attempted by substituting variable selection algorithms does not affect the running time complexity of the \gls{BnB} algorithm, this will not be discussed.  
+
+
+
+
+
+
+
+
+
+
 \section{Branch and Bound}\label{sec:bnb}
 
-A \textit{relaxation} of a \gls{MILP} problem is achieved by relaxing the integrality constraint, as shown in \Cref{fig:milpfig}. Obtaining the solution to the relaxed problem gives a lower bound on the optimal solution (for a minimization problem). Naturally, any feasible solution to the integrality-constrained problem gives an upper bound on the solution. Furthermore, if the solution to the relaxed problem adheres to the integrality constraints, it is also the solution to the MILP problem \cite{wolsey2020integer}.
+A \textit{relaxation} of a \gls{MILP} problem is achieved by relaxing the integrality constraint, as shown in \Cref{fig:milpfig}. Obtaining the solution to the relaxed problem gives a lower bound on the optimal solution (for a minimization problem). Naturally, any feasible solution to the integrality-constrained problem gives an upper bound on the solution. Furthermore, if the solution to the relaxed problem adheres to the integrality constraints, it is also the solution to the \gls{MILP} problem \cite{wolsey2020integer}.
 
-The most prevalent solution algorithm for MILP problems exploits these results, by sequentially dividing the solution space until the optimum with the integrality constraint is found. This is done by branching in a bipartite graph according to \cite{gasse2019exact}:
+
+
+
+
+
+The most prevalent solution algorithm for \gls{MILP} problems exploits these results, by sequentially dividing the solution space until the optimum with the integrality constraint is found. This is done by branching in a bipartite graph according to \cite{gasse2019exact}:
 \begin{align} \label{eq:branch}
     x_{i} \leq\left\lfloor x_{i}^{\star}\right\rfloor \vee x_{i} \geq\left\lceil x_{i}^{\star}\right\rceil, \quad \exists \; i \leq p \mid x_{i}^{\star} \notin \mathbb{Z}    
 \end{align}
-Further creating sub-problems with this binary decomposition. An illustration of this process is shown in \Cref{fig:bandb1}.
+Further creating sub-problems with this binary decomposition. A general algorithm for this process is presented in \Cref{alg:bnb}, and an illustration of this process is shown in \Cref{fig:bandb1}.
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    \KwResult{Optimal point and solution value of given problem.}
+    Set $L = \{X\}$ and initialize $\hat{x}$\; 
+    \While{$L \neq \emptyset $}{
+        Select a subproblem $S$ from $L$ to explore\;
+        \If{a solution $\hat{x}_* \in \{x \in S \;|\; f(x) < f(\hat{x})\}$ can be found}{
+            Set $\hat{x} = \hat{x}_*$\;
+        }
+        \If{$S$ cannot be pruned}{
+            Partition $S$ into $\{S_1, S_2 ..., S_r\}$\;
+            Insert $\{S_1, S_2 ..., S_r\}$ into $L$\;
+        }
+        Remove  $S$ from $L$\;
+    }
+    Return $\hat{x}$\;
+    \caption{\label{alg:bnb} A generic Branch and Bound algorithm \cite{morrison2016branch}.}
+\end{algorithm}
 
 %https://tex.stackexchange.com/questions/416359/branch-and-bound-tree-in-tikz
 \comments{
@@ -144,13 +198,13 @@ Further creating sub-problems with this binary decomposition. An illustration of
     ]
   ]
 \end{forest}
-\caption{\label{fig:bandb1}PLACEHOLDER Illustration of the branch and bound algorithm}
+\caption{\label{fig:bandb1}Illustration of the branch and bound algorithm}
 \end{figure}}
 
 \begin{figure}
-\centering
-\includegraphics[width=0.8\linewidth]{img/bnb.png}
-\caption{\label{fig:bandb1}Illustration of the branch and bound algorithm adapted from a maximization problem in \textit{Integer Programming }(2020) \cite{wolsey2020integer}}
+    \centering
+    \includegraphics[width=0.8\linewidth]{img/bnb.png}
+    \caption{\label{fig:bandb1}Illustration of the branch and bound algorithm adapted from a maximization problem in \textit{Integer Programming }(2020) \cite{wolsey2020integer}}
 \end{figure}
 
 For each generated solution, represented by nodes in \Cref{fig:bandb1}, a relaxation of the problem is solved in order to obtain an upper and lower bound on the solution of the sub-problem. 
@@ -252,39 +306,54 @@ where $\bm{X}$ is the feasible set as described in \Cref{eq:milp}. These inequal
 Algorithms that find these inequalities during the \gls{BnB} algorithm are called \textit{Branch and Cut}. The nomenclature comes from calling the application of these inequalities \textit{cuts} or \textit{cutting planes}.
 When an application of inequalities are only employed on the root node (before dividing the solution space in the enumeration), the algorithm is sometimes referred to as \textit{Cut and Branch} rather than \textit{Branch and Cut} \cite{wolsey2020integer}.
 
+
+
+
+
+
 \subsection{Primal and Dual Heuristics}
 
-The efficiency of modern \gls{MILP} solvers rely on their implementation of \textit{primal} and \textit{dual} heuristics.
+The modern implementations of \gls{BnB} solvers base their efficiency on the implementation of \textit{heuristics} \cite{khalil2020towards}, which are divided into the classes \textit{primal} and \textit{ dual}. Heuristic is synonymous with "human-designed rule" in this context.
 
-Primal heuristics are methods for finding feasible solutions at a given \gls{BnB} node, where the quality, or distance to the optimal bound, is the determining factor to whether the feasible solution is useful or not \cite{khalil2020towards}. These heuristics are as costly as they are useful, and modern solvers periodically run different heuristics at different times during the solution process \cite{khalil2020towards}.  
+\textit{Primal heuristics} are methods for finding feasible solutions at a given \gls{BnB} node, where the quality, i.e. the distance to the optimal bound, is the determining factor to whether the feasible solution is useful or not \cite{khalil2020towards}. These heuristics are as costly as they are useful, and modern solvers periodically run different heuristics at different times during the solution process \cite{khalil2020towards}.
 
-Dual heuristics are the backbone of the creation of the \gls{BnB} tree. This includes selecting which node to branch from, and which variable to branch on at the selected node CHECK!!. The application of cutting planes is also classified under dual heuristics.
+\textit{Dual heuristics} are the methods that find the lower bound of the optimization problem. This includes solution of relaxations of the problem as well as the addition of valid inequalities. 
+
+Quoting Khalil (2020) \cite{khalil2020towards}:
+\begin{quote}
+    [...] the
+primal side refers to the quest for good feasible solutions, whereas the dual side refers to
+the search for a proof of optimality.
+\end{quote}
+
+
+
+
 
 
 \subsection{Branching Variable Selection Strategy}\label{ssec:branchingstrategy}
 
-As mentioned, an important decision in the B\&B algorithm is the choice of the variable that should be branched on. 
+As mentioned, an important decision in the \gls{BnB} algorithm is the choice of the variable that should be branched on. 
 There exists many heuristics for solving this, which vary in computational complexity and accuracy. 
 A good branching algorithm should choose to branch on variables that lead to small solution trees (fewer nodes evaluated) and find these variables in a computationally efficient manner. 
 
 The current branching strategy resulting in the smallest solution trees is known as \textit{Strong Branching} (\gls{SB}) \cite{applegate1995finding}, and the application of this branching strategy at every node is known as \textit{Full Strong Branching} (\gls{FSB}) \cite{achterberg2004branching}. 
 This branching policy is based on determining the best variable to branch on by solving the relaxation for every candidate variable and is therefore very computationally expensive compared to other methods \cite{achterberg2004branching}.
 
-All popular variable selection strategies depend on scoring all the possible variables and selecting the variable with the most optimal score \cite{achterberg2004branching}. There are two other classes of branching strategies than \gls{FSB}: \textit{Most Infeasible Branching} (\gls{MIB}), where the variable with the fractional part of the relaxation optimum closest to $0.5$ is selected (a very poor strategy) 
-and \textit{Pseudo-cost Branching} (\gls{PB}), which relies on the expected change in objective value based on previous branching on the variable in question
-\cite{achterberg2004branching}. Today, combinations of \gls{FSB} and \gls{PB} are most common \cite{anand2017comparative}.   
+All popular variable selection strategies depend on scoring all the possible variables and selecting the variable with the most optimal score \cite{achterberg2004branching}. There are two other common classes of branching strategies than \gls{FSB}: \textit{Most Infeasible Branching} (\gls{MIB}), where the variable with the fractional part of the relaxation optimum closest to $0.5$ is selected (a very poor policy) 
+and \textit{Pseudo-cost Branching} (\gls{PC}), which relies on the expected change in objective value based on previous branching on the variable in question
+\cite{achterberg2004branching}. Today, combinations of \gls{FSB} and \gls{PC} are most common \cite{anand2017comparative}.   
 
-In the literature, the branching strategy is referred to as a strategy, policy, or rule, in this project \textit{strategy} is used.  
-
-\subsection{B\&B MILP Features}
-??
+In the literature, the branching strategy is referred to as a strategy, policy, or rule, in this project \textit{policy} is used.  
 
 
 
 
 
 
-\section{Learned Branching Policy}
+
+
+\subsection{Learned Branching Policy}
 
 Recently, attempts have been made to find a branching strategy based on statistical learning. 
 
@@ -299,7 +368,14 @@ The fundamental assumption to this approach is that the most computationally dem
 where $f$ is the learned function, $\mathcal{C}$ is the set of possible branching variables, $\pi_{SB}$ is the Strong Branching strategy and $\epsilon$ is the deviation in the scoring function. 
 
 
-\subsection{Markov Decision Processes}\label{sec:mdp}
+
+
+\section{Markov Decision Processes}\label{sec:mdp}
+
+This section presents the \textit{Markov Decision Process} formulation of the variable selection problem. 
+
+
+\subsection{Markov Decision Processes Formulation}\label{ssec:mdp}
 
 Central to the advancement of learned strategies in \gls{BnB} is the interpretation of the solution algorithm as a \textit{Markov Decision Process} (\gls{MDP}) \cite{gasse2019exact}. This interpretation relates the problem to a large collection of literature on the topic \cite{howard1960dynamic}.
 
@@ -348,12 +424,12 @@ An illustration of the Markov Decision Process control loop from the documentati
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.45\linewidth]{img/mdp.png}
-    \caption{Illustration of the Markov Decision Process control loop (\url{https://doc.ecole.ai/master/using-environments.html}).}
+    \includegraphics[width=0.55\linewidth]{img/mdp.png}
+    \caption{Illustration of the Markov Decision Process control loop. Figure from Provoust et al. (2021) \cite{prouvost2021ecole}}
     \label{fig:mdp}
 \end{figure}
 
-\subsection{Branch \& Bound as a PO-MDP}
+\subsection{Branch \& Bound as a PO-MDP}\label{ssec:pomdp}
 
 Interpreted in the language of \gls{MDP}s, the \gls{BnB} algorithm is the \textit{environment} and a concrete \gls{MILP} problem instance is an \textit{episode} in this environment. The \textit{agent} is the brancher, where in this thesis the variable selection policy is the component of interest, ignoring the node selection policy. The state of the solver consists of the \gls{BnB} tree at that instance, as well as the observations at each node (the \textit{history} of the \gls{PO-MDP}).
 
@@ -361,12 +437,77 @@ This formulation is the basis for the \textit{Ecole} framework, which is discuss
 The \gls{PO-MDP} formulation allows for the agent in the \gls{BnB} environment to be learned through \textit{reinforcement learning}
 
 
+\subsection{Branch \& Bound Observation}\label{ssec:obs}
+
+A prerequisite for learning in \gls{BnB} is the observation of the state of the episode, i.e. the state of the solver of an instance at a specific node in the solution tree. 
+
+Little attention towards these features are found in the major publications in this field (\cite{gasse2019exact,gupta2020hybrid}), however the observation is the foundation of the learning process.
+\textit{Learning to Branch} by Khalil et al. (2016) \cite{khalil2016learning} contains multiple additional features, however these will not be discussed in this thesis. 
+
+The features are divided into three classes: Variable features, constraint features and edge features.
+
+
+\textbf{Variable Features}
+
+For a candidate branching variable, relevant features include the type of the variable (binary, integer etc.), whether the variable has a defined lower and/or upper bound, and whether the solution is at at either of these bounds.  
+If not, the variable has a fractionality that represents the solution of the relaxed problem.
+At the solution node, the incumbent has a value that can be compared to incumbents at other nodes, as well as the relative impact of the variable on the objective value in the incumbent. 
+The variable also has a state with respect to the solution of the relaxation with simplex --- if the variable is a basic or non-basic variable or other information relating to this solution.
+Presented in Khalil et al. (2016) \cite{khalil2016learning} are also a number of other features that will not be utilized in this work.
+
+
+
+
+\textbf{Constraint Features}
+
+The cosine similarity represents a coefficient of the angle between the variable and the constraint.   
+The bias of the constraint is also included. 
+An additional feature is whether the variable is at the constraint in the relaxation
+Each constraint also has a value from the solution of the dual problem. 
+
+
+\textbf{Edge Features}
+
+The edge features consist of the constraint coefficient, meaning the coefficient that is multiplied with the candidate variable.
+
+
+
+
+\subsection{Bipartite Graph Representation}
+
+The application of \gls{GCNN}s on \gls{MILP} and sub-\gls{MILP} problems rely on the bipartite representation of constraints and variables as presented in Gasse et al. (2019) \cite{gasse2019exact}.
+This concept will be introduced with an example \gls{MILP} given as:
+\begin{align}\label{eq:bipex}
+    \min \quad &\texttt{v}_1 + \texttt{v}_2 + \texttt{v}_3\\ 
+    s.t. \quad &\texttt{v}_1 + \texttt{v}_2 - \texttt{v}_3 \geq 1 \qquad (c_1)\nonumber\\
+    &\texttt{v}_3 \geq \frac{1}{2}\qquad\qquad\quad\;\,\,\, (c_2)\nonumber\\
+    &\mathbf{v} \in \mathbb{B}^N \nonumber
+\end{align}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.40\linewidth]{img/bipartite_zoom.png}
+    \caption{Example of a bipartite constraint-variable graph.}
+    \label{fig:bipartite_cv}
+\end{figure}
+
+For \Cref{eq:bipex}, the corresponding constraint-variable graph representation can be illustrated as in
+\Cref{fig:bipartite_cv}.
+
+Constraints and variables are the numbered nodes of the graphs, while the edges represent the relation between the nodes. 
+
+
+
+\section{Machine Learning Models}
+
+
+The \gls{ML}-models used in the thesis are presented in this section. Firstly the Multi-Layer Perceptron and Graph Convolutional Neural Network models, before the concepts of \textit{Ablation studies} and \textit{Reinforcement Learning} are given.
 
 \subsection{Multi-layer Perceptrons}
 
 Multi-Layer Perceptrons (\gls{MLP}s), more commonly known as deep feed-forward neural networks, are recommended by Gupta et al. (2020) \cite{gupta2020hybrid} as a less computationally expensive alternative to the approaches by Khalil et al. (2016) \cite{khalil2016learning} and Gasse et al. (2019) \cite{gasse2019exact}. 
 
-MLPs are networks that generate a nonlinear function $y = f(\mathbf{x}; \bm{\theta})$, where $x$ is the input $y$ is the output and $\bm{\theta}$ represents the parameters of the function. The parameters are learned during repeated optimization, and will under ideal circumstances converge to approach the goal function $y = f^*(\mathbf{x})$. The function is realized as a series of compositions of functions. The composed functions are represented as an acyclical, directed graph \cite{nielsen2018neural}, and can be expressed as:
+\gls{MLP}s are networks that generate a nonlinear function $y = f(\mathbf{x}; \bm{\theta})$, where $x$ is the input $y$ is the output and $\bm{\theta}$ represents the parameters of the function. The parameters are learned during repeated optimization, and will under ideal circumstances converge to approach the goal function $y = f^*(\mathbf{x})$. The function is realized as a series of compositions of functions. The composed functions are represented as an acyclical, directed graph \cite{nielsen2018neural}, and can be expressed as:
 \begin{align}
     y = f_L \circ f_{L-1} \circ \ldots \circ f_{1} \circ f_{0} (\mathbf{x})  
 \end{align}
@@ -387,17 +528,16 @@ Depending on the training configuration, the problem can be interpreted as a cla
 
 \subsection{Graph Convolutional Neural Networks }
 
-Graph Convolutional Neural Networks (\gls{GCNN}s) is a term for neural networks that have input data represented in a graph-structure that is processed by the convolution operation \cite{kipf2016semisupervised}. The graph convolution operation is defied by the propagation rule \cite{kipf2016semisupervised}:
+Graph Convolutional Neural Networks (\gls{GCNN}s) is a term for neural networks that have input data represented in a graph-structure that is processed by the convolution operation \cite{kipf2016semisupervised}. In this thesis, the terms \gls{GCNN} and \gls{GNN} will be used interchangeably. The graph convolution operation is defied by the propagation rule \cite{kipf2016semisupervised}:
 \begin{equation}
     H^{(l+1)} = \sigma \left( \Tilde{D}^{-\frac{1}{2}} \Tilde{A} \Tilde{D}^{-\frac{1}{2}} H^{(l)}W^{(l)}\right)
 \end{equation}
 where $H^{(l)}$ is the matrix of activations in layer $l$ (meaning $H^{(0)} = 0$). $\Tilde{A} = A + I_N$, where $A$ is the adjacency matrix representing the undirected graph $\mathcal{G}$, and $\Tilde{D} = \sum_j \Tilde{A}_{i j}$. $\sigma( \cdot) $ is a nonlinear activation function.
 This operation is shown to be inspired by the first order approximations to spectral filters on graphs \cite{kipf2016semisupervised}.
 
-The term \textit{embeddings} will be used in this thesis for continuous-variable representations derived from the input features, as it is used in Gasse et al. \cite{gasse2019exact}. 
+The term \textit{embeddings} will be used in this thesis for continuous-variable representations derived from the input features, as it is used in Gasse et al. (2019) \cite{gasse2019exact}. 
 
 
-PRENORM LAYERS
 
 
 
@@ -418,30 +558,6 @@ matter the order in which the nodes are presented
 \end{enumerate}
 
 
-
-
-\subsection{Bipartite Graph Representation}
-
-The application of \gls{GCNN}s on \gls{MILP} and sub-\gls{MILP} problems rely on the bipartite representation of constraints and variables as presented in Gasse et al. (2019) \cite{gasse2019exact}.
-This concept will be introduced with an example \gls{MILP} given as:
-\begin{align}\label{eq:bipex}
-    \min \quad &\texttt{v}_1 + \texttt{v}_2 + \texttt{v}_3\\ 
-    s.t. \quad &\texttt{v}_1 + \texttt{v}_2 - \texttt{v}_3 \geq 1 \qquad (c_1)\nonumber\\
-    &\texttt{v}_3 \geq \frac{1}{2}\qquad\qquad\quad\;\,\,\, (c_2)\nonumber\\
-    &\mathbf{v} \in \mathbb{B}^N \nonumber
-\end{align}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.45\linewidth]{img/bipartite_zoom.png}
-    \caption{Example of a bipartite constraint-variable graph.}
-    \label{fig:bipartite_cv}
-\end{figure}
-
-For \Cref{eq:bipex}, the corresponding constraint-variable graph representation can be illustrated as in
-\Cref{fig:bipartite_cv}.
-
-Constraints and variables are the numbered nodes of the graphs, while the edges represent the relation between the nodes. 
 
 
 
