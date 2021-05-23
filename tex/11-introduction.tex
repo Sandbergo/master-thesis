@@ -1,27 +1,29 @@
 %!TEX root = ../Thesis.tex
 \chapter{Introduction}\label{cha:introduction}
 %
-This chapter presents a short history, motivation and background in the fields of mathematical programming and machine learning, summarizes the previous work on the topic of \textit{learning-to-branch}, poses the research questions for the project, and explains the structure of the project. \Cref{sec:background,sec:motivation,sec:previouswork} and \ref{sec:structure} are adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020). 
+This chapter presents a short history, motivation and background in the fields of mathematical programming and machine learning, summarizes the previous work on the topic of \textit{learning-to-branch}, poses the research questions for the project, and explains the structure of the project. \Cref{sec:int_background,sec:int_previouswork} and \ref{sec:int_structure} are adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020). 
 
 
-\section{Background}\label{sec:background}
+\section{Background}\label{sec:int_background}
 
-In this section, a relevant background in the relevant fields of mathematical programming and machine learning is presented, as well as an overview of the previous work in combining these fields. A familiarity of the reader with the central concepts and terms in this field is assumed.
+In this section, a background in the relevant fields of mathematical programming and machine learning is presented, as well as an overview of the previous work in combining these fields. A familiarity of the reader with the central concepts and terms in this field is assumed.
 
 \subsection{Mathematical Programming}
 
 The invention of efficient solution algorithms to linear mathematical programming problems is considered one of the great post-war inventions \cite{dantzig1983reminiscences}. The simplex algorithm and its derivatives have since become ubiquitous in a number of disciplines including finance, engineering, transportation, and energy \cite{junger2010years}. These algorithms allow for the efficient solution of the global optimum of linear functions with an objective function, a number of variables and a number of constraints on these variables. However, the simplex algorithm is limited to problems where the \textit{feasible set} of possible solutions is convex.
 
-To further increase the expressiveness of the linear programming \textit{language}, the inclusion of non-convex constraints such as limiting variables to only take integer values, is a reoccurring limitation in modeling real-world problems in a mathematical programming language. The set of optimization problems with these integer are known as \textit{Mixed Integer Linear Programs} (\gls{MILP}). The inclusion of integer constraints to these linear problems has proved to be a very challenging problem class to develop efficient solution algorithms for, as it is considered unlikely that a polynomial-time solution algorithm exists \cite{bengio2020machine}.
+To further increase the expressiveness of the linear programming \textit{language}, the inclusion of non-convex constraints such as limiting variables to only take integer values, is a reoccurring limitation in modeling real-world problems in a mathematical programming language. The set of linear optimization problems with these integer constraints are known as \textit{Mixed-Integer Linear Programs} (\gls{MILP}). The inclusion of integer constraints to these linear problems has proved to be a very challenging problem class to develop efficient solution algorithms for, as it is considered unlikely that a polynomial-time solution algorithm exists \cite{bengio2020machine}.
 
-For problems including integer constraints, the na\"ive approach of comparing every possible combination of feasible solutions, known as \textit{explicit enumeration}, will result in a solution algorithm that is of exponential complexity, which makes larger optimization problems intractable. An alternative to explicit enumeration is \textit{implicit enumeration}, where a large number of possible solutions so not have to be evaluated explicitly. 
+For problems including integer constraints, the na\"ive approach of comparing every possible combination of feasible solutions, known as \textit{explicit enumeration}, will result in a solution algorithm that is of exponential complexity, which makes larger optimization problems intractable \cite{wolsey2020integer}. An alternative to explicit enumeration is \textit{implicit enumeration}, where a large number of possible solutions do not have to be evaluated explicitly. 
 \textit{Branch and Bound} (\gls{BnB}), conceived in 1960 \cite{land1960automatic}, is an algorithm for solving mathematical programming problems via implicit enumeration. It has since received numerous improvements and extensions \cite{wolsey2020integer}. 
 
 For time-constrained applications of these non-convex optimization problems, a decrease in time to calculate the optimal solution can result in significant improvements and has been a very active field of research for many decades \cite{wolsey2020integer}. For the interested reader, the modern advances of Branch and Cut, Column Generation, and Bender's Decomposition algorithms are recommended reading in \textit{Integer Programming} by Lawrence Wolsey \cite{wolsey2020integer}.
 
-%Currently, the most efficient solution algorithms using Branch and Bound are proprietary algorithms, notably IBM CPLEX and Gurobi, however, open source solvers do exist and are under continuous development, e.g. \gls{COIN-OR} and \gls{SCIP} Optimization Suites \cite{achterberg2009scip,anand2017comparative}. Improvements to 
+Currently, the most efficient solution algorithms using Branch and Bound are proprietary algorithms, notably IBM CPLEX and Gurobi \cite{anand2017comparative}. Open-source solvers also exist and are under continuous development, e.g. \gls{COIN-OR} and \gls{SCIP} Optimization Suites \cite{achterberg2009scip,anand2017comparative}. The algorithms are highly complex and employ a large variety of methods to quickly solve the complex problems \cite{wolsey2020integer}. 
 
 There is a large interest in both theoretical and practical mathematical programming for methods that can improve the efficiency of \gls{MILP} optimization algorithms \cite{wolsey2020integer}. This can have a lasting impact on the nature of mathematical programming and is therefore an important area to explore further. Researchers in Mathematical Optimization have also noted the potential for expert-constructed branching strategies based on knowledge obtained from \textit{Statistical Learning}, also known as \textit{Machine Learning} (\Gls{ML}) \cite{lodi2017learning}.
+
+
 
 
 \subsection{Machine Learning}
@@ -37,9 +39,10 @@ For many tasks, e.g. tasks with a real-time component, the strength of Machine L
 
 Further, the results of the iterative optimization process of generating an \gls{ML}-model can find patterns in data that are difficult to discover with traditional statistics \cite{goodfellow2016deep}. Much like chess Grandmasters learn from observing the best \gls{AI} players, so too might experts gain knowledge in their respective fields by analyzing the results of an algorithm built on statistical learning.  
 
+Within the field of Machine Learning, the concept of \textit{ablations} and \textit{ablation studies} are gaining interest \cite{meyes2019ablation}. In an ablation study, the performance of a learned model is examined after the removal of sections of the original model. This is performed in an attempt to understand the role of a section within a complex system.  
 
 
-\section{Previous Work}\label{sec:previouswork}
+\section{Previous Work}\label{sec:int_previouswork}
 
 There has been a recent surge of interest in leveraging machine learning methods in solving non-convex optimization problems, notably a recent literature review conducted by Yoshua Bengio \cite{bengio2020machine}. The aim is for statistical learning to aid in the efficient solving of complex problems without sacrificing the strong guarantees inherent in mathematical optimization solvers. These hybrid methods now show the potential to be competitive with the state-of-the-art solvers for these \gls{NP}-hard problems \cite{gasse2019exact}. 
 
@@ -59,11 +62,11 @@ The methods of Gasse et al. (2019) \cite{gasse2019exact} and the improvements ma
 Recent attempts to facilitate the development of \gls{ML}-aided \gls{BnB} includes a notable project named \textit{Extensible Combinatorial Optimization Learning Environments} (\emph{Ecole}) \cite{prouvost2020ecole, prouvost2021ecole}. It was developed by the group \textit{Data Science For Decision Making} (\gls{DS4DM}), connected to the Polytechnique Montr\'{e}al university. \gls{Ecole} is an open-source framework for a controllable and extensible python interface to \gls{BnB} algorithms and is built on \gls{SCIP} and PySCIPOpt. The framework is tightly knit with the previous work from the group, notably Gasse et al. (2019) \cite{gasse2019exact} and Gupta et al. (2020) \cite{gupta2020hybrid}, and aims to standardize research within the field of \gls{BnB} algorithm improvement.  
  A recent article by
 Cappart et al. (2021) \cite{cappart2021combinatorial} presents the current status of and the role of the \gls{Ecole} framework in further developing this field. 
-As of May 2021, no articles have been published with results from using this framework.
+As of May 2021, no articles have been published with results using this framework, bar the mentioned introductory articles.
 
 
 
-\section{Motivation}\label{sec:motivation}
+\section{Motivation}\label{sec:int_motivation}
 
 As stated, the ubiquity of \gls{BnB} algorithms in industry implies that increased efficiency in computation time will be very beneficial. The benefits could be in the form of reduced resource expenditure on computations, increased time resolution in real-time applications, or even new applications due to the increased efficiency.  
 
@@ -71,14 +74,15 @@ Machine Learning has been proved by many researchers to be a good candidate for 
 
 While the alternative models presented in Gupta et al. (2020) \cite{gupta2020hybrid} are interesting, a thorough exploration of the more standard models in \gls{ML} (\gls{GCNN}s and \gls{MLP}s) is assumed to be more fruitful if they can achieve similar performance. The \gls{GCNN} developed and presented in Gasse et al. (2019) (from now on referred to as the \textit{Gasse \gls{GCNN}}) might not be competitive on the \gls{CPU} in the current configuration, however, this does not mean that the \gls{GCNN} architecture is unsuited for the application on a \gls{CPU}.
 
-A comparison, with the solution efficiency reported on both \gls{GPU} and \gls{CPU}, of a selection of \textit{iterative ablations} on the Gasse \gls{GCNN} can give further insight into the model accuracy versus solution efficiency trade-off. Hopefully, this can give a more definitive answer to whether the \gls{GCNN} models are limited to purely \gls{GPU} applications. 
+A comparison, with the solution efficiency reported on both \gls{GPU} and \gls{CPU}, of a selection of \textit{iterative ablations} on the Gasse \gls{GCNN} can give further insight into the model accuracy versus solution efficiency trade-off. When future researchers chose \gls{ML} models for learning in \gls{BnB}, this work will serve as a resource to better understand this trade-off on the two different computational resources.
 
 The term \textit{iterative ablations} (\Gls{IA}) will be used to describe the process of removing parts of a network sequentially. The term is, to the knowledge of the author, only used once before, in the context of ablative liver surgery in Seror (2015) \cite{seror2015ablative}. 
 
 In addition, the choice to implement the source code in the new \gls{Ecole} framework is a conscious decision to aid in the standardization of how research is done within the field of improving \gls{BnB} algorithms.  
 
 
-\section{Research Questions}\label{sec:questions}
+
+\section{Research Questions}\label{sec:int_questions}
 
 For this project, three research questions are considered. This is done to aid the reader in following the thesis. The questions will be answered explicitly in \Cref{cha:discussion}. In addition, the topics of accuracy-efficiency-implementation will be reoccurring throughout the chapters of the thesis. 
 
@@ -106,11 +110,8 @@ The general field has gained traction recently \cite{bengio2020machine}, and the
 
 
 
-\section{Thesis Structure}\label{sec:structure}
+\section{Thesis Structure}\label{sec:int_structure}
 
 
 \Cref{cha:introduction} contains an introduction to the thesis with a short background in the relevant field, an overview of previous work, a section on the motivation for the conducted experiments, a formulation of the three research questions, and an overview of the thesis structure. 
-In the following chapter, \Cref{cha:background}, the necessary theoretical background in optimization and machine learning is presented, as well as a review of earlier work in the field. In \Cref{cha:methods}, the data set, chosen training and testing methods, and experiments are presented, along with the architectural choices. \Cref{cha:results} provides the results of the aforementioned experiments. Then, \Cref{cha:discussion} contains discussions of the results, a critique of the experiments, and ideas for further work. Finally, \Cref{cha:conclusion} summarizes the project with a conclusion on the implications of the results. 
-
-
-of 
+In the following chapter, \Cref{cha:background}, the necessary theoretical background in optimization and machine learning is presented, as well as a review of earlier work in the field. In \Cref{cha:methods}, the data set, chosen training and testing methods, and experiments are presented, along with the architectural choices. \Cref{cha:results} provides the results of the aforementioned experiments. Then, \Cref{cha:discussion} contains discussions of the results, a critique of the experiments, and ideas for further work. Finally, \Cref{cha:conclusion} summarizes the project with a conclusion on the implications of the results. Additional material is provided in \cref{cha:appendix-my-appendix}.

@@ -1,9 +1,9 @@
 \chapter{Background}\label{cha:background}
 
-The following chapter lays the theoretical groundwork for the project. An understanding of linear algebra, numerical optimization, algorithms, and statistics is assumed. \Cref{sec:mathprog,sec:motivation,sec:previouswork} and \ref{sec:structure} are adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020). 
+The following chapter lays the theoretical groundwork for the project. An understanding of linear algebra, numerical optimization, algorithms, and statistics is assumed. \Cref{sec:back_mathprog,sec:back_bnb} and \ref{ssec:back_mlp} are adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020). 
 
 
-\section{Mathematical Programming}\label{sec:mathprog}
+\section{Mathematical Programming}\label{sec:back_mathprog}
 
 This section presents the field of \textit{Mathematical Programming} at the level relevant for understanding the thesis.
 In this work, the terms mathematical programming, numerical optimization, and optimization are used interchangeably. The differences between these stem largely from the communities who use them. The section will first cover the topic of Linear Programming (\gls{LP}), and then the topic of Mixed-Integer Linear Programming (\gls{MILP}), lastly a section on NP-hard problems.  
@@ -22,7 +22,7 @@ and the constraint right-hand-side vector $b \in R^m $.
 
 The size of the problem will be measured by the dimensions of the constraint coefficient matrix $ \mathbb{A} $, where the number of rows and columns corresponds to the number of variables and constraints, respectively.
 
-These problems are convex \cite{wolsey2020integer}, and can be solved by several efficient algorithms. The simplex algorithm can solve problems on this form efficiently, as optimal points are guaranteed to be on the vertices of the feasible set, and the same for interior-point methods \cite{nocedal2006numerical}. These algorithms are good average performance but do not have guaranteed polynomial running time in the worst case. Guaranteed polynomial solution algorithms do exist, for instance Karamkar's algorithm \cite{karamkar1984new}. 
+These problems are convex \cite{wolsey2020integer}, and can be solved by several efficient algorithms. The simplex algorithm can solve problems on this form efficiently, and the same for interior-point methods \cite{nocedal2006numerical}. These algorithms are good average performance but do not have guaranteed polynomial running time in the worst case. Guaranteed polynomial solution algorithms do exist, for instance Karamkar's algorithm \cite{karamkar1984new}. 
 
 
 \subsection{Mixed Integer Linear Programming}
@@ -118,20 +118,20 @@ A subset of \gls{MILP} problems can be Integer Linear Programming (\gls{ILP}), w
 
 A basic understanding of computational complexity is required to justify the nature of the algorithms used to solve \gls{MILP} problems. 
 
-All problems can be divided into \textit{classes} by the nature of the algorithms that can solve these problems. Problems for which there exists algorithms that can solve the problem in a time that is \textit{polynomial} of the problem size, belong to class $\mathcal{P}$. Problems to which a correct solution can be verified in polynomial time belongs to the class $\mathcal{NP}$ (non-deterministic polynomial time) \cite{cormen2009introduction}. 
+All problems can be divided into \textit{classes} by the nature of the algorithms that can solve these problems. Problems for which there exist algorithms that can solve the problem in a time that is \textit{polynomial} of the problem size belong to class $\mathcal{P}$. Problems to which a correct solution can be verified in polynomial time belong to the class $\mathcal{NP}$ (non-deterministic polynomial time) \cite{cormen2009introduction}. 
 
 
 Two other central complexity classes in this context are the $\mathcal{NP}$-complete and $\mathcal{NP}$-hard classes. The $\mathcal{NP}$-complete class contains problems that can be \textit{reduced} to any other problem in the $\mathcal{NP}$-complete class in polynomial time. 
-The $\mathcal{NP}$-hard class contains problems that are at least as hard as the problems in the $\mathcal{NP}$-complete group, but has not been proved to be reducible to a $\mathcal{NP}$-complete problem. A figure showing this is given in \Cref{fig:np}. The general \gls{MILP} belongs to the $\mathcal{NP}$-hard class, and some \gls{MILP}s belong to the $\mathcal{NP}$-complete class. 
+The $\mathcal{NP}$-hard class contains problems that are at least as hard as the problems in the $\mathcal{NP}$-complete group but has not been proved to be reducible to a $\mathcal{NP}$-complete problem. A figure showing this is given in \Cref{fig:np}. The general \gls{MILP} belongs to the $\mathcal{NP}$-hard class, and some \gls{MILP}s belong to the $\mathcal{NP}$-complete class. 
 
 
 \begin{figure}
     \centering
     \includegraphics[width=0.4\linewidth]{img/npc.png}
-    \caption{\label{fig:np}Illustration of the most common view of the P, NP, NPC and NP-hard relationship. Adapted from Cormen et al. (2009) \cite{cormen2009introduction}.}
+    \caption{\label{fig:np}Illustration of the most common view of the P, NP, NPC, and NP-hard relationship. Adapted from Cormen et al. (2009) \cite{cormen2009introduction}.}
 \end{figure}
 
-As stated, it is considered unlikely that \gls{MILP} problems can be solved in polynomial time. Therefore, it is more fruitful to improve upon the best existing solution algorithms and evaluating the improvements on practical problems. As the improvements attempted by substituting variable selection algorithms does not affect the running time complexity of the \gls{BnB} algorithm, this will not be discussed.  
+As stated, it is considered unlikely that \gls{MILP} problems can be solved in polynomial time. Therefore, it is more fruitful to improve upon the best existing solution algorithms and evaluating the improvements on practical problems. As the improvements attempted by substituting variable selection algorithms do not affect the running time complexity of the \gls{BnB} algorithm, this will not be discussed.  
 
 
 
@@ -142,9 +142,9 @@ As stated, it is considered unlikely that \gls{MILP} problems can be solved in p
 
 
 
-\section{Branch and Bound}\label{sec:bnb}
+\section{Branch and Bound}\label{sec:back_bnb}
 
-A \textit{relaxation} of a \gls{MILP} problem is achieved by relaxing the integrality constraint, as shown in \Cref{fig:milpfig}. Obtaining the solution to the relaxed problem gives a lower bound on the optimal solution (for a minimization problem). Naturally, any feasible solution to the integrality-constrained problem gives an upper bound on the solution. Furthermore, if the solution to the relaxed problem adheres to the integrality constraints, it is also the solution to the \gls{MILP} problem \cite{wolsey2020integer}.
+A \textit{relaxation} of a \gls{MILP} problem is achieved by relaxing the integrality constraint, as shown in \Cref{fig:milpfig}. Obtaining the solution to the relaxed problem gives a lower bound on the optimal solution (for a minimization problem). Naturally, any feasible solution to the integrality-constrained problem gives an upper bound to the solution. Furthermore, if the solution to the relaxed problem adheres to the integrality constraints, it is also the solution to the \gls{MILP} problem \cite{wolsey2020integer}.
 
 
 
@@ -209,7 +209,7 @@ Further creating sub-problems with this binary decomposition. A general algorith
 
 For each generated solution, represented by nodes in \Cref{fig:bandb1}, a relaxation of the problem is solved in order to obtain an upper and lower bound on the solution of the sub-problem. 
 These values are shown on the top and bottom right, respectively. 
-Generating upper and lower bounds for solutions allow for discarding a large number of solutions \cite{wolsey2020integer}. Branches can be \textit{pruned} (meaning no further partitioning from that branch) if they meet at least one of the following three criteria \cite{wolsey2020integer}:
+Generating upper and lower bounds for solutions allows for discarding a large number of solutions \cite{wolsey2020integer}. Branches can be \textit{pruned} (meaning no further partitioning from that branch) if they meet at least one of the following three criteria \cite{wolsey2020integer}:
 \newpage
 \begin{enumerate}[label=(\roman*)]
     \item Pruning by optimality: $Z^t = \{\max \bm{c}^{\top} \bm{x} : \bm{x} \in S_t\}$ has been solved.
@@ -359,82 +359,81 @@ Recently, attempts have been made to find a branching strategy based on statisti
 
 Using machine learning, specifically imitation learning, to find good candidate variables for branching in a less computationally demanding manner was proposed by Elias Khalil \cite{khalil2016learning}. Various methods for learning in branching include \textit{ Support Vector Machine Ranking} (\Gls{SVM}) \cite{khalil2016learning}, \textit{Graph Convolutional Neural Networks} (\gls{GCNN}) \cite{gasse2019exact} and \textit{Feature-wise Linear Modulation} (\gls{FiLM}) \cite{gupta2020hybrid}.
 
-The fundamental assumption to this approach is that the most computationally demanding but most accurate branching policy can be learned. The algorithm will use imitation learning on the branching expert to find a computationally less expensive non-linear function approximation to the expert algorithm's variable scoring. Then, the algorithm branches on the variable with the highest score. This can be expressed as: 
-\begin{align}
-    f(i) &=  \pi_{SB} (i) + \epsilon \quad \forall \; i \in \mathcal{C}\\
-    f(i) &= s_i\\
-    i^*_f &= \underset{i \in \mathcal{C}}{\mathrm{argmin}} \; \bm{s}_i
-\end{align}
-where $f$ is the learned function, $\mathcal{C}$ is the set of possible branching variables, $\pi_{SB}$ is the Strong Branching strategy and $\epsilon$ is the deviation in the scoring function. 
+The fundamental assumption to this approach is that a computationally efficient approximation to the most computationally demanding but most accurate branching policy can be learned. The algorithm will use imitation learning on the branching expert to find a computationally less expensive non-linear function approximation to the expert algorithm's variable scoring. Then, the algorithm branches on the variable with the highest score. 
+%This can be expressed as: 
+%\begin{align}
+%    f(i) &=  \pi_{SB} (i) + \epsilon \quad \forall \; i \in \mathcal{C}\\
+%    f(i) &= s_i\\
+%    i^*_f &= \underset{i \in \mathcal{C}}{\mathrm{argmin}} \; \bm{s}_i
+%\end{align}
+%where $f$ is the learned function, $\mathcal{C}$ is the set of possible branching variables, $\pi_{SB}$ is the Strong Branching strategy and $\epsilon$ is the deviation in the scoring function. 
 
 
 
 
-\section{Markov Decision Processes}\label{sec:mdp}
+\section{Markov Decision Processes}\label{sec:back_mdp}
 
 This section presents the \textit{Markov Decision Process} formulation of the variable selection problem. 
 
 
 \subsection{Markov Decision Processes Formulation}\label{ssec:mdp}
 
-Central to the advancement of learned strategies in \gls{BnB} is the interpretation of the solution algorithm as a \textit{Markov Decision Process} (\gls{MDP}) \cite{gasse2019exact}. This interpretation relates the problem to a large collection of literature on the topic \cite{howard1960dynamic}.
+Central to the advancement of learned strategies in \gls{BnB} is the interpretation of the solution algorithm as an \textit{agent} in a \textit{Markov Decision Process} (\gls{MDP}) \cite{gasse2019exact}. This interpretation relates the problem to a large collection of literature on the topic \cite{howard1960dynamic}.
 
-An \gls{MDP} is expressed as $ \mathcal{S}, \mathcal{A}, p_{init}, p_{trans}, R$ 
-where $ \mathcal{S}$ is the state space, 
-$\mathcal{A}$ is the action space, 
-$p_{init}$ is an initial state distribution ($p_{init}\;:\;\mathcal{S}\leftarrow \mathbb{R}_{\geq 0}$), 
-$p_{trans}$ is the state transition distribution (
-$p_{trans}\; : \; \mathcal{S}
-\times \mathcal{A}\times \mathcal{S}
-\leftarrow \mathbb{R}_{\geq 0}$), 
-$p_{trans}$), $R$ is the reward function $R\;:\;\mathcal{S} \rightarrow \mathbb{R}$. \cite{prouvost2020ecole}. 
+The agent is at time $t$ in a state $\mathcal{S}_t$, from which it performs an action $\mathcal{A}_t$ that transforms the agent to the state $\mathcal{S}_{t+1}$ and receives the \textit{reward} $\mathcal{R}_{t+1}$ \cite{prouvost2021ecole}. The probability of an agent performing action $a$ in state $s$ is given as $\pi (a | s)$. The probability distribution for the agent for the agent to transition to a new state $s'$ is given as $\mathbb{P}(s', r | a, s)$ \cite{prouvost2021ecole}. 
 
-Further, the \textit{action policy} $\pi$ is given as $\pi \; : \; \mathcal{A}\times \mathcal{S}
-\leftarrow \mathbb{R}_{\geq 0}$, and results in state-action trajectories $\tau = (s_0, a_0, s_1, a_1, ... )$ that obey a joint distribution that can be expressed as following: \cite{prouvost2020ecole}
+ 
+A sequence of actions generates a sequence of trajectories $\tau$, and is described as an \textit{episiode}. The probability of a trajectory is given in Prouvost et al. (2021) \cite{prouvost2020ecole} as:
 \begin{equation}
-    \tau \sim \underbrace{p_\textit{init}(s_0)}_{\text{initial state}}
-\prod_{t=0}^\infty \underbrace{\pi(a_t | s_t)}_{\text{next action}}
-\underbrace{p_\textit{trans}(s_{t+1} | a_t, s_t)}_{\text{next state}}
+    \mathbb{P}(\tau) \sim \underbrace{\mathbb{P}(\mathcal{S}_0)}_{\text{initial state}}
+\prod_{t=0}^\infty \underbrace{\pi(\mathcal{A}_t | \mathcal{S}_t)}_{\text{next action}}
+\underbrace{\mathbb{P}(\mathcal{S}_{t+1}, \mathcal{R}_{t+1} | \mathcal{A}_t, \mathcal{S}_t)}_{\text{next state}}
 \end{equation}
 
-These definitions now allow a formulation of the \gls{MDP} control problem, which is the problem of interest in this thesis. The control problem consists of finding the action policy that maximizes the reward, and can be stated as: \cite{prouvost2020ecole}
-\begin{equation}\label{eq:mdprcontrol}
-    [\pi^\star = \underset{\pi}{\operatorname{arg\,max}}
-\lim_{T \to \infty} \mathbb{E}_\tau\left[\sum_{t=0}^{T} R(s_t)\right]
-\end{equation}
+These definitions now allow a formulation of the \gls{MDP} control problem, which is the problem of interest in this thesis. The control problem consists of finding the action policy that maximizes the reward. %, and can be stated as: 
+%\cite{prouvost2020ecole}
+%\begin{equation}\label{eq:mdprcontrol}
+%    \pi^\star = \underset{\pi}{\operatorname{arg\,max}}
+%\lim_{T \to \infty} \mathbb{E}_\tau\left[\sum_{t=0}^{T} %\mathcal{R}(\mathcal{S}_t)\right]
+%\end{equation}
+
 
 
 \subsection{Partially-observable Markov Decision Processes}
 
-A subset or generalization of an \gls{MDP} is the \textit{Partially-observable Markov Decision Process }(\gls{PO-MDP}) \cite{monahan1982state}. Processes of this class allows for uncertainty of the states as well as additional acquisition of state information \cite{monahan1982state}.
-The addition of an observation of the process in the observation space ($o \in \Omega $) extends the process to the formulation to $ (\mathcal{S}, \mathcal{A}, p_{init}, p_{trans}, R, O)$. 
+A subset or generalization of an \gls{MDP} is the \textit{Partially-observable Markov Decision Process }(\gls{PO-MDP}) \cite{monahan1982state}. Processes of this class allows for uncertainty of the states as well as additional acquisition of state information \cite{monahan1982state}. The agent will therefore decide actions based on the observation of the state, given as $\mathcal{O}$ \cite{prouvost2021ecole}. All past observations of the observations, rewards and actions are given in the history $H_t$, given as \cite{prouvost2021ecole}:
+\begin{equation}
+    H_t = \{\mathcal{O}(\mathcal{S}_0), \mathcal{R}(S_0), \mathcal{A}_0, ..., \mathcal{O}(\mathcal{S}_{t-1}), \mathcal{R}(S_{t-1}), \mathcal{A}_{t-1}, \mathcal{O}(\mathcal{S}_t)\}
+\end{equation}
+The generalization from \gls{MDP} to \gls{PO-MDP} concedes the Markovian nature of the trajectories \cite{prouvost2020ecole}.
 
-The generalization from \gls{MDP} to \gls{PO-MDP} concedes the Markovian nature of the trajectories \cite{prouvost2020ecole}, i.e:
+In addition, the initial state is given by the distribution of the problem instance $I$, giving the relation $\mathbb{P}(\mathcal{S}_0) = \mathbb{P}(I) \mathbb{P}(\mathcal{S}_0 | I)  $\cite{prouvost2021ecole}. 
+
+This results in the final formulation \cite{prouvost2021ecole}:
 \begin{equation}
-    o_{t+1},r_{t+1} \not \perp   h_{t-1} \mid o_t,r_t,a_t
-\text{,}
+    \mathbb{P}(\tau) \sim \underbrace{ \mathbb{P}(I) \mathbb{P}(\mathcal{S}_0 | I)  }_{\text{initial state}}
+\prod_{t=0}^\infty \underbrace{\pi(\mathcal{A}_t | H_t)}_{\text{next action}}
+\underbrace{\mathbb{P}(\mathcal{S}_{t+1}, \mathcal{R}_{t+1} | \mathcal{A}_t, \mathcal{S}_t)}_{\text{next state}}
 \end{equation}
-meaning that the entire action-state history of the process is necessary for the policy. The history is denoted $\mathcal{H}$, and the policy of the \gls{PO-MDP} is stated as:
-\begin{equation}
-    \pi:\mathcal{A} \times \mathcal{H} \to \mathbb{R}_{\geq 0}
-\end{equation}
-which means that the control problem of the \gls{PO-MDP} can also be stated as \cref{eq:mdprcontrol}. 
 
 An illustration of the Markov Decision Process control loop from the documentation of \gls{Ecole} is shown in \Cref{fig:mdp}.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.55\linewidth]{img/mdp.png}
-    \caption{Illustration of the Markov Decision Process control loop. Figure from Provoust et al. (2021) \cite{prouvost2021ecole}}
+    \caption{Illustration of the Markov Decision Process control loop. Figure from Provoust et al. (2021) \cite{prouvost2021ecole}.}
     \label{fig:mdp}
 \end{figure}
+
+
 
 \subsection{Branch \& Bound as a PO-MDP}\label{ssec:pomdp}
 
 Interpreted in the language of \gls{MDP}s, the \gls{BnB} algorithm is the \textit{environment} and a concrete \gls{MILP} problem instance is an \textit{episode} in this environment. The \textit{agent} is the brancher, where in this thesis the variable selection policy is the component of interest, ignoring the node selection policy. The state of the solver consists of the \gls{BnB} tree at that instance, as well as the observations at each node (the \textit{history} of the \gls{PO-MDP}).
 
-This formulation is the basis for the \textit{Ecole} framework, which is discussed in \Cref{sec:ecole}
+This formulation is the basis for the \textit{Ecole} framework, which is discussed in \Cref{ssec:ecole}
 The \gls{PO-MDP} formulation allows for the agent in the \gls{BnB} environment to be learned through \textit{reinforcement learning}
+
 
 
 \subsection{Branch \& Bound Observation}\label{ssec:obs}
@@ -480,7 +479,7 @@ This concept will be introduced with an example \gls{MILP} given as:
 \begin{align}\label{eq:bipex}
     \min \quad &\texttt{v}_1 + \texttt{v}_2 + \texttt{v}_3\\ 
     s.t. \quad &\texttt{v}_1 + \texttt{v}_2 - \texttt{v}_3 \geq 1 \qquad (c_1)\nonumber\\
-    &\texttt{v}_3 \geq \frac{1}{2}\qquad\qquad\quad\;\,\,\, (c_2)\nonumber\\
+    &\texttt{v}_3 \geq \frac{1}{2}\qquad\qquad\quad\;\,\; (c_2)\nonumber\\
     &\mathbf{v} \in \mathbb{B}^N \nonumber
 \end{align}
 
@@ -498,12 +497,12 @@ Constraints and variables are the numbered nodes of the graphs, while the edges 
 
 
 
-\section{Machine Learning Models}
+\section{Machine Learning Models}\label{sec:back_models}
 
 
 The \gls{ML}-models used in the thesis are presented in this section. Firstly the Multi-Layer Perceptron and Graph Convolutional Neural Network models, before the concepts of \textit{Ablation studies} and \textit{Reinforcement Learning} are given.
 
-\subsection{Multi-layer Perceptrons}
+\subsection{Multi-layer Perceptrons}\label{ssec:back_mlp}
 
 Multi-Layer Perceptrons (\gls{MLP}s), more commonly known as deep feed-forward neural networks, are recommended by Gupta et al. (2020) \cite{gupta2020hybrid} as a less computationally expensive alternative to the approaches by Khalil et al. (2016) \cite{khalil2016learning} and Gasse et al. (2019) \cite{gasse2019exact}. 
 
@@ -532,8 +531,8 @@ Graph Convolutional Neural Networks (\gls{GCNN}s) is a term for neural networks 
 \begin{equation}
     H^{(l+1)} = \sigma \left( \Tilde{D}^{-\frac{1}{2}} \Tilde{A} \Tilde{D}^{-\frac{1}{2}} H^{(l)}W^{(l)}\right)
 \end{equation}
-where $H^{(l)}$ is the matrix of activations in layer $l$ (meaning $H^{(0)} = 0$). $\Tilde{A} = A + I_N$, where $A$ is the adjacency matrix representing the undirected graph $\mathcal{G}$, and $\Tilde{D} = \sum_j \Tilde{A}_{i j}$. $\sigma( \cdot) $ is a nonlinear activation function.
-This operation is shown to be inspired by the first order approximations to spectral filters on graphs \cite{kipf2016semisupervised}.
+where $H^{(l)}$ is the matrix of activations in layer $l$. $\Tilde{A} = A + I_N$, where $A$ is the adjacency matrix representing the undirected graph $\mathcal{G}$, and $\Tilde{D} = \sum_j \Tilde{A}_{i j}$. $\sigma( \cdot) $ is a nonlinear activation function.
+This operation is shown to be inspired by the first-order approximations to spectral filters on graphs \cite{kipf2016semisupervised}.
 
 The term \textit{embeddings} will be used in this thesis for continuous-variable representations derived from the input features, as it is used in Gasse et al. (2019) \cite{gasse2019exact}. 
 
@@ -543,18 +542,18 @@ The term \textit{embeddings} will be used in this thesis for continuous-variable
 
 Models that leverage the graph nature of combinatorial optimization problems have been shown to have satisfactory performance, see e.g. Dai et al. (2018) \cite{dai2018learning}. 
 \gls{GCNN}s are proposed by Gasse et al. \cite{gasse2019exact} as an alternative to the feature-rich approaches by Khalil et al. (2016) \cite{khalil2016learning}. 
-The application of \gls{GCNN}s on \gls{BnB} algorithms relies on the bipartite graph structure that results from the solution process, as explained in \Cref{sec:bnb}. At each point before the variable selection process, the state of the solution algorithm graph can be processed by the \gls{GCNN} algorithm. 
+The application of \gls{GCNN}s on \gls{BnB} algorithms rely on the bipartite graph structure that results from the solution process, as explained in \Cref{sec:back_bnb}. At each point before the variable selection process, the state of the solution algorithm graph can be processed by the \gls{GCNN} algorithm. 
 
 The state of the \gls{BnB} graph at a node can be represented as $s_t = (\mathcal{G}, \mathbf{C}, \mathbf{E}, \mathbf{V})$, where $\mathcal{G}$ represents the bipartite \gls{BnB} solution graph at that time instance, $\mathbf{C}$ represents the constraints, $\mathbf{E}$ represents the \textit{edges}, or connections between the variables and constraints, and $\mathbf{V}$ represents candidate variables.  
 
 Gasse et al. (2019) \cite{gasse2019exact} presents three motivating points for why graph convolutions would be a good architecture for learning to branch:
 \begin{enumerate}[label=(\roman*)]
-    \item They are well-defined no matter the input graph size
+    \item They are well-defined no matter the input graph size.
     \item Their computational complexity is directly related
 to the density of the graph, which makes it an ideal choice for processing typically sparse \gls{MILP}
-problems
+problems.
     \item They are permutation-invariant, that is they will always produce the same output no
-matter the order in which the nodes are presented
+matter the order in which the nodes are presented.
 \end{enumerate}
 
 
@@ -566,7 +565,7 @@ matter the order in which the nodes are presented
 
 The concept of ablation studies in machine learning, as presented in 
 Meyes et al. (2019) \cite{meyes2019ablation} is presented in this section.
-Ablation studies hail from the field of neuroscience, in which sections of a complex system, e.g. the brain, is examined after removing different sections. The function of the removed sections can then be inferred by the change in the observed reaction to external stimuli \cite{meyes2019ablation}.
+Ablation studies hail from the field of neuroscience, in which a complex system, e.g. the brain, is examined after removing different sections. The function of the removed sections can then be inferred by the change in the observed reaction to external stimuli \cite{meyes2019ablation}.
 
 In the context of \gls{ML}, ablation studies are a formalization of observing changes in performance after the removal of components of artificial neural networks \cite{meyes2019ablation}.  
 The concept, or at least the formalization, is not yet considered a standard method in \gls{ML} research \cite{sheikholeslami2019ablation}.
@@ -578,7 +577,7 @@ In this thesis, the concept of an ablation study will be interpreted more broadl
 
 \subsection{Reinforcement Learning}
 
-The subset of machine learning described as Reinforcement Learning (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. No results will be discussed in this thesis, however a background in the topic is necessary to understand both other works in the field and the long-term goals of the project.
+The subset of machine learning described as Reinforcement Learning (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. No results will be discussed in this thesis, however, a background in the topic is necessary to understand both other works in the field and the long-term goals of the project.
 
 \gls{RL} encompasses the problem of an \textit{agent} learning a \textit{policy} for behaving in an \textit{environment} so as to achieve a global objective. Any sequential decision-making problem with a measure of optimality that relies on past experience can be formulated as a \gls{RL} problem \cite{francois2018introduction}. In addition, the approach has seen success in a number of fields in the past years with the integration of deep learning models, often termed deep \gls{RL} \cite{francois2018introduction}. Most notable of the advancements might be AlphaZero, Google's successful chess-AI \cite{silver2017mastering}. \gls{RL} has the important property of being independent of data, meaning a number of core \gls{ML} challenges (quantity, quality, and bias of data) are rendered irrelevant. 
 
