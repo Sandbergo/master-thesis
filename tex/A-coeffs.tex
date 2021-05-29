@@ -1,0 +1,41 @@
+%!TEX root = ../Thesis.tex
+
+\chapter{Linear Model Coefficients}\label{cha:coefficients}
+
+The coefficients of the MLP1 model constitute a linear classifier for predicting the top branching variable according to the Strong Branching algorithm. The input variables are normalized in the prenorm layer as explained in \Cref{ssec:models_gcnn}, and the coefficients are then min-max normalized between -1 and 1, calculated as:
+\begin{equation}
+    \mathbf{x}_{minmax} = 2 \cdot \frac{\mathbf{x} - \mathbf{1} \cdot \min(\mathbf{x})}{\mathbf{1} \cdot (\max(\mathbf{x})- \min(\mathbf{x}) )} - \mathbf{1} 
+\end{equation}
+The result is presented in \Cref{tab:coeffs}. The variable type features are omitted, as these are equal for all samples and therefore do not contribute to the prediction.
+
+A thorough analysis of the variable features and their correlation with the variable quality and/or Strong Branching score is interesting in its own right and highly relevant in an analysis of the quality of the feature set. This is outside of the scope and purpose of this thesis, but this little result is included in order to encourage future research.
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{lrr}
+		\toprule
+		  \textbf{Feature} & \textbf{Auctions} & \textbf{Setcover}\\
+		  \toprule
+		  objective & 0.99 & 1.00 \\
+		  % 4 for free
+		  has\_lb & 0.37 & 0.58\\
+		  has\_ub & -0.79 & -1.00\\
+		  reduced\_cost & -1.0 & -0.89\\
+		  sol\_value & -0.64 & -0.91\\
+          sol\_frac  & -0.97 & -0.98\\
+		  sol\_is\_at\_lb & 1.00 & 0.82\\
+		  sol\_is\_at\_ub & -0.76 & -0.94\\
+		  scaled\_age & -0.69 & -0.90 \\
+          inc\_val & -0.09 & 0.34\\
+          avg\_inc\_val & -0.38 & 0.20\\
+		  basis\_status\_lower & 0.97 & 0.90 \\
+		  basis\_status\_basic & -0.77 & -0.93\\
+		  basis\_status\_upper & -0.76 & -0.94 \\
+		  basis\_status\_zero & -0.89 & -0.98 \\
+		  %Static Features & 18 & Khalil et al. \cite{khalil2016learning} \\
+		  %Dynamic Features & 54 & Khalil et al. \cite{khalil2016learning} \\
+		% \addlinespace
+		\bottomrule
+	\end{tabular}
+	\caption{\label{tab:coeffs}Normalized coefficients for the MLP1 linear models. Irrelevant features are omitted.}
+\end{table}

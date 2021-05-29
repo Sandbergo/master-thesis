@@ -1,0 +1,67 @@
+%!TEX root = ../Thesis.tex
+\chapter{Time and Node Distributions}\label{cha:dists}
+%
+
+The distribution of solution times and number of nodes is central to the evaluation of the variable selection algorithms. In this thesis, the mean and standard deviation are calculated under the assumption of both of these variables having a distribution that can be approximated as a Gaussian (normal) distribution. This is in contrast with the main sources of this thesis (Gasse et al. (2019) \cite{gasse2019exact}, Gupta et al. (2020) \cite{gupta2020hybrid}), which use shifted geometric means. The choice of distribution in this thesis is based on uncertainty in the distribution parameters and configurations in the previous works. An example of a time and node distribution with a superimposed normal distribution approximation is shown in \Cref{fig:histogram_time} and \Cref{fig:histogram_nodes}. Some discrepancy is found for the time distribution, and more considerably for the number of nodes. The discrepancy is considered of little importance in the comparison of the models, particularly as the node number comparison is devoted little attention in this thesis. Further researchers are encourage to standardize the statistical side of branching comparison in larger detail. 
+
+% https://tex.stackexchange.com/questions/237085/histogram-with-overlaying-gauss-curve-pgfplots
+\newcommand\gauss[2]{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}
+
+\begin{figure}[ht]
+\centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            height=7cm,
+            width=12cm,
+            xmin=0.0,
+            xmax=4.5,
+            xlabel = Solution time,
+            ylabel = Frequency
+    ]
+    
+        \addplot[
+            black,
+            fill=lightgray,
+            hist,
+            hist/bins=40,
+        ] table[
+            y=time,
+        ] {dat/soltime_gnn1_cauctions.dat};
+    
+        \addplot[domain={0.0:4.5},yscale=23.2,samples=250] {\gauss{1.68}{0.48}}; %23.2
+    
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Solution time for GNN1 on combinatorial auctions problems with a normal distribution approximation.}
+    \label{fig:histogram_time}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            height=7cm,
+            width=12cm,
+            xmin=0.0,
+            xmax=500,
+            xlabel = Solution time,
+            ylabel = Frequency
+    ]
+    
+        \addplot[
+            black,
+            fill=lightgray,
+            hist,
+            hist/bins=40,
+        ] table[
+            y=nodes,
+        ] {dat/nodes_gnn1_cauctions.dat};
+    
+        \addplot[domain={0.0:500},yscale=2800,samples=250] {\gauss{95}{78}}; %23.2
+    
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Number of nodes after solving for GNN1 on combinatorial auctions problems with a normal distribution approximation.}
+    \label{fig:histogram_nodes}
+\end{figure}
+

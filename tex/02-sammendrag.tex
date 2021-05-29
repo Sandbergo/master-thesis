@@ -2,13 +2,13 @@
 \chapter*{\norwegianabstractname}
 \addcontentsline{toc}{chapter}{\norwegianabstractname}
 %
-Denne oppgaven vurderer ablasjoner av et graf-konvolusjonelt nevralt nettverk for maskinlæringsassistert forgrening foreslått av Gasse et al. (2019) for mer effektiv løsning av blandede heltallsproblemer (\gls{MILP}).
+Denne oppgaven evaluerer ablasjoner av et grafkonvolusjonelt nevralt nettverk for maskinlæringsassistert forgrening foreslått av Gasse et al. (2019) for mer effektiv løsning av blandede heltallsproblemer (\gls{MILP}).
 Effektive \gls{MILP}-løsningsalgoritmer er viktige for optimering i sanntid i mange industrier, blant annet produksjon, logistikk, transport og energiproduksjon. 
-Reduksjon i beregninstid ved å kombinere maskinlæring og \textit{Branch and Bound}-løsningsalgoritmen kan forbedre disse algoritmene uten å ofre de sterke fordelene av global optimering.  
+Reduksjon i beregningstid ved å kombinere maskinlæring og \textit{Branch and Bound}-løsningsalgoritmen kan forbedre disse algoritmene uten å ofre de sterke fordelene til global optimering.  
 %Flere sentrale forskere innen numerisk optimalisering og maskinlæring har vist interesse for å benytte maskinlæring i \gls{MILP}\cite{bengio2020machine,bertsimas2019online}. Spesielt variabelseleksjonsdelen av branchingstrategien har vist seg å være et felt der maskinlæringsmetoder kan gi lovende resultater \cite{khalil2020towards}. 
-I 2019 ble pålitelige resultater med forbedring over de beste branchingstrategiene i åpen-kildekodeløsere vist , og i 2020 ble disse metodene utvidet til rent \gls{CPU}-baserte modeller.
+I 2019 ble pålitelige resultater med forbedring over de beste forgreningsstrategiene i åpen-kildekodeløsere vist, og i 2020 ble disse metodene utvidet til rent \gls{CPU}-baserte modeller.
 Forskjellige nettverkstopologier og datasett for både \gls{GPU} og \gls{CPU} har blit foreslått, men kompromisset mellom nøyaktighet og effektivitet for modellene på forskjellig hardware er for det meste uutforsket. 
-For å adressere dette blir to graf-konvolusjonale nevralnett og tre multi-layer perceptrons trent gjennom imitasjonslæring av Strong Branching-algoritmen (\gls{SB}) på genererte \gls{MILP}-problemer i det nye rammeverket \textit{\gls{Ecole}}. Modellene blir deretter inkorporert i optimaliseringsløseren \gls{SCIP} og evaluert på testproblemer. Alle modeller viser nær høyest effektivitet mot sammenlignbare algoritmer på \gls{GPU}. Modellene med graf-konvolusjoner viser et stort effektivitetstap når beregningen gjennomføres på \gls{GPU}.
+For å adressere dette blir to grafkonvolusjonale nevralnett og tre flerlagsperceptroner trent gjennom imitasjonslæring av Strong Branching-algoritmen på genererte \gls{MILP}-problemer i det nye rammeverket \textit{\gls{Ecole}}. Modellene blir deretter inkorporert i optimaliseringsløseren \gls{SCIP} og evaluert på testproblemer. Alle modeller viser nær høyest effektivitet mot sammenlignbare algoritmer på \gls{GPU}. Modellene med graf-konvolusjoner viser et stort effektivitetstap når beregningen gjennomføres på \gls{GPU}.
 
 Kildekoden for denne oppgaven er tilgjengelig på\\ \url{https://github.com/Sandbergo/learn2branch}
 \clearpage
