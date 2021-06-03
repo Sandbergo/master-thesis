@@ -1,6 +1,6 @@
 \chapter{Results}\label{cha:results}
 
-In this chapter, the results of the experiments are reported, as described in \Cref{cha:methods}. Some sentences and formulations are adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020), as this thesis shares methods with the aforementioned report. 
+In this chapter, the results of the experiments are reported, as described in \Cref{cha:methods}. Some sentences and formulations are adapted from the project report \textit{Multi-Layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020), as this thesis shares methods with the report. 
 
 
 \section{Data Set}\label{sec:datagen}
@@ -68,7 +68,7 @@ $250$ problem instances are generated for evaluating the efficiency of the model
 \section{Training}\label{sec:res_training}
 
 The training was performed as described in \Cref{sec:trainingprotocol}. 
-The training graph for MLP2 on the combinatorial auction data set is shown in \Cref{fig:training_mlp2}, and the training graph for GNN1 on the set covering data set is shown in \Cref{fig:training_gnn1}. The Training and validation loss quickly converges before flattening out. There is no discernible difference between training and validation loss. Loss graphs for the other models are not presented, as they are very similar, and are therefore considered to be of little interest. 
+The training graph for MLP2 on the combinatorial auction data set is shown in \Cref{fig:training_mlp2}, and the training graph for GNN1 on the set covering data set is shown in \Cref{fig:training_gnn1}. The training and validation loss quickly converges before flattening out. There is no discernible difference between training and validation loss. Loss graphs for the other models are not presented, as they are very similar, and are therefore considered to be of little interest. 
 %
 
 \begin{figure}[ht]
@@ -137,11 +137,11 @@ The training graph for MLP2 on the combinatorial auction data set is shown in \C
 		Model & acc@1 & acc@5 & acc@10 & acc@1 & acc@5 & acc@10 \\
 		\midrule
 		random & 15.8 \% & 34.5 \% & 44.6 \% & 14.6 \% & 32.6 \% & 41.2 \%\\
-		MLP1 & 46.2 \% & 75.1 \% & 87.0 \% & 37.5 \% & 62.7 \% & 73.3 \%\\
-		MLP2 & 50.1 \% & 78.9 \% & 89.9 \% & 46.0 \% & 74.2 \% & 87.2 \%\\
-		MLP3 & 50.2 \% & 79.3 \% & 90.1 \% & 46.2 \% & 74.7 \% & 87.4 \%\\
-		GNN1 & 53.0 \% & 87.5 \% & 95.9 \% & 56.9 \% & 88.6 \% & 96.8 \%\\
-		GNN2 & 53.0 \% & 87.1 \% & 96.0 \% & 56.8 \% & 88.5 \% & 96.9 \%\\
+		MLP1 & 46.2 \% & 75.1 \% & 87.0 \% & 40.2 \% & 63.6 \% & 73.3 \%\\
+		MLP2 & 50.1 \% & 78.9 \% & 89.9 \% & 49.1 \% & 75.5 \% & 88.1 \%\\
+		MLP3 & 50.2 \% & 79.3 \% & 90.1 \% & 49.4 \% & 75.7 \% & 88.3 \%\\
+		GNN1 & 53.0 \% & 87.5 \% & 95.9 \% & 57.9 \% & 89.4 \% & 97.0 \%\\
+		GNN2 & 53.0 \% & 87.1 \% & 96.0 \% & 58.8 \% & 89.9 \% & 97.2 \%\\
 		\addlinespace
 		\bottomrule
 	\end{tabular}
@@ -168,25 +168,25 @@ The training graph for MLP2 on the combinatorial auction data set is shown in \C
 % GNN1 [0.5693 0.7178 0.7961 0.8507 0.8862 0.9108 0.9317 0.9486 0.9584 0.9682]
 % GNN2 [0.5679 0.7139 0.7955 0.8477 0.8848 0.9101 0.9336 0.9496 0.961  0.9688]
 The accuracy of the models is measured by the top-k accuracy, as specified in \Cref{ssec:benchmarking}.
-The top-k accuracy scores for k equal to 1, 5, and 10 for the models along with the benchmark accuracy for random variable selection are shown in \Cref{tab:accs}. Top-k accuracy for this application is defined as the percentage of selected branching variables within the top k variables as determined by the Strong Branching evaluation. 
+The top-k accuracy scores for k equal to 1, 5, and 10 for the models along with the benchmark accuracy for random variable selection are shown in \Cref{tab:accs}. Top-k accuracy for this application is defined as the percentage of selected branching variables within the top k variables as determined by the strong branching evaluation. 
 % https://scikit-learn.org/dev/modules/model_evaluation.html#top-k-accuracy-score
 
 Comparison with the random variable selection policy shows considerable improvement in favor of the trained models. Accuracy decreases with the ablations, although there is little difference between GNN2 and GNN1, and MLP3 and MLP2, respectively. MLP1 performs considerably poorer than the other models, indicating that a non-linear relationship between the variable features and the variable score is beneficial. There is also a noteworthy decrease in accuracy after removing the graph convolutions, indicating that the module aids in prediction.
 
 A comparison of the differences between models of the two problem classes shows that the decrease in accuracy from GNN1 to MLP3 is around three times larger for the set covering problems. This indicates that the addition of different problem classes in the evaluation of branching policies is necessary.
 
-Note that the GNN2 model should have similar accuracy to the corresponding model in Gasse et al. (2019) \cite{gasse2019exact}, however, the models have almost 10 \% lower accuracy. The cause for this is unknown, and the analysis of the models will not be affected by this. 
+Note that the GNN2 model should have similar accuracy to the corresponding model in Gasse et al. (2019) \cite{gasse2019exact}, however, the models have around $ 7 \%$ lower accuracy in this implementation. The cause for this is unknown, and the analysis of the models will not be affected by this. 
 
 
 
 \section{Efficiency}\label{sec:res_efficiency}
 
-Eight branching policies were compared on the problem data set. The branching policies are Full Strong Branching, Pseudo-cost Branching, Reliability Pseudo-cost branching, and the five learned models. The results for the combinatorial auctions problems are shown in \Cref{tab:results1_cauction} and for the set covering problems in \Cref{tab:results1_set}. \textit{Time} is the mean solution time, \textit{nodes} is the mean number of nodes in the solution graphs (calculated in accordance with the findings of Gamrath et al. (2018) \cite{gamrath2018measuring}), \textit{time/node} is the average time per node, calculated by dividing the two means, and \textit{parameters} is the number of (trainable) parameters of the model. The solution times and number of nodes are also provided with their respective standard deviations. For evaluating the time per node, it is worth noting that the average number of candidate variables may vary between methods. In other works relating to node and time measurements when comparing branching policies, a variant of the shifted geometric mean is used. This is not done in this thesis, see \Cref{cha:dists} for a short discussion on this. 
+Eight branching policies were compared on the problem data set. The branching policies are full strong branching, pseudo-cost branching, reliability pseudo-cost branching, and the five learned models. The results for the combinatorial auctions problems are shown in \Cref{tab:results1_cauction} and for the set covering problems in \Cref{tab:results1_set}. \textit{Time} is the mean solution time, \textit{nodes} is the mean number of nodes in the solution graphs (calculated in accordance with the findings of Gamrath et al. (2018) \cite{gamrath2018measuring}), \textit{time/node} is the average time per node, calculated by dividing the two means, and \textit{parameters} is the number of (trainable) parameters of the model. The solution times and number of nodes are also provided with their respective standard deviations. For evaluating the time per node, it is worth noting that the average number of candidate variables may vary between methods. In other works relating to node and time measurements when comparing branching policies, a variant of the shifted geometric mean is used. This is not done in this thesis, see \Cref{cha:dists} for a short discussion on this. 
 The branching policy with the shortest mean solution time is marked bold for the \gls{GPU} and \gls{CPU} times. 
 
 The solution time and number of nodes for the classical branching policies is as expected: \gls{FSB} has the lowest number of nodes but the processing time per node is too high to be competitive, \gls{PC} has a competitive solution time as the branching variable selection is performed very quickly, while \gls{RPC} is a midpoint between the two algorithms. 
 
-For the learned models, the results show that the ablation from GNN2 to GNN1 does not reduce the time per node, neither does the removal of hidden layers between the models MLP3 and MLP2. Time per node is considerably reduced after the graph convolutions are removed and reduced again when the model's hidden layers are removed. This is consistent over both the \gls{GPU} and \gls{CPU} variants.  
+For the learned models, the results show that the ablation from GNN2 to GNN1 does not particularly reduce the time per node, neither does the removal of hidden layers between the models MLP3 and MLP2. Time per node is considerably reduced after the graph convolutions are removed and reduced again when the model's hidden layers are removed. This is consistent over both the \gls{GPU} and \gls{CPU} variants.  
 
 
 
@@ -203,52 +203,52 @@ Note also that the time per node is not equal between the two problem classes --
 	\centering
 	\begin{tabular}{lrrrrrrr}
 	    \toprule
-		Model & Time (s) & Nodes  & Time/node (ms) & parameters \\
+		Model & Time [s] & Nodes  & Time/node [ms] & parameters \\
 		\midrule
-		FSB & $4.08 \pm 2.11$ & $8 \pm 8$  & $462.6$ & --- \\
+		FSB & $4.08 \pm 2.11$ & $8 \pm 8 $  & $462.6$ & --- \\
 		PC  & $1.96 \pm 0.84$ & $355 \pm 358$ & $5.5$ & ---\\
 		RPC & $2.73 \pm 1.18$ & $16 \pm 30$ & $ 171.1$ & ---\\
 		\addlinespace
-		MLP1\textsubscript{g} & $1.84 \pm 0.83$ & $282 \pm 362$ & $6.5$  & 19\\
-		MLP2\textsubscript{g} & $\mathbf{1.60 \pm 0.44}$ & $123 \pm 116$ & $13.0$ & 1344\\
-		MLP3\textsubscript{g} & $1.62 \pm 0.45$ & $121 \pm 112$ & $13.4$ & 9702\\
-		GNN1\textsubscript{g} & $1.61 \pm   0.45$ & $96 \pm   83$   & $16.6$ & 52083\\
-		GNN2\textsubscript{g} & $  1.67 \pm   0.46$ &  $  96 \pm   84$ &  $  17.3$ & 64562\\
+		MLP1\textsubscript{g} & $  1.58 \pm   0.46$ &  $ 146 \pm  149$ &  $  10.8$  & 19\\
+		MLP2\textsubscript{g} & $  \mathbf{1.56 \pm   0.43}$ &  $ 119 \pm  119$ &  $  13.1$ & 1344\\
+		MLP3\textsubscript{g} & $  1.57 \pm   0.44$ &  $ 118 \pm  115$ &  $  13.2$ & 9702\\
+		GNN1\textsubscript{g} & $  1.58 \pm   0.42$ &  $  92 \pm   78$ &  $  17.2$ & 52083\\
+		GNN2\textsubscript{g} & $  1.59 \pm   0.43$ &  $  91 \pm   80$ &  $  17.5$ & 64562\\
 		\addlinespace
-		MLP1\textsubscript{c} & $1.78 \pm 0.78$ & $280 \pm 394$ & $6.4$  & 19\\
-		MLP2\textsubscript{c} & $3.12 \pm 1.28$ & $123 \pm 114$ & $25.4$ & 1344\\
-		MLP3\textsubscript{c} & $3.24 \pm 1.35$ & $120 \pm 112$ & $27.0$ & 9702\\
-		GNN1\textsubscript{c} & $  5.57 \pm   3.91$ &  $  95 \pm   81$ &  $  58.1$ & 52083\\
-		GNN2\textsubscript{c} & $  5.47 \pm   3.16$ &  $  94 \pm   79$ &  $  57.9$ & 64562\\
+		MLP1\textsubscript{c} & $  3.14 \pm   1.53$ &  $ 147 \pm  148$ &  $  21.2$  & 19\\
+		MLP2\textsubscript{c} & $  3.07 \pm   1.35$ &  $ 120 \pm  118$ &  $  25.4$ & 1344\\
+		MLP3\textsubscript{c} & $  3.08 \pm   1.32$ &  $ 118 \pm  112$ &  $  26.0$ & 9702\\
+		GNN1\textsubscript{c} & $  5.34 \pm   3.42$ &  $  97 \pm   86$ &  $  54.8$ & 52083\\
+		GNN2\textsubscript{c} & $  5.61 \pm   3.65$ &  $  94 \pm   84$ &  $  59.3$ & 64562\\
 		\bottomrule
 	\end{tabular}
-	\caption{Combinatorial auction solving time for classical and learned methods. Subscripts denote whether the model is run on the \gls{GPU} or \gls{CPU}}\label{tab:results1_cauction}
+	\caption{Combinatorial auction solving time for classical and learned methods. Subscripts denote whether the model is run on the \gls{GPU} or \gls{CPU}.}\label{tab:results1_cauction}
 \end{table}
 
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{lrrrrrrr}
 		\toprule
-		Model & Time (s) & Nodes  & Time/node (ms) & parameters \\
+		Model & Time [s] & Nodes  & Time/node [ms] & parameters \\
 		\midrule
 		FSB & $26.23 \pm  33.79$ & $31 \pm 45$ & $845.6$ & ---\\
 		PC  & $7.78 \pm 9.50$ & $749 \pm 1634$ & $10.4$ & ---\\
 		RPC & $10.68 \pm 8.01$ & $295 \pm 895$ & $36.2$ & ---\\
 		\addlinespace
-		MLP1\textsubscript{g} & $23.58 \pm 38.93$ &  $1321 \pm 2354$ &  $  17.8$& 19\\
-		MLP2\textsubscript{g} & $15.26 \pm 22.30 $ &  $ 522 \pm  909 $ &  $  29.2$ & 1344\\
-		MLP3\textsubscript{g} & $16.45 \pm 22.58$ & $515 \pm 808 $  & $31.9$ & 9702\\
-		GNN1\textsubscript{g} & $11.63 \pm 16.66$ & $272 \pm 506 $  & $42.8$ & 52083\\
-		GNN2\textsubscript{g} & $\mathbf{11.18 \pm 11.51}$ & $264 \pm 357 $  & $42.3$ & 64562\\
+		MLP1\textsubscript{g} & $ 16.28 \pm  24.29$ &  $ 621 \pm 1097$ &  $  26.2$ & 19\\
+		MLP2\textsubscript{g} & $ 15.75 \pm  21.89$ &  $ 531 \pm  917$ &  $  29.6$ & 1344\\
+		MLP3\textsubscript{g} & $ 15.83 \pm  22.25$ &  $ 523 \pm  899$ &  $  30.3$ & 9702\\
+		GNN1\textsubscript{g} & $ 11.95 \pm  12.94$ &  $ 268 \pm  384$ &  $  44.6$  & 52083\\
+		GNN2\textsubscript{g} & $ \mathbf{11.71 \pm  12.92}$ &  $ 266 \pm  382$ &  $  44.0$ & 64562\\
 		\addlinespace
-		MLP1\textsubscript{c} & $23.85 \pm 34.68$ & $1303 \pm 2308$ & $17.7$ & 19\\
-		MLP2\textsubscript{c} & $17.26 \pm 20.53$ & $521 \pm 887$   & $33.1$ & 1344\\
-		MLP3\textsubscript{c} & $18.46 \pm 23.24$ & $523 \pm  908$  & $35.3$ & 9702\\
-		GNN1\textsubscript{c} & $68.59 \pm 97.11$ & $308 \pm 460$   & $222.6$ & 52083\\
-		GNN2\textsubscript{c} & $72.37 \pm 112.80$ & $324 \pm 523$  & $223.4$ & 64562\\
+		MLP1\textsubscript{c} & $ 17.57 \pm  20.96$ &  $ 609 \pm 1019$ &  $  28.8$ & 19\\
+		MLP2\textsubscript{c} & $ 17.39 \pm  21.31$ &  $ 535 \pm  929$ &  $  32.5$ & 1344\\
+		MLP3\textsubscript{c} & $ 17.38 \pm  21.35$ &  $ 517 \pm  889$ &  $  33.6$ & 9702\\
+		GNN1\textsubscript{c} & $ 60.06 \pm  81.62$ &  $ 265 \pm  382$ &  $ 226.1$ & 52083\\
+		GNN2\textsubscript{c} & $ 63.11 \pm  87.58$ &  $ 268 \pm  392$ &  $ 235.1$ & 64562\\
 		\bottomrule
 	\end{tabular}
-	\caption{Set covering solving time for classical and learned methods. Subscripts denote whether the model is run on the \gls{GPU} or \gls{CPU}}\label{tab:results1_set}
+	\caption{Set covering solving time for classical and learned methods. Subscripts denote whether the model is run on the \gls{GPU} or \gls{CPU}.}\label{tab:results1_set}
 \end{table}
 \end{scriptsize}
 %time  26.23 \pm  33.79  | nb nodes      31 \pm   45 | time/node   845.6 ms
@@ -289,27 +289,27 @@ Note also that the time per node is not equal between the two problem classes --
        (1,4.08) +-(0.0,0.262)
        (2,1.96) +-(0.0,0.1043)
        (3,2.73) +-(0.0,0.146)
-       (4,1.78) +-(0.0,0.0967)
-       (5,3.12) +-(0.0,0.159)
-       (6,3.24) +-(0.0,0.167)
-       (7,5.57) +- (0.0, 0.49)
-       (8,5.47) +- (0.0, 0.39)
+       (4,3.14) +- (0.0, 0.19)
+       (5,3.07) +- (0.0, 0.17)
+       (6,3.08) +- (0.0, 0.16)
+       (7,5.34) +- (0.0, 0.43)
+       (8,5.61) +- (0.0, 0.46)
     };
     %negativ
     \addplot[color=black,fill=black!10,error bars/.cd,y dir=both,y explicit,]
     coordinates {
       %(1,0.9365) +- (0.00587,0.00587)
       %(2,0.1435) +- (0.01737,0.01737)
-      (4,1.84) +-(0.0,0.103)
-      (5,1.60) +-(0.0,0.0545)
-      (6,1.62) +-(0.0,0.0558)
-      (7,1.61) +- (0.0, 0.06)
-      (8,1.67) +- (0.0, 0.06)
+      (4,1.58) +- (0.0, 0.06)
+      (5,1.56) +- (0.0, 0.05)
+      (6,1.57) +- (0.0, 0.05)
+      (7,1.58) +- (0.0, 0.05)
+      (8,1.59) +- (0.0, 0.05)
 };
     \legend{CPU,GPU}
     \end{axis}
     \end{tikzpicture}
-    \caption{Combinatorial Auction test problem mean solution time GPU and CPU.}
+    \caption{Combinatorial Auction test problem mean solution time when run on the GPU and CPU.}
     \label{fig:cauctions_bar}
 \end{figure}
 
@@ -331,7 +331,7 @@ Note also that the time per node is not equal between the two problem classes --
 		%enlarge x limits=0.15,
         %enlarge y limits=0.05,
         %restrict y to domain=0:6
-        ymin=0.0,   ymax=90.0,
+        ymin=0.0,   ymax=80.0,
 	    legend style={at={(0.01,0.9)},anchor=west,legend columns=-1}
     ]
     \addplot[color=black,fill=black!35,error bars/.cd,y dir=both,y explicit,]
@@ -339,27 +339,27 @@ Note also that the time per node is not equal between the two problem classes --
        (1,26.23) +-(0.0, 4.19)
        (2,7.78) +-(0.0, 1.18)
        (3,10.68) +-(0.0,0.993)
-       (4,39.70) +-(0.0, 6.83)
-       (5,17.26) +- (0.0, 2.6)
-       (6,18.46) +- (0.0, 2.9)
-       (7,68.59) +-(0.0,12)
-       (8,72.37) +-(0.0,14)
+       (4,17.57) +- (0.0, 2.62)
+       (5,17.39) +- (0.0, 2.66)
+       (6,17.38) +- (0.0, 2.66)
+       (7,60.06) +- (0.0, 10.19)
+       (8,63.11) +- (0.0, 10.93)
     };
     %negativ
     \addplot[color=black,fill=black!10,error bars/.cd,y dir=both,y explicit,]
     coordinates {
       %(1,0.9365) +- (0.00587,0.00587)
       %(2,0.1435) +- (0.01737,0.01737)
-      (4,23.58) +- (0.0, 4.86)
-      (5,15.26) +- (0.0, 2.8)
-      (6,16.45) +-(0.0,2.8)
-      (7,11.63) +-(0.0, 2.07)
-      (8,11.18) +-(0.0, 1.43)
+      (4,16.28) +- (0.0, 3.03)
+      (5,15.75) +- (0.0, 2.73)
+      (6,15.83) +- (0.0, 2.78)
+      (7,11.95) +- (0.0, 1.61)
+      (8,11.71) +- (0.0, 1.61)
 };
     \legend{CPU,GPU}
     \end{axis}
     \end{tikzpicture}
-    \caption{Set covering test problem solution time GPU and CPU.}
+    \caption{Set covering test problem mean solution time when run on the GPU and CPU.}
     \label{fig:set_bar}
 \end{figure}
 

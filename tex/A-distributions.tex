@@ -15,7 +15,7 @@ The distribution of solution times and number of nodes is central to the evaluat
             width=12cm,
             xmin=0.0,
             xmax=4.5,
-            xlabel = Solution time,
+            xlabel = {Solution time [s]},
             ylabel = Frequency
     ]
     
@@ -28,7 +28,7 @@ The distribution of solution times and number of nodes is central to the evaluat
             y=time,
         ] {dat/soltime_gnn1_cauctions.dat};
     
-        \addplot[domain={0.0:4.5},yscale=23.2,samples=250] {\gauss{1.68}{0.48}}; %23.2
+        \addplot[domain={0.0:4.5},yscale=28,samples=250] {\gauss{1.68}{0.48}}; %23.2
     
         \end{axis}
     \end{tikzpicture}
@@ -44,7 +44,7 @@ The distribution of solution times and number of nodes is central to the evaluat
             width=12cm,
             xmin=0.0,
             xmax=500,
-            xlabel = Solution time,
+            xlabel = {Solution time [s]},
             ylabel = Frequency
     ]
     
@@ -57,7 +57,7 @@ The distribution of solution times and number of nodes is central to the evaluat
             y=nodes,
         ] {dat/nodes_gnn1_cauctions.dat};
     
-        \addplot[domain={0.0:500},yscale=2800,samples=250] {\gauss{95}{78}}; %23.2
+        \addplot[domain={0.0:500},yscale=3400,samples=250] {\gauss{95}{78}}; %2800
     
         \end{axis}
     \end{tikzpicture}

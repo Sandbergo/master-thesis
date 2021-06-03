@@ -1,7 +1,7 @@
 \chapter{Methods}\label{cha:methods}
 
 In this chapter, the selected methods for the experiments are presented and discussed.  
-An understanding of the theoretical groundwork of the project from \Cref{cha:background} is assumed. A substantial part of the methods are taken directly or indirectly from the source code of Gasse et al. (2019) \cite{gasse2019exact}, Gupta et al. (2020) \cite{gupta2020hybrid}, and the \gls{Ecole} source code \cite{prouvost2020ecole}. Some sentences and formulations are adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020), as this thesis shares methods with the aforementioned report. 
+An understanding of the theoretical groundwork of the project from \Cref{cha:background} is assumed. A substantial part of the methods are taken directly or indirectly from the source code of Gasse et al. (2019) \cite{gasse2019exact}, Gupta et al. (2020) \cite{gupta2020hybrid}, and the \gls{Ecole} source code \cite{prouvost2020ecole}. Some sentences and formulations are adapted from the project report \textit{Multi-Layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020), as this thesis shares methods with the report. 
 
 
 \section{Dataset}\label{sec:dataset}
@@ -37,7 +37,7 @@ The combinatorial auction problem is the problem with the shortest solution time
     \max &\sum_{i=1}^N p_i x_i \\ s.t. \; &\sum_{i=1}^N \mathbf{a}_{i,j} x_i \leq 1 \,, \quad \forall \, j \in \mathcal{P}\\ \mathbf{x} &\in \mathbb{B}^N 
 \end{align}
 
-The combinatorial auctions problem is based on multi-object auctions where bidders place monetary bids on bundles (combinations) of goods, and the optimization problem is to find the bids that maximize the profit of the auctioneer \cite{brown2000towards}. The problems are considered realistic and economically oriented, and are applicable to five broad domains in which optimization is important: Proximity in Space, Paths in Space, Arbitrary Relationships, Temporal Matching, and Temporal Scheduling \cite{brown2000towards}. The problems are \gls{NP}-hard \cite{dong2012combinatorial}. 
+The combinatorial auctions problem is based on multi-object auctions where bidders place monetary bids on bundles (combinations) of goods, and the optimization problem is to find the bids that maximize the profit of the auctioneer \cite{brown2000towards}. The problems are considered realistic and economically oriented, and are applicable to five broad domains in which optimization is important: proximity in space, paths in space, arbitrary relationships, temporal matching, and temporal scheduling \cite{brown2000towards}. The problems are \gls{NP}-hard \cite{dong2012combinatorial}. 
 
 %\subsubsection{Capacitated Facility Location}
 
@@ -53,8 +53,8 @@ The combinatorial auctions problem is based on multi-object auctions where bidde
 
 \subsection{Expert Solution Generation}\label{ssec:expertsolutiongeneration}
 
-The generated problems are solved using the Full Strong Branching policy, as explained in \Cref{ssec:branchingpolicy}. To not interfere with branching policies, the application of cutting planes to the problem is restricted to the root node, before any branching decisions are made. This means that the Branch and Bound algorithm used in these experiments could be called a \textit{Cut and Branch} algorithm, as is discussed in \Cref{ssec:inequalities}.
-However, without loss of generality and for simplicity, the algorithm will be referred to as \textit{Branch and Bound} in this thesis despite the initial application of cutting planes.  
+The generated problems are solved using the full strong branching policy, as explained in \Cref{ssec:branchingpolicy}. To not interfere with branching policies, the application of cutting planes to the problem is restricted to the root node, before any branching decisions are made. This means that the Branch-and-bound algorithm used in these experiments could be called a \textit{cut-and-branch} algorithm, as is discussed in \Cref{ssec:inequalities}.
+However, without loss of generality and for simplicity, the algorithm will be referred to as \textit{branch-and-bound} in this thesis despite the initial application of cutting planes.  
 
 
 \begin{algorithm}[H]
@@ -87,7 +87,7 @@ For every node, the \gls{SB} policy assigns a score to every possible branching 
 
 \subsection{Branching Variable Features}
 
-At nodes where the Strong Branching policy is used, available features for every possible branching variable is saved. The features, as explained in \Cref{ssec:obs}, are divided into the groups variable features, constraint features and edge features. These features are presented in 
+At nodes where the strong branching policy is used, available features for every possible branching variable is saved. The features, as explained in \Cref{ssec:obs}, are divided into the groups variable features, constraint features and edge features. These features are presented in 
  \Cref{tab:feats}. For a further explanation on the relevant features, see \Cref{ssec:obs}.
 %
 \renewcommand{\arraystretch}{1.5}
@@ -136,7 +136,7 @@ The underlying assumption is that these features are sufficiently correlated wit
 
 \section{Models}\label{sec:models}
 
-This section presents the \gls{ML}-models used in the experiments. These models are \textit{iterative ablations} of the model presented in Gasse et al. (2019) \cite{gasse2019exact}, meaning each model is an increasingly simplified version of the original network. 
+This section presents the \gls{ML} models used in the experiments. These models are \textit{iterative ablations} of the model presented in Gasse et al. (2019) \cite{gasse2019exact}, meaning each model is an increasingly simplified version of the original network. 
 
 
 \subsection{Original Graph Convolutional Neural Network}\label{ssec:models_gcnn}
@@ -156,13 +156,13 @@ Gasse et al. (2019) \cite{gasse2019exact} also notes that it is common to normal
 
 In the original implementation, the prenorm layer's coefficients ($\bm{\beta}, \bm{\sigma}$) are approximated and fixed in a pre-training phase, while the implementation in this thesis uses the new PyTorch library-component \verb|torch.nn.LayerNorm()|, where the coefficients are approximated continuously.     
 
-After the normalizations, the features are transformed to \textit{embeddings} of a uniform size of 64 via a Multi-Layer Perceptron. 
+After the normalizations, the features are transformed to \textit{embeddings} of a uniform size of 64 via linear neural network layers. 
 
-An illustration of the Gasse \gls{GCNN} in given in \Cref{fig:gnn2}. The two convolutions are marked and the network layers are represented with a rectangle for each layer. The size of the hidden layers is consistently equal to 64. After the convolutions, a 2-layer perceptron transforms from the variable features (with information gained after the convolutions) to the single output. The dimensions for the tensors are marked in the figure. 
+An illustration of the Gasse \gls{GCNN} in given in \Cref{fig:gnn2}. $n$ is the number of candidate variables, $m$ is the number of constraints, $d=19$ is the number of variable features, $e=1$ is the number of edge features, $c=5$ is the number of constraint features. The two convolutions are marked and the network layers are represented with a rectangle for each layer. The size of the hidden layers is consistently equal to 64. After the convolutions, a 2-layer perceptron transforms from the variable features (with information gained after the convolutions) to the single output. The dimensions for the tensors are marked in the figure. 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{img/gnn_2.png}
-    \caption{The Graph Convolutional Neural Network as specified in Gasse et al. (2019) \cite{gasse2019exact}.}
+    \includegraphics[width=\linewidth]{img/gnn2.png}
+    \caption{The graph convolutional neural network as specified in Gasse et al. (2019) \cite{gasse2019exact}.}
     \label{fig:gnn2}
 \end{figure}
 
@@ -184,9 +184,9 @@ The ablated models are chosen based on three basic assumptions that are assumed 
     \item  It is  assumed that the addition of the graph convolution will be a significant factor in the accuracy and efficiency of the models, particularly on the \gls{CPU}, based on the results in the appendix of Gupta et al. (2020) \cite{gupta2020hybrid}.
 \end{enumerate}
 
-Considering this, the experiments will be performed with a total of five models, meaning the original model and four models stemming from the iterative ablation of this model. Of these, two models will contain the graph convolution operation, and three will be Multi-layer Perceptrons that only use the variable data. 
+Considering this, the experiments will be performed with a total of five models, meaning the original model and four models stemming from the iterative ablation of this model. Of these, two models will contain the graph convolution operation, and three will be multi-layer perceptrons that only use the variable data. 
 
-Results in the specialization project this thesis is based on showed consistent and significant changes in the accuracy-efficiency trade-off were found with a similar selection of \gls{MLP} models, although these models relied on the extended variable feature set developed in Khalil et al. (2016) \cite{khalil2016learning}.
+Results in the specialization project this thesis is based on showed consistent and significant changes in the accuracy/efficiency trade-off were found with a similar selection of \gls{MLP} models, although these models relied on the extended variable feature set developed in Khalil et al. (2016) \cite{khalil2016learning}.
 
 \textit{GNN2}, illustrated in \Cref{fig:gnn1}, is identical (except for the minor, commented details), to the original Gasse \gls{GCNN}.  
 
@@ -194,7 +194,7 @@ Results in the specialization project this thesis is based on showed consistent 
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{img/gnn_1.png}
+    \includegraphics[width=\linewidth]{img/gnn1.png}
     \caption{Topology of the ablated model GNN1.}
     \label{fig:gnn1}
 \end{figure}
@@ -233,7 +233,7 @@ Results in the specialization project this thesis is based on showed consistent 
 
 \subsection{Network hyperparameters}
 
-All hyperparameters except for the amount and size of the hidden layers is consistent for all models, in order to make a fairer judgment of the accuracy/efficiency trade-off. The activation function is the \textit{Recti-Linear Unit} (ReLU), expressed as $y = \max \{ 0, x\}$. This non-linear activation function is the least computationally expensive of the common activation functions. This is consistent with Gasse et al. (2019) \cite{gasse2019exact} and Gupta et al. (2020) \cite{gupta2020hybrid}.
+All hyperparameters except for the amount and size of the hidden layers is consistent for all models, in order to make a fairer judgment of the accuracy/efficiency trade-off. The activation function is the \textit{recti-linear unit} (ReLU), expressed as $y = \max \{ 0, x\}$. This non-linear activation function is the least computationally expensive of the common activation functions. This is consistent with Gasse et al. (2019) \cite{gasse2019exact} and Gupta et al. (2020) \cite{gupta2020hybrid}.
 
 
 \section{Training Protocol}\label{sec:trainingprotocol}
@@ -264,7 +264,7 @@ The parameters of the \gls{MLP} are trained via mini-batch gradient descent \cit
 
 \subsection{Computer Hardware}
 
-Training of the \gls{MLP}s is performed on an NVIDIA RTX2070 SUPER GPU (8GB VRAM). The \gls{BnB} solution efficiency evaluations are performed with an Intel i5-2500K \gls{CPU} (4 cores, 6 threads) running at 3.31 GHz. This is less expensive hardware compared to Gasse et al. (2019) \cite{gasse2019exact} and Gupta et al. (2020) \cite{gupta2020hybrid}, particularly the CPU. Variation in processing power is assumed to have an insignificant effect on the relative solution times of the methods, however, \gls{CPU}s with internal acceleration methods for matrix operations might give varying results \cite{vanhoucke2011improving}. It is assumed that the results on the chosen hardware yield a more pessimistic performance overall for the \gls{ML} based methods, and will therefore not be given too much attention in the thesis. Analysis of these differences in hardware and processing performance for both the classical and learned methods on both \gls{CPU} and \gls{GPU} is of interest, but far beyond the scope of this thesis. 
+Training of the models is performed on an NVIDIA RTX2070 SUPER GPU (8GB VRAM). The \gls{BnB} solution efficiency evaluations are performed with an Intel i5-2500K \gls{CPU} (4 cores, 6 threads) running at 3.31 GHz. This is less expensive hardware compared to Gasse et al. (2019) \cite{gasse2019exact} and Gupta et al. (2020) \cite{gupta2020hybrid}, particularly the CPU. Variation in processing power is assumed to have an insignificant effect on the relative solution times of the methods, however, \gls{CPU}s with internal acceleration methods for matrix operations might give varying results \cite{vanhoucke2011improving}. It is assumed that the results on the chosen hardware yield a more pessimistic performance overall for the \gls{ML} based methods, and will therefore not be given too much attention in the thesis. Analysis of these differences in hardware and processing performance for both the classical and learned methods on both \gls{CPU} and \gls{GPU} is of interest, but far beyond the scope of this thesis. 
 
 
 
@@ -277,11 +277,11 @@ The method in which the learned models are compared to each other and the classi
 
 The accuracy and efficiency of the algorithm with the learned branching policy are evaluated against three branching policies native to the \gls{SCIP} optimization suite, and explained in  more detail in \Cref{ssec:branchingpolicy}. 
 
-First is the Full Strong Branching (\gls{FSB}) policy \cite{applegate1995finding}, the slow but accurate expert policy that performs Strong Branching at every node for every variable. This algorithm is not commonly used because of the computationally heavy variable decision process \cite{achterberg2004branching}.
+First is the full strong branching (\gls{FSB}) policy \cite{applegate1995finding}, the slow but accurate expert policy that performs strong branching at every node for every variable. This algorithm is not commonly used because of the computationally heavy variable decision process \cite{achterberg2004branching}.
 
-Pseudo-cost Branching (\gls{PC}) is the fast but inaccurate branching policy \cite{gamrath2018measuring} that chooses the variable that maximizes the lower bound improvement according to the results of previous branching decisions \cite{benchiou1971experiments}.% This method does not compute anything for the candidate variables and relies only on previous results. 
+Pseudo-cost branching (\gls{PC}) is the fast but inaccurate branching policy \cite{gamrath2018measuring} that chooses the variable that maximizes the lower bound improvement according to the results of previous branching decisions \cite{benchiou1971experiments}.% This method does not compute anything for the candidate variables and relies only on previous results. 
 
-Reliability Pseudo-cost Branching (\gls{RPC}) \cite{achterberg2004branching} combines \gls{FSB} and \gls{PC} by performing \gls{SB} on variables with low confidence in the pseudo-costs \cite{gamrath2018measuring}. \gls{RPC} is the default branching policy in the \gls{SCIP} \gls{BnB} solver. 
+Reliability pseudo-cost branching (\gls{RPC}) \cite{achterberg2004branching} combines \gls{FSB} and \gls{PC} by performing \gls{SB} on variables with low confidence in the pseudo-costs \cite{gamrath2018measuring}. \gls{RPC} is the default branching policy in the \gls{SCIP} \gls{BnB} solver. 
 
 The classical variable selection policies will be implemented by configuring the priority of the branching policies in \gls{SCIP}. 
 
@@ -290,7 +290,7 @@ The classical variable selection policies will be implemented by configuring the
 
 The learned branching policies are evaluated for both \textit{accuracy} and \textit{efficiency}. 
 
-The accuracy of the policies is evaluated against the expert decisions of the Full Strong Branching Algorithm. This is done by evaluating the average \textit{top-k accuracy} over an unseen test set. Top-k accuracy measures whether the chosen branching variable was within the top k choices of the Strong Branching algorithm, based on the score given to each candidate variable by the algorithm. Only the learned models are measured in this regard. 
+The accuracy of the policies is evaluated against the expert decisions of the full strong branching algorithm. This is done by evaluating the average \textit{top-k accuracy} over an unseen test set. Top-k accuracy measures whether the chosen branching variable was within the top k choices of the strong branching algorithm, based on the score given to each candidate variable by the algorithm. Only the learned models are measured in this regard. 
 
 The efficiency of the policies is evaluated by exchanging the branching policy of the optimization solver and testing on the data set, as described in \Cref{sec:dataset}. The counting of nodes and time is done with the built in capabilities of \gls{Ecole}. %For the largest problems, solution time is limited to $ 45 $ minutes, and the number of problems the algorithm does not solve will be reported.
 %The execution time is compared using python's \verb|time.proc_time()| function, which returns the \gls{CPU} process time \cite{rossum2009python}. 
@@ -313,7 +313,7 @@ A number of comprehensive software libraries are required to perform the experim
 
 The \textit{SCIP Optimization Suite} contains, as of version 7, the simplex-based linear programming solver SoPlex \cite{wunderling1996soplex}, the automated decomposition solver GCG \cite{gamrath2010gcg}, the parallelization framework UG \cite{shinano2018ug} and the \gls{MILP} pre solving library PaPILO \cite{gamrath2020scip}.
 
-In the experiments in this thesis, the LP solver and node selection algorithms are the most relevant, as most of the more complex capabilities of \gls{SCIP} are deactivated in order to make the results as fair and reproducible as possible. 
+In the experiments in this thesis, the \gls{LP} solver and node selection algorithms are the most relevant, as most of the more complex capabilities of \gls{SCIP} are deactivated in order to make the results as fair and reproducible as possible. 
 
 
 
@@ -334,7 +334,7 @@ To facilitate and standardize the development of \gls{ML}-based improvements of 
 The library is based on the open-source solver \gls{SCIP} \cite{achterberg2009scip}.
 
 
-It also provides \gls{CO} problem \textit{generators} for the four problem classes presented in this thesis. As of version 0.5, these generators are not completely correct, and in the problem generators from Gupta et al. (2020) \cite{gupta2020hybrid} were therefore used. These problems appear to be resolved in version 0.6.  
+It also provides problem \textit{generators} for the four problem classes presented in this thesis. As of version 0.5, these generators are not completely correct, and in the problem generators from Gupta et al. (2020) \cite{gupta2020hybrid} were therefore used. These problems appear to be resolved in version 0.6.  
 
 
 The theoretical basis for \gls{Ecole} is the \gls{PO-MDP} formulation for \gls{Ecole}, given in \Cref{sec:back_mdp}.
@@ -358,11 +358,11 @@ The project is run on only open-source software, in order to support and further
 
 The project code is written in 
 \verb|python 3.8.5| \cite{rossum2009python}, and uses               
-\verb|pytorch 1.6.0| \cite{paszke2019pytorch} for the machine learning models.           
+\verb|pytorch 1.7.1| \cite{paszke2019pytorch} for the machine learning models.           
 
 For \gls{GPU} accelerated training, 
-\verb|cudnn 7.6.5| and 
-\verb|cudatoolkit 10.2.89| \cite{kirk2008nvidia} is used. 
+\verb|CUDA 10.1| and 
+\verb|cudatoolkit 11.2| \cite{kirk2008nvidia} is used. 
 
 The optimization problems are solved using the \verb|SCIP 7.0.2| Optimization Suite \cite{gamrath2020scip}, using the 
 \verb|SoPlex 4.0.1| \cite{wunderling1996soplex} linear programming solver to solve the relaxed problems. The Python interface

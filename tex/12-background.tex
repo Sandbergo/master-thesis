@@ -1,12 +1,12 @@
 \chapter{Background}\label{cha:background}
 
-The following chapter lays the theoretical groundwork for the project. An understanding of linear algebra, numerical optimization, algorithms, and statistics is assumed. \Cref{sec:back_mathprog,sec:back_bnb} and \ref{ssec:back_mlp} are adapted from the project report \textit{Multi-layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020). 
+The following chapter lays the theoretical groundwork for the project. An understanding of linear algebra, numerical optimization, algorithms, and statistics is assumed. \Cref{sec:back_mathprog,sec:back_bnb,ssec:back_mlp} are adapted from the project report \textit{Multi-Layer Perceptrons for Branching in Mixed-Integer Linear Programming} (2020). 
 
 
 \section{Mathematical Programming}\label{sec:back_mathprog}
 
-This section presents the field of \textit{Mathematical Programming} at the level relevant for understanding the thesis.
-In this work, the terms mathematical programming, numerical optimization, and optimization are used interchangeably. The differences between these stem largely from the different communities who use them. The section will first cover the topic of Linear Programming (\gls{LP}), then the topic of Mixed-Integer Linear Programming (\gls{MILP}), and lastly a section on computational complexity.  
+This section presents the field of \textit{mathematical programming} at the level relevant for understanding the thesis.
+In this work, the terms mathematical programming, numerical optimization, and optimization are used interchangeably. The differences between these stem largely from the different communities who use them. The section will first cover the topic of linear programming (\gls{LP}), then the topic of mixed-integer linear programming (\gls{MILP}), and lastly a section on computational complexity.  
 
 
 \subsection{Linear Programming}
@@ -27,7 +27,7 @@ These problems are convex \cite{wolsey2020integer}, and can be solved by several
 
 \subsection{Mixed Integer Linear Programming}
 
-Mixed Integer Linear Programming is a superset of linear programming, where one or more of the variables can be restricted to discrete values. The general problem can in this case be stated as \cite{gasse2019exact}:
+Mixed integer linear programming is a superset of linear programming, where one or more of the variables can be restricted to discrete values. The general problem can in this case be stated as \cite{gasse2019exact}:
 \begin{align}\label{eq:milp}
     \underset{\mathbf{x}}{\arg \min }\left\{\mathbf{c}^{\top} \mathbf{x} \mid \mathbf{A} \mathbf{x} \leq \mathbf{b}, \; \mathbf{x} \in \mathbb{Z}_+^{p} \times \mathbb{R}_+^{n-p}\right\},
 \end{align}
@@ -107,9 +107,9 @@ In \Cref{fig:milpfig}, an \gls{LP} problem and the problem with \textit{integral
 
 A problem that includes integrality constraints cannot be convex \cite{wolsey2020integer}. The non-convexity of the feasible set of the problem constitutes a significant challenge, and it is considered unlikely that polynomial-time solutions exist \cite{papadimitriou1982combinatorial}. \gls{MILP} problems belong to the category of $\mathcal{NP}$-hard problems \cite{papadimitriou1982combinatorial} (this class of problems will be discussed in \Cref{ssec:complexity}).   
 
-A subset of \gls{MILP} problems can be Integer Linear Programming (\gls{ILP}), where all variables are restricted to integer values, or Binary Linear Programming (\gls{BLP}), where all variables are restricted to binary values. 
+A subset of \gls{MILP} problems can be integer linear programming (\gls{ILP}), where all variables are restricted to integer values, or binary linear programming (\gls{BLP}), where all variables are restricted to binary values. 
 
-\gls{ILP} and \gls{BLP} problems belong to the category of \textit{Combinatorial Optimization} (\gls{CO}) problems, which has been the main focus of the efforts to solve entirely or partially with machine learning methods \cite{bengio2020machine}. 
+\gls{ILP} and \gls{BLP} problems belong to the category of \textit{combinatorial optimization} (\gls{CO}) problems, which has been the main focus of the efforts to solve entirely or partially with machine learning methods \cite{bengio2020machine}. 
 
 
 
@@ -118,7 +118,7 @@ A subset of \gls{MILP} problems can be Integer Linear Programming (\gls{ILP}), w
 
 A basic understanding of computational complexity is required to justify the nature of the algorithms used to solve \gls{MILP} problems. 
 
-All problems can be divided into \textit{classes} by the nature of the algorithms that can solve these problems. Problems for which there exist algorithms that can solve the problem in a time that is \textit{polynomial} of the problem size belong to class $\mathcal{P}$. Problems to which a correct solution can be verified in polynomial time belong to the class $\mathcal{NP}$ (non-deterministic polynomial time) \cite{cormen2009introduction}. 
+Problems can be divided into \textit{classes} by the nature of the algorithms that can solve these problems. Problems for which there exist algorithms that can solve the problem in a time that is \textit{polynomial} of the problem size belong to class $\mathcal{P}$. Problems to which a correct solution can be verified in polynomial time belong to the class $\mathcal{NP}$ (non-deterministic polynomial time) \cite{cormen2009introduction}. 
 
 
 Two other central complexity classes in this context are the $\mathcal{NP}$-complete and $\mathcal{NP}$-hard classes. The $\mathcal{NP}$-complete class contains problems that can be \textit{reduced} to any other problem in the $\mathcal{NP}$-complete class in polynomial time. 
@@ -173,7 +173,7 @@ Further creating sub-problems with this binary decomposition. A general algorith
         Remove  $S$ from $L$\;
     }
     Return $\hat{x}$\;
-    \caption{\label{alg:bnb} A generic Branch and Bound algorithm \cite{morrison2016branch}.}
+    \caption{\label{alg:bnb} A generic branch-and-bound algorithm \cite{morrison2016branch}.}
 \end{algorithm}
 
 %https://tex.stackexchange.com/questions/416359/branch-and-bound-tree-in-tikz
@@ -204,7 +204,7 @@ Further creating sub-problems with this binary decomposition. A general algorith
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{img/bnb.png}
-    \caption{\label{fig:bandb1}Illustration of the branch and bound algorithm adapted from a maximization problem in \textit{Integer Programming }(2020) \cite{wolsey2020integer}}
+    \caption{\label{fig:bandb1}Illustration of the branch-and-bound algorithm adapted from a maximization problem in \textit{Integer Programming }(2020) \cite{wolsey2020integer}.}
 \end{figure}
 
 For each generated solution, represented by nodes in \Cref{fig:bandb1}, a relaxation of the problem is solved in order to obtain an upper and lower bound on the solution of the sub-problem. 
@@ -226,7 +226,7 @@ The choice of node and variable to branch on to find the optimum in the fewest n
 
 Another important method used in \gls{BnB} algorithms is the concept of valid inequalities. A valid inequality is an inequality that does not remove feasible solutions of the non-convex solution set but can remove potential solutions to the relaxed problems. A valid inequality can be expressed as:
 \begin{equation}\label{eq:cut}
-    \mathbf{\pi}^{\top} \mathbf{x} \leq \pi_0 \quad \forall \; \mathbf{x} \in  \bm{X}   
+    \bm{\pi}^{\top} \mathbf{x} \leq \pi_0 \quad \forall \; \mathbf{x} \in  \bm{X}   
 \end{equation}
 where $\bm{X}$ is the feasible set as described in \Cref{eq:milp}. These inequalities reduce the size of the feasible set for the relaxations of the problem without removing feasible solutions of the original problem. An illustration of an \gls{ILP} with an added valid inequality is shown in \Cref{fig:cut}. Here the feasible set of the relaxation is reduced in size by the added constraint, while the feasible points of the \gls{ILP} remain feasible after the application of the inequality, as is given in \Cref{eq:cut}.
 
@@ -297,14 +297,14 @@ where $\bm{X}$ is the feasible set as described in \Cref{eq:milp}. These inequal
         }
       \end{scope}
     \end{tikzpicture}
-    \caption{Figure of \Gls{ILP} before and after an added valid inequality.}
+    \caption{Figure of an \Gls{ILP} before and after an added valid inequality.}
     \label{fig:cut}
 \end{figure}
  
 
 
-Algorithms that find these inequalities during the \gls{BnB} algorithm are called \textit{Branch and Cut}. The nomenclature comes from calling the application of these inequalities \textit{cuts} or \textit{cutting planes}.
-When an application of inequalities are only employed on the root node (before dividing the solution space in the enumeration), the algorithm is sometimes referred to as \textit{Cut and Branch} rather than \textit{Branch and Cut} \cite{wolsey2020integer}.
+Algorithms that find these inequalities during the \gls{BnB} algorithm are called \textit{branch-and-cut}. The nomenclature comes from calling the application of these inequalities \textit{cuts} or \textit{cutting planes}.
+When an application of inequalities are only employed on the root node (before dividing the solution space in the enumeration), the algorithm is sometimes referred to as \textit{cut-and-branch} rather than \textit{branch-and-cut} \cite{wolsey2020integer}.
 
 
 
@@ -313,13 +313,13 @@ When an application of inequalities are only employed on the root node (before d
 
 \subsection{Primal and Dual Heuristics}
 
-The modern implementations of \gls{BnB} solvers base their efficiency on the implementation of \textit{heuristics} \cite{khalil2020towards}, which are divided into the classes \textit{primal} and \textit{ dual}. Heuristic is synonymous with "human-designed rule" in this context.
+The modern implementations of \gls{BnB} solvers base their efficiency on the implementation of \textit{heuristics} \cite{khalil2020towards}, which are divided into the classes \textit{primal} and \textit{dual}. Heuristic is synonymous with "human-designed rule" in this context.
 
 \textit{Primal heuristics} are methods for finding feasible solutions at a given \gls{BnB} node, where the quality, i.e. the distance to the optimal bound, is the determining factor to whether the feasible solution is useful or not \cite{khalil2020towards}. These heuristics are as costly as they are useful, and modern solvers periodically run different heuristics at different times during the solution process \cite{khalil2020towards}.
 
 \textit{Dual heuristics} are the methods that find the lower bound of the optimization problem. This includes solution of relaxations of the problem as well as the addition of valid inequalities. 
 
-The relationship can be summarized in this quote from Khalil (2020) \cite{khalil2020towards}:
+The relationship is summarized in this quote from Khalil (2020) \cite{khalil2020towards}:
 \begin{quote}
     [...] the
 primal side refers to the quest for good feasible solutions, whereas the dual side refers to
@@ -344,14 +344,14 @@ All popular variable selection policies depend on scoring the candidate branchin
 
 
 
-The current branching policy resulting in the smallest solution trees is known as \textit{Strong Branching} (\gls{SB}) \cite{applegate1995finding}, and the application of this branching policy at every node is known as \textit{Full Strong Branching} (\gls{FSB}) \cite{achterberg2004branching}. This branching policy is based on determining the best variable to branch on by solving the relaxation for every candidate variable, and is therefore very computationally expensive compared to other methods \cite{achterberg2004branching}.
+The current branching policy resulting in the smallest solution trees is known as \textit{strong branching} (\gls{SB}) \cite{applegate1995finding}, and the application of this branching policy at every node is known as \textit{full strong branching} (\gls{FSB}) \cite{achterberg2004branching}. This branching policy is based on determining the best variable to branch on by solving the relaxation for every candidate variable, and is therefore very computationally expensive compared to other methods \cite{achterberg2004branching}.
 
-Another branching policy is \textit{Most Infeasible Branching} (\gls{MIB}), where the variable with the fractional part of the relaxation optimum closest to $0.5$ is selected. This policy, though computationally inexpensive, has proved to be very poor \cite{achterberg2004branching}. 
+Another branching policy is \textit{most infeasible branching} (\gls{MIB}), where the variable with the fractional part of the relaxation optimum closest to $0.5$ is selected. This policy, though computationally inexpensive, has proved to be very poor \cite{achterberg2004branching}. 
  
-An effective and popular policy is \textit{Pseudo-cost Branching} (\gls{PC}), which relies on the expected change in objective value based on previous branching on the variable in question
+An effective and popular policy is \textit{pseudo-cost branching} (\gls{PC}), which relies on the expected change in objective value based on previous branching on the variable in question
 \cite{achterberg2004branching}. In short, the objective gain per unit change in a variable is averaged over all nodes where it has been branched upon. This value is termed the \textit{pseudo-cost} of the variable. As is evident, these values depend on a history of branching, and will therefore be inaccurate for the first decisions \cite{achterberg2004branching}. 
 
-The policy known as \textit{Reliability Pseudo-Cost Branching} (\gls{RPC}) aims to mitigate the inaccuracy of the \gls{PC} algorithm by combining \gls{SB} and \gls{PC} \cite{anand2017comparative}. In \gls{RPC}, \gls{SB} is employed for variables that are either uninitialized (never branched on before) or have \textit{unreliable} pseudo-costs (pseudo-costs that stem from little data) \cite{achterberg2004branching}. This policy is the standard of the \gls{SCIP} optimization suite \cite{achterberg2009scip}. 
+The policy known as \textit{reliability pseudo-cost branching} (\gls{RPC}) aims to mitigate the inaccuracy of the \gls{PC} algorithm by combining \gls{SB} and \gls{PC} \cite{anand2017comparative}. In \gls{RPC}, \gls{SB} is employed for variables that are either uninitialized (never branched on before) or have \textit{unreliable} pseudo-costs (pseudo-costs that stem from little data) \cite{achterberg2004branching}. This policy is the standard of the \gls{SCIP} optimization suite \cite{achterberg2009scip}. 
 
 In the literature, the branching policy is referred to as a policy, strategy, or rule. In this thesis \textit{policy} is used.  
 
@@ -366,7 +366,7 @@ In the literature, the branching policy is referred to as a policy, strategy, or
 
 Recently, attempts have been made to find a branching policy based on statistical learning. 
 
-Using machine learning, specifically imitation learning, to find good candidate variables for branching in a less computationally demanding manner was proposed by Elias Khalil \cite{khalil2016learning}. Various methods for learning in branching include \textit{ Support Vector Machine Ranking} (\Gls{SVM}) \cite{khalil2016learning}, \textit{Graph Convolutional Neural Networks} (\gls{GCNN}) \cite{gasse2019exact} and \textit{Feature-wise Linear Modulation} (\gls{FiLM}) \cite{gupta2020hybrid}.
+Using machine learning, specifically imitation learning, to find good candidate variables for branching in a less computationally demanding manner was proposed by Elias Khalil \cite{khalil2016learning}. Various methods for learning in branching include \textit{ support vector machine ranking} (\Gls{SVM}) \cite{khalil2016learning}, \textit{graph convolutional neural networks} (\gls{GCNN}) \cite{gasse2019exact} and \textit{feature-wise linear modulation} (\gls{FiLM}) \cite{gupta2020hybrid}.
 
 The fundamental assumption to this approach is that a computationally efficient approximation to the most computationally demanding but most accurate branching policy can be learned. The algorithm will use imitation learning on the branching expert to find a computationally less expensive non-linear function approximation to the expert algorithm's variable scoring. Then, the algorithm branches on the variable with the highest score. 
 %This can be expressed as: 
@@ -382,12 +382,12 @@ The fundamental assumption to this approach is that a computationally efficient 
 
 \section{Markov Decision Processes}\label{sec:back_mdp}
 
-This section presents the \textit{Markov Decision Process} formulation of the variable selection problem. 
+This section presents the \textit{Markov decision process} formulation of the variable selection problem. 
 
 
 \subsection{Markov Decision Processes Formulation}\label{ssec:mdp}
 
-Central to the advancement of learned policies in \gls{BnB} is the interpretation of the solution algorithm as an \textit{agent} in a \textit{Markov Decision Process} (\gls{MDP}) \cite{gasse2019exact}. This interpretation relates the problem to a large collection of literature on the topic \cite{howard1960dynamic}.
+Central to the advancement of learned policies in \gls{BnB} is the interpretation of the solution algorithm as an \textit{agent} in a \textit{Markov decision process} (\gls{MDP}) \cite{gasse2019exact}. This interpretation relates the problem to a large collection of literature on the topic \cite{howard1960dynamic}.
 
 In an \gls{MDP}, the agent is at time $t$ in a state $\mathcal{S}_t$, from which it performs an action $\mathcal{A}_t$ that transforms the agent to the state $\mathcal{S}_{t+1}$ and receives the \textit{reward} $\mathcal{R}_{t+1}$ \cite{prouvost2021ecole}. The probability of an agent performing action $a$ in state $s$ is given as $\pi (a | s)$. The probability distribution for the agent to transition to a new state $s'$ is given as $\mathbb{P}(s', r | a, s)$ \cite{prouvost2021ecole}. 
 
@@ -410,7 +410,7 @@ These definitions now allow a formulation of the \gls{MDP} control problem, whic
 
 \subsection{Partially-observable Markov Decision Processes}
 
-A subset or generalization of an \gls{MDP} is the \textit{Partially-observable Markov Decision Process }(\gls{PO-MDP}) \cite{monahan1982state}. Processes of this class allow for uncertainty of the states as well as additional acquisition of state information \cite{monahan1982state}. The agent will therefore decide actions based on the observation of the state, given as $\mathcal{O}$ \cite{prouvost2021ecole}. All past observations of the observations, rewards and actions are given in the history $\mathcal{H}_t$, given as \cite{prouvost2021ecole}:
+A subset or generalization of an \gls{MDP} is the \textit{partially-observable Markov decision process }(\gls{PO-MDP}) \cite{monahan1982state}. Processes of this class allow for uncertainty of the states as well as additional acquisition of state information \cite{monahan1982state}. The agent will therefore decide actions based on the observation of the state, given as $\mathcal{O}$ \cite{prouvost2021ecole}. All past observations of the observations, rewards and actions are given in the history $\mathcal{H}_t$, given as \cite{prouvost2021ecole}:
 \begin{equation}
     \mathcal{H}_t = \{\mathcal{O}(\mathcal{S}_0), \mathcal{R}(S_0), \mathcal{A}_0, ..., \mathcal{O}(\mathcal{S}_{t-1}), \mathcal{R}(S_{t-1}), \mathcal{A}_{t-1}, \mathcal{O}(\mathcal{S}_t)\}
 \end{equation}
@@ -425,12 +425,12 @@ This results in the final formulation \cite{prouvost2021ecole}:
 \underbrace{\mathbb{P}(\mathcal{S}_{t+1}, \mathcal{R}_{t+1} | \mathcal{A}_t, \mathcal{S}_t)}_{\text{next state}}
 \end{equation}
 
-An illustration of the Markov Decision Process control loop from the documentation of \gls{Ecole} is shown in \Cref{fig:mdp}.
+An illustration of the Markov decision process control loop from the documentation of \gls{Ecole} is shown in \Cref{fig:mdp}.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.55\linewidth]{img/mdp.png}
-    \caption{Illustration of the Markov Decision Process control loop. Figure from Prouvost et al. (2021) \cite{prouvost2021ecole}.}
+    \caption{Illustration of the Markov decision process control loop. Figure from Prouvost et al. (2021) \cite{prouvost2021ecole}.}
     \label{fig:mdp}
 \end{figure}
 
@@ -441,7 +441,7 @@ An illustration of the Markov Decision Process control loop from the documentati
 Interpreted in the language of \gls{MDP}s, the \gls{BnB} algorithm is the \textit{environment} and a concrete \gls{MILP} problem instance is an \textit{episode} in this environment. The \textit{agent} is the brancher, where in this thesis the variable selection policy is the component of interest, ignoring the node selection policy. The state of the solver consists of the \gls{BnB} tree at that instance, as well as the observations at each node (the \textit{history} of the \gls{PO-MDP}).
 
 This formulation is the basis for the \textit{Ecole} framework, which is discussed in \Cref{ssec:ecole}
-The \gls{PO-MDP} formulation allows for the agent in the \gls{BnB} environment to be learned through Reinforcement Learning, discussed in \Cref{ssec:back_rl}.
+The \gls{PO-MDP} formulation allows for the agent in the \gls{BnB} environment to be learned through reinforcement learning, discussed in \Cref{ssec:back_rl}.
 
 
 
@@ -452,7 +452,7 @@ A prerequisite for learning in \gls{BnB} is the observation of the state of the 
 %Little attention towards these features are found in the major publications in this field (\cite{gasse2019exact,gupta2020hybrid}), however the observation is the foundation of the learning process.
 %\textit{Learning to Branch} by Khalil et al. (2016) \cite{khalil2016learning} contains multiple additional features, however these will not be discussed in this thesis. 
 
-The features of a \gls{BnB} node are divided into three classes: Variable features, constraint features and edge features.
+The features of a \gls{BnB} node are divided into three classes: variable features, constraint features and edge features.
 
 
 \textbf{Variable Features}
@@ -509,11 +509,11 @@ Constraints and variables are the numbered nodes of the graphs, while the edges 
 \section{Machine Learning Models}\label{sec:back_models}
 
 
-The \gls{ML}-models used in the thesis are presented in this section. First the Multi-Layer Perceptron and Graph Convolutional Neural Network models, then the concepts of \textit{Ablation studies} and \textit{Reinforcement Learning}.
+The \gls{ML}-models used in the thesis are presented in this section. First the multi-layer perceptron and graph convolutional neural network models, then the concepts of \textit{ablation studies} and \textit{reinforcement learning}.
 
 \subsection{Multi-layer Perceptrons}\label{ssec:back_mlp}
 
-Multi-Layer Perceptrons (\gls{MLP}s), more commonly known as deep feed-forward neural networks, are recommended by Gupta et al. (2020) \cite{gupta2020hybrid} as a less computationally expensive alternative to the approaches by Khalil et al. (2016) \cite{khalil2016learning} and Gasse et al. (2019) \cite{gasse2019exact}. 
+Multi-layer perceptrons (\gls{MLP}s), more commonly known as deep feed-forward neural networks, are recommended by Gupta et al. (2020) \cite{gupta2020hybrid} as a less computationally expensive alternative to the approaches by Khalil et al. (2016) \cite{khalil2016learning} and Gasse et al. (2019) \cite{gasse2019exact}. 
 
 \gls{MLP}s are networks that generate a nonlinear function $y = f(\mathbf{x}; \bm{\theta})$, where $x$ is the input, $y$ is the output, and $\bm{\theta}$ represents the parameters of the function. The parameters are learned during repeated optimization, and will under ideal circumstances converge to approach the optimal function $y = f^*(\mathbf{x})$. The function is realized as a series of compositions of functions. The composed functions are represented as an acyclical, directed graph \cite{nielsen2018neural}, and can be expressed as:
 \begin{align}
@@ -536,7 +536,7 @@ The computation of the output of the function given its input is known as a \tex
 
 \subsection{Graph Convolutional Neural Networks }
 
-Graph Convolutional Neural Networks (\gls{GCNN}s) is a term for neural networks that have input data represented in a graph-structure that is processed by a convolution operation \cite{kipf2016semisupervised}. In this thesis, the terms \gls{GCNN} and \gls{GNN} will be used interchangeably. 
+Graph convolutional neural network (\gls{GCNN}) is a term for neural networks that have input data represented in a graph-structure that is processed by a convolution operation \cite{kipf2016semisupervised}. In this thesis, the terms \gls{GCNN} and \gls{GNN} will be used interchangeably. 
 
 The fundamental property of the graph convolution is its ability to create representations of irregular data without altering the structure of the data. This means that, for instance, nodes that share vertices can pass information to each other, so the feature representation of a node can utilize the features of neighboring nodes.  
 An illustration of this using the bipartite graph from \Cref{fig:bipartite_cv} is given in \Cref{fig:conv_ex}. The features of the nodes are transformed while maintaining the structure of the graph.
@@ -602,7 +602,7 @@ In this thesis, the concept of an ablation study will be interpreted more broadl
 
 \subsection{Reinforcement Learning}\label{ssec:back_rl}
 
-The subset of machine learning described as \textit{Reinforcement Learning} (\gls{RL}) is highly relevant in the context of \gls{ML} (\gls{CO}). No results will be discussed in this thesis, however, a background in the topic is necessary to understand both related work and the long-term goals of the field.
+The subset of machine learning described as \textit{reinforcement learning} (\gls{RL}) is highly relevant in the context of \gls{ML} in \gls{CO}. No results will be discussed in this thesis, however, a background in the topic is necessary to understand both related work and the long-term goals of the field.
 
 \gls{RL} encompasses the problem of an \textit{agent} learning a \textit{policy} for behaving in an \textit{environment} so as to achieve a global objective. Any sequential decision-making problem with a measure of optimality that relies on past experience can be formulated as a \gls{RL} problem \cite{francois2018introduction}. The approach has seen success in a number of fields in the past years with the integration of deep learning models, often termed deep \gls{RL} \cite{francois2018introduction}. Most notable of the advancements might be AlphaZero, Google's successful chess-AI \cite{silver2017mastering}. \gls{RL} has the important property of being independent of data, meaning a number of core \gls{ML} challenges (quantity, quality, and bias of data) are rendered irrelevant \cite{goodfellow2016deep}. 
 
